@@ -24,11 +24,11 @@ class Checkup:
         Calls the model for prediction
         and then updates the categories dictionary
         '''
-        cataract_pred = cataract(self.image).prediction("/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/weights/model_k.h5")
+        cataract_pred = cataract(self.image).prediction()
         if cataract_pred[0] == 1:
             self.categories["CATARACT"] = 1
         
-        diabetic_retinopathy_pred = diabetic_retinopathy(self.image).prediction("/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/weights/CL_MULTI_effnetb0-16-0.005-SGD.pt")
+        diabetic_retinopathy_pred = diabetic_retinopathy(self.image).prediction()
         #to get the severity of diabetic retinopathy
         for key, value in self.diabetic_retinopathy_classes.items():
             if value == diabetic_retinopathy_pred:
@@ -41,7 +41,7 @@ class Checkup:
         print(self.categories)
 
 def main():
-    obj = Checkup("/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/images/3_retina_disease/Retina_003.png")
+    obj = Checkup("/home/ayush/Documents/Machine_learning/INFYUVA/final/images/1_normal/NL_002.png")
     obj.call_model()
     obj.show_categories()
 

@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 class diabetic_retinopathy(Image, Model):
     def __init__(self,image):
+        self.weights_path = '/home/ayush/Documents/Machine_learning/INFYUVA/final/weights/DR.pt'
         self.image = image
         self.model = self.create_model()
         self.x = None
@@ -32,11 +33,11 @@ class diabetic_retinopathy(Image, Model):
         new_array = cv2.resize(self.image,(512,512))
         self.x = torch.unsqueeze(torch.tensor(new_array).permute(2,0,1),0).float()
         
-    def prediction(self,weights_path):
+    def prediction(self):
         '''
         Predicts the class of the image using the weights
         '''
-        self.model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+        self.model.load_state_dict(torch.load(self.weights_path, map_location=torch.device('cpu')))
         self.model = self.model.eval()
         return self.model(self.x).argmax().item()
 

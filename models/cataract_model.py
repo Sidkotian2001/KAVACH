@@ -8,6 +8,7 @@ class cataract(Image, Model):
    
    def __init__(self,image):
       self.model = self.create_model()
+      self.weights_path = '/home/ayush/Documents/Machine_learning/INFYUVA/final/weights/CATARACT.h5'
       self.model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
       self.image = image
       self.x = None
@@ -48,9 +49,9 @@ class cataract(Image, Model):
       self.x = self.x.astype('float32')
       self.x = self.x/255
 
-   def prediction(self,weights_path):
+   def prediction(self):
       self.model.build((None,224,224,3))
-      self.model.load_weights(weights_path)
+      self.model.load_weights(self.weights_path)
       with tf.device('/cpu:0'):
          return self.model.predict(self.x).argmax(axis=1)
       

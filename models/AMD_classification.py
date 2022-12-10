@@ -16,7 +16,7 @@ class macular_degeneration():
         self.macular_degeneracy_classes = {0: 'Normal', 1 : 'Mild', 2: 'Severe'}
         
     def create_model(self):
-        self.weights_path = '/home/sid009/jupyter/Infyuva_repo/Ophthalmology_DL-main/AMD Classification/model/AMD.pt'
+        self.weights_path = '/home/ayush/Documents/Machine_learning/INFYUVA/final/weights/AMD.pt'
         self.model = EfficientNet.from_pretrained('efficientnet-b3', num_classes = len(self.macular_degeneracy_classes))
         self.model.load_state_dict(torch.load(self.weights_path, map_location = torch.device('cpu')))
         self.model.to(torch.device('cpu'))

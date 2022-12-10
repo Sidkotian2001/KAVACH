@@ -1,35 +1,102 @@
-# base Class of your App inherits from the App class. 
-# app:always refers to the instance of your application 
-from kivy.app import App 
-    
-# BoxLayout arranges children in a vertical or horizontal box.
-# or help to put the childrens at the desired location.
-from kivy.uix.boxlayout import BoxLayout
-  
-###############################################
-  
-# creating the root widget used in .kv file
-class KVBL(BoxLayout):
-    '''
-        no need to do anything here as
-        we are building things in .kv file
-    '''
-    pass
-  
-#################################################  
-# class in which name .kv file must be named KVBoxLayout.kv. 
-class login(App):  
-        
-    def build(self):
-        # returning the instance of KVBL class
-        return KVBL()
-  
-##################################################
-  
-# creating the object root for BoxLayoutApp() class  
-root = login() 
-    
-# run function runs the whole program 
-# i.e run() method which calls the 
-# target function passed to the constructor. 
-root.run() 
+# import all the relevant classes
+from kivy.app import App
+from kivy.uix.widget import Widget
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.properties import ObjectProperty
+from kivy.lang import Builder
+from kivy.uix.popup import Popup
+from kivy.uix.floatlayout import FloatLayout
+import pandas as pd
+
+# class to call the popup function
+class PopupWindow(Widget):
+	def btn(self):
+		popFun()
+
+# class to build GUI for a popup window
+class P(FloatLayout):
+	pass
+
+# function that displays the content
+def popFun():
+	show = P()
+	window = Popup(title = "popup", content = show,
+				size_hint = (None, None), size = (300, 300))
+	window.open()
+
+# class to accept user info and validate it
+class loginWindow(Screen):
+	email = ObjectProperty(None)
+	pwd = ObjectProperty(None)
+	def validate(self):
+
+		# validating if the email already exists
+		if self.email.text not in users['Email'].unique():
+			popFun()
+		else:
+
+			# switching the current screen to display validation result
+			sm.current = 'logdata'
+
+			# reset TextInput widget
+			self.email.text = ""
+			self.pwd.text = ""
+
+
+# class to accept sign up info
+class signupWindow(Screen):
+	name2 = ObjectProperty(None)
+	email = ObjectProperty(None)
+	pwd = ObjectProperty(None)
+	def signupbtn(self):
+
+		# creating a DataFrame of the info
+		user = pd.DataFrame([[self.name2.text, self.email.text, self.pwd.text]],
+							columns = ['Name', 'Email', 'Password'])
+		if self.email.text != "":
+			if self.email.text not in users['Email'].unique():
+
+				# if email does not exist already then append to the csv file
+				# change current screen to log in the user now
+				user.to_csv('login.csv', mode = 'a', header = False, index = False)
+				sm.current = 'login'
+				self.name2.text = ""
+				self.email.text = ""
+				self.pwd.text = ""
+		else:
+			# if values are empty or invalid show pop up
+			popFun()
+	
+# class to display validation result
+class logDataWindow(Screen):
+	pass
+
+# class for managing screens
+class windowManager(ScreenManager):
+	pass
+
+# kv file
+kv = Builder.load_file('login.kv')
+sm = windowManager()
+
+# reading all the data stored
+#if login.csv does not exist then create it
+try:
+    users=pd.read_csv('login.csv')
+except:
+    users=pd.DataFrame(columns=['Name','Email','Password'])
+    users.to_csv('login.csv',index=False)
+
+# adding screens
+sm.add_widget(loginWindow(name='login'))
+sm.add_widget(signupWindow(name='signup'))
+sm.add_widget(logDataWindow(name='logdata'))
+
+# class that builds gui
+class loginMain(App):
+	def build(self):
+		return sm
+
+# driver function
+if __name__=="__main__":
+	loginMain().run()
