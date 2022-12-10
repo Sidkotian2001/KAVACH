@@ -1,7 +1,6 @@
 import torch
 import torchvision.models as models
 import torch.nn as nn
-from torchcam.methods import GradCAMpp
 from torchvision.io.image import read_image
 from torchvision.transforms.functional import resize
 import cv2
