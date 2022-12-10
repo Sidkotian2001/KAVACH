@@ -34,14 +34,14 @@ class Checkup:
             if value == diabetic_retinopathy_pred:
                 self.categories["DIABETIC RETINOPATHY"] = key
         
-        macular_degeneration_pred = macular_degeneration('/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/images/2_cataract/cataract_001.png').prediction()
+        macular_degeneration_pred = macular_degeneration(self.image_path).prediction()
         self.categories['Macular Degeneration'] = macular_degeneration_pred
 
     def show_categories(self):
         print(self.categories)
 
 def main():
-    obj = Checkup("/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/images/2_cataract/cataract_001.png")
+    obj = Checkup("/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/images/3_retina_disease/Retina_003.png")
     obj.call_model()
     obj.show_categories()
 
