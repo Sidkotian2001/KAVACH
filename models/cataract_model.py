@@ -3,6 +3,7 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 from abstract_class import Image,Model
+import tensorflow as tf
 class cataract(Image, Model):
    
    def __init__(self,image):
@@ -50,5 +51,6 @@ class cataract(Image, Model):
    def prediction(self,weights_path):
       self.model.build((None,224,224,3))
       self.model.load_weights(weights_path)
-      return self.model.predict(self.x).argmax(axis=1)
+      with tf.device('/cpu:0'):
+         return self.model.predict(self.x).argmax(axis=1)
       
