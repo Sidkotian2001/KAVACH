@@ -3,15 +3,20 @@ windowManager:
 	loginWindow:
 	signupWindow:
 	logDataWindow:
+	runningWindow:
 
 # GUI for the login window
 <loginWindow>:
 	email : email
 	pwd : pwd
 	FloatLayout:
-		size: root.width, root.height
+		Image:
+            source: '/home/ayush/Downloads/eye.png'
+            allow_stretch: True
+            keep_ratio: False
 		Label:
-			text : "EMAIL: "
+			text : "Email: "
+			color: 0,0,0,1
 			size_hint : 0.2, 0.1
 			pos_hint : {"x":0.25, "top":0.9}
 		TextInput:
@@ -20,7 +25,8 @@ windowManager:
 			size_hint : 0.3, 0.1
 			pos_hint : {"x" : 0.45, "top" : 0.9}
 		Label:
-			text : "PASSWORD: "
+			text : "Password: "
+			color: 0,0,0,1
 			size_hint : 0.2, 0.1
 			pos_hint : {"x" : 0.25, "top" : 0.7}
 		TextInput:
@@ -29,19 +35,24 @@ windowManager:
 			size_hint : 0.3, 0.1
 			pos_hint : {"x" : 0.45, "top" : 0.7}
 		Button:
-			text : "Create an account"
-			size_hint : 0.4, 0.1
-			pos_hint : {"x" : 0.33, "top" : 0.4}
-			on_release:
-				app.root.current = 'signup'
-				root.manager.transition.direction = "left"
-		Button:
 			text : "LOGIN"
+			background_normal: ''
+    		background_color: 0.51, 0.54,0.82, 1
 			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.39, "top" : 0.2}
+			pos_hint : {"x" : 0.42, "top" : 0.4}
 			on_release:
 				root.validate()
 				root.manager.transition.direction = "up"
+		Button:
+			text : "Create an account"
+			background_normal: ''
+    		background_color: 0.51, 0.54,0.82, 1
+			size_hint : 0.4, 0.1
+			pos_hint : {"x" : 0.37, "top" : 0.2}
+			on_release:
+				app.root.current = 'signup'
+				root.manager.transition.direction = "left"
+		
 
 # GUI for the signup window
 <signupWindow>:
@@ -49,6 +60,12 @@ windowManager:
 	email : email
 	pwd : pwd
 	FloatLayout:
+		 # Add the background image to the FloatLayout
+        Image:
+            source: '/home/ayush/Downloads/eye.png'
+            allow_stretch: True
+            keep_ratio: False
+
 		Label:
 			text : "NAME: "
 			size_hint : 0.2, 0.1
@@ -88,18 +105,22 @@ windowManager:
 <logDataWindow>:
 	info : info
 	FloatLayout:
+		Image:
+            source: '/home/ayush/Downloads/eye.png'
+            allow_stretch: True
+            keep_ratio: False
 		Label:
 			id : info
+			color : 0,0,0,1
 			size_hint : 0.8, 0.2
 			pos_hint : {"x" : 0.15, "top" : 0.8}
 			text : "SUCCESSFULLY LOGGED IN"
 		Button:
-			text : "Login"
+			text : "Start model"
 			size_hint : 0.4, 0.1
 			pos_hint : {"x" : 0.33, "top" : 0.55}
-			on_release:
-				app.root.current = 'login'
-				root.manager.transition.direction = "down"
+			on_press :
+				root.runbtn()
 		Button:
 			text : "Create new account"
 			size_hint : 0.4, 0.1
@@ -107,8 +128,13 @@ windowManager:
 			on_release:
 				app.root.current = 'signup'
 				root.manager.transition.direction = "down"
-
-
+<runningwindow>
+	Label:
+		text : "Running model"
+		size_hint : 0.2, 0.1
+		pos_hint : {"x" : 0.3, "top" : 0.8}
+		
+		
 # GUI for pop up window
 <P>:
 	Label:

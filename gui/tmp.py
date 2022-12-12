@@ -1,3 +1,9 @@
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)
+Config.set('graphics', 'width', '700')
+Config.set('graphics', 'height', '600')
+
+
 # import all the relevant classes
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -7,7 +13,10 @@ from kivy.lang import Builder
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
 import pandas as pd
-
+import os
+#class for running model
+class runningWindow(Screen):
+	pass
 # class to call the popup function
 class PopupWindow(Widget):
 	def btn(self):
@@ -34,6 +43,7 @@ class loginWindow(Screen):
 		if self.email.text not in users['Email'].unique():
 			popFun()
 		else:
+			# validating if the password is correct
 
 			# switching the current screen to display validation result
 			sm.current = 'logdata'
@@ -69,11 +79,15 @@ class signupWindow(Screen):
 	
 # class to display validation result
 class logDataWindow(Screen):
+	def runbtn(self):
+		print("running")
+		os.system('python3 /home/ayush/Documents/Machine_learning/INFYUVA/final/models/detect.py')
 	pass
 
 # class for managing screens
 class windowManager(ScreenManager):
 	pass
+
 
 # kv file
 kv = Builder.load_file('login.kv')
@@ -91,7 +105,7 @@ except:
 sm.add_widget(loginWindow(name='login'))
 sm.add_widget(signupWindow(name='signup'))
 sm.add_widget(logDataWindow(name='logdata'))
-
+sm.add_widget(runningWindow(name='running'))
 # class that builds gui
 class loginMain(App):
 	def build(self):

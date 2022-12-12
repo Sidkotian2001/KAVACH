@@ -41,7 +41,7 @@ class Checkup:
         print(self.categories)
 
 def main():
-    obj = Checkup("/home/ayush/Documents/Machine_learning/INFYUVA/final/images/1_normal/NL_002.png")
+    obj = Checkup("/home/ayush/Documents/Machine_learning/INFYUVA/final/images/2_cataract/cataract_004.png")
     obj.call_model()
     obj.show_categories()
 
