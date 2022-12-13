@@ -103,30 +103,25 @@ windowManager:
 
 # GUI to show validation result
 <logDataWindow>:
-	info : info
 	FloatLayout:
 		Image:
             source: '/home/ayush/Downloads/eye.png'
             allow_stretch: True
             keep_ratio: False
-		Label:
-			id : info
-			color : 0,0,0,1
-			size_hint : 0.8, 0.2
-			pos_hint : {"x" : 0.15, "top" : 0.8}
-			text : "SUCCESSFULLY LOGGED IN"
+	
 		Button:
 			text : "Start model"
 			size_hint : 0.4, 0.1
 			pos_hint : {"x" : 0.33, "top" : 0.55}
 			on_press :
 				root.runbtn()
+
 		Button:
-			text : "Create new account"
+			text : "Capture Image"
 			size_hint : 0.4, 0.1
 			pos_hint : {"x" : 0.33, "top" : 0.4}
 			on_release:
-				app.root.current = 'signup'
+				app.root.current = 'video'
 				root.manager.transition.direction = "down"
 <runningwindow>
 	Label:
