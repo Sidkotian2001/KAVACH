@@ -81,7 +81,7 @@ class signupWindow(Screen):
 class logDataWindow(Screen):
 	def runbtn(self):
 		print("running")
-		os.system('python3 /home/ayush/Documents/Machine_learning/INFYUVA/final/models/detect.py')
+		os.system('python3 ../models/detect.py')
 	pass
 
 # class for managing screens

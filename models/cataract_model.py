@@ -7,6 +7,7 @@ import tensorflow as tf
 class cataract(Image, Model):
    
    def __init__(self,image):
+      # tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
       self.model = self.create_model()
       self.weights_path = '/home/ayush/Documents/Machine_learning/INFYUVA/final/weights/CATARACT.h5'
       self.model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
