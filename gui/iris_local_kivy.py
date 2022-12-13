@@ -11,6 +11,7 @@ class iris_voice():
     def __init__(self):
         self.cap = cv.VideoCapture(0)
         self.is_eye_in_square = False
+        self.frame_original = None
 
         self.shared_variable = multiprocessing.Value('i')
         self.shared_eye_count = multiprocessing.Array('i', 2)
@@ -205,11 +206,11 @@ class iris_voice():
             #Flipping the frame
             # image = cv.flip(frame, 0)
             image = cv.flip(frame, 1)
+            self.frame_original = image.copy()
             image, results = self.mediapipe_detection(image, face_mesh)
-
+            pupils_coords = None
             if results.multi_face_landmarks:
                 for _, facial_landmarks in enumerate(results.multi_face_landmarks):
-                    pupils_coords = None
                     #Detect coordinates of each part 
                     left_eye_coords = self.part_detection(self.LEFT_EYE, facial_landmarks, image.shape)
                     right_eye_coords = self.part_detection(self.RIGHT_EYE, facial_landmarks, image.shape)
@@ -223,11 +224,11 @@ class iris_voice():
                     self.display_part(image, left_iris_coords, (0,255,255), True)
                     self.display_part(image, right_iris_coords, (0,255,255), True)
                     self.display_part(image, pupils_coords, (0,255,255), True, True)
-            
-            self.get_distance(pupils_coords[0], pupils_coords[1])
+            if pupils_coords:
+                self.get_distance(pupils_coords[0], pupils_coords[1])
 
 
-            self.correct_position(image, pupils_coords, left_iris_coords, right_iris_coords, number_of_eyes_captured)
+                self.correct_position(image, pupils_coords, left_iris_coords, right_iris_coords, number_of_eyes_captured)
 
             if self.shared_variable.value == 6:
                 self.is_eye_in_square = True
