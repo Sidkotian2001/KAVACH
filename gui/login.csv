@@ -1,4 +1,15 @@
 Name,Email,Password
+<<<<<<< HEAD
 Ayush, admin
 ayush,aa,aa
+||||||| 9db5361
+Ayush,aayushbatra@gmail.com,admin
+ayush,aa,aa
+=======
+Ayush,aayushbatra@gmail.com,admin
+ayush,a,a
+>>>>>>> 19e934303618f13fe45dd35125be5cdb96954ae8
 bb,bb,bb
+siddharth,sidkotian@gmail.com,
+sam,sam@gmail.com,my_name
+f,f,f
