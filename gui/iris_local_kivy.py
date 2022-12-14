@@ -139,7 +139,7 @@ class iris_voice():
             #Both the eyes are localized exiting
             print("correct position : Both the eyes are localized, finished image capture")
             cv.putText(image, "correct_position : both the eyes are localized, finished image capture", (200, 100), cv.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2, cv.LINE_AA)
-            exit()
+            # exit()
         
         #Center rectangle coordinates
         center_x1, center_y1 = 300, 210
