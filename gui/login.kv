@@ -11,44 +11,50 @@ windowManager:
 	pwd : pwd
 	FloatLayout:
 		Image:
-            source: '/home/ayush/Downloads/eye.png'
+            source: 'Infysuva.png'
             allow_stretch: True
             keep_ratio: False
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
 		Label:
 			text : "Email: "
 			color: 0,0,0,1
 			size_hint : 0.2, 0.1
-			pos_hint : {"x":0.25, "top":0.9}
+			pos_hint : {"center_x":0.25, "center_y":0.75}
 		TextInput:
 			id : email
 			multiline :False
-			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.45, "top" : 0.9}
+			size_hint : 0.3, 0.075
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.75}
 		Label:
 			text : "Password: "
 			color: 0,0,0,1
 			size_hint : 0.2, 0.1
-			pos_hint : {"x" : 0.25, "top" : 0.7}
+			pos_hint : {"center_x" : 0.25, "center_y" : 0.60}
 		TextInput:
 			id : pwd
 			multiline :False
-			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.45, "top" : 0.7}
+			size_hint : 0.3, 0.075
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.60}
 		Button:
 			text : "LOGIN"
 			background_normal: ''
-    		background_color: 0.51, 0.54,0.82, 1
-			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.42, "top" : 0.4}
+    		background_color: 0.50, 0.50,0.80, 1
+			size_hint : 0.2, 0.1
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.45}
 			on_release:
 				root.validate()
-				root.manager.transition.direction = "up"
+				root.manager.transition.direction = "left"
 		Button:
 			text : "Create an account"
 			background_normal: ''
-    		background_color: 0.51, 0.54,0.82, 1
-			size_hint : 0.4, 0.1
-			pos_hint : {"x" : 0.37, "top" : 0.2}
+    		background_color: 0.50, 0.50,0.80, 1
+			size_hint : 0.3, 0.1
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.25}
 			on_release:
 				app.root.current = 'signup'
 				root.manager.transition.direction = "left"
@@ -65,9 +71,17 @@ windowManager:
             source: '/home/ayush/Downloads/eye.png'
             allow_stretch: True
             keep_ratio: False
+		
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
 
 		Label:
 			text : "NAME: "
+			color: 0,0,0,1
 			size_hint : 0.2, 0.1
 			pos_hint : {"x":0.25, "top":0.9}
 		TextInput:
@@ -77,6 +91,7 @@ windowManager:
 			pos_hint : {"x" : 0.45, "top" : 0.9}
 		Label:
 			text : "EMAIL: "
+			color: 0,0,0,1
 			size_hint : 0.2, 0.1
 			pos_hint : {"x" : 0.25, "top" : 0.7}
 		TextInput:
@@ -86,6 +101,7 @@ windowManager:
 			pos_hint : {"x" : 0.45, "top" : 0.7}
 		Label:
 			text : "PASSWORD: "
+			color: 0,0,0,1
 			size_hint : 0.2, 0.1
 			pos_hint : {"x" : 0.25, "top" : 0.5}
 		TextInput:
@@ -108,21 +124,28 @@ windowManager:
             source: '/home/ayush/Downloads/eye.png'
             allow_stretch: True
             keep_ratio: False
+		
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
 	
 		Button:
 			text : "Start model"
 			size_hint : 0.4, 0.1
-			pos_hint : {"x" : 0.33, "top" : 0.55}
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.60}
 			on_press :
 				root.runbtn()
 
 		Button:
 			text : "Capture Image"
 			size_hint : 0.4, 0.1
-			pos_hint : {"x" : 0.33, "top" : 0.4}
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.40}
 			on_release:
-				app.root.current = 'video'
-				root.manager.transition.direction = "down"
+				app.root.current = 'view_images'
+				root.manager.transition.direction = "left"
 <runningwindow>
 	Label:
 		text : "Running model"
@@ -136,3 +159,35 @@ windowManager:
 		text : "Please enter valid information"
 		size_hint : 0.2, 0.1
 		pos_hint : {"x" : 0.3, "top" : 0.8}
+
+<View_Images>:
+	FloatLayout:
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+
+		Image:
+			source: 'image_taken_0.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.4, 0.4
+			pos_hint: {'center_x': 0.25, 'center_y' : 0.5}
+		
+		Label:
+			id: 'left_eye_lbl'
+			text: 'Left eye'
+			color: 1,1,1,1
+			size_hint: 0.3, 0.2
+			pos_hint: {'center_x' : 0.25, 'center_y' : 0.8}
+
+		
+		Image:
+			source : 'image_taken_1.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.4, 0.4
+			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+

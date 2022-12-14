@@ -1,7 +1,7 @@
 from kivy.config import Config
 Config.set('graphics', 'resizable', False)
-Config.set('graphics', 'width', '700')
-Config.set('graphics', 'height', '600')
+Config.set('graphics', 'width', '640')
+Config.set('graphics', 'height', '480')
 
 
 # import all the relevant classes
@@ -20,6 +20,7 @@ from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
 import os
+
 #class for running model
 class runningWindow(Screen):
 	pass
@@ -29,7 +30,7 @@ class PopupWindow(Widget):
 		popFun()
 
 # class to build GUI for a popup window
-class P(FloatLayout):
+class P(FloatLayout):		
 	pass
 
 # function that displays the content
@@ -45,18 +46,32 @@ class loginWindow(Screen):
 	pwd = ObjectProperty(None)
 	def validate(self):
 
-		# validating if the email already exists
-		if self.email.text not in users['Email'].unique():
-			popFun()
-		else:
-			# validating if the password is correct
+		# reading all the data stored
+		#if login.csv does not exist then create it
+		# try:
+		# 	users=pd.read_csv('login.csv')
+		# except:
+		# 	users=pd.DataFrame(columns=['Name','Email','Password'])
+		# 	users.to_csv('login.csv',index=False)
 
-			# switching the current screen to display validation result
-			sm.current = 'logdata'
+		# # validating if the email already exists
+		# if self.email.text not in users['Email'].unique():
+		# 	popFun()
+		# else:
+		# 	# validating if the password is correct
+		# 	user_email = users[users['Email'] == self.email.text]
+		# 	if user_email['Password'].values[0] == self.pwd.text:
+		# 		# switching the current screen to display validation result
+		# 		sm.current = 'logdata'
 
-			# reset TextInput widget
-			self.email.text = ""
-			self.pwd.text = ""
+		# 		# reset TextInput widget
+		# 		self.email.text = ""
+		# 		self.pwd.text = ""
+		# 	else:
+
+		# 		popFun()
+		sm.current = 'logdata'
+			
 
 
 # class to accept sign up info
@@ -65,7 +80,13 @@ class signupWindow(Screen):
 	email = ObjectProperty(None)
 	pwd = ObjectProperty(None)
 	def signupbtn(self):
-
+		# reading all the data stored
+		#if login.csv does not exist then create it
+		try:
+			users=pd.read_csv('login.csv')
+		except:
+			users=pd.DataFrame(columns=['Name','Email','Password'])
+			users.to_csv('login.csv',index=False)
 		# creating a DataFrame of the info
 		user = pd.DataFrame([[self.name2.text, self.email.text, self.pwd.text]],
 							columns = ['Name', 'Email', 'Password'])
@@ -96,6 +117,7 @@ class windowManager(ScreenManager):
 class VideoCapture(Screen):
 	def __init__(self, **kwargs):
 		super(VideoCapture, self).__init__(**kwargs)
+		
 		self.texture = None
 		self.iris_obj = None
 		self.number_of_eyes_captured = 0
@@ -191,22 +213,15 @@ class VideoCapture(Screen):
 		self.button1.disabled = True
 		self.button2.disabled = True
 
-	def print_shit(self):
-		# time.sleep(0.5)
-		print(self.number_of_eyes_captured)
 
+class View_Images(Screen):
+	pass
 
 # kv file
 kv = Builder.load_file('login.kv')
 sm = windowManager()
 
-# reading all the data stored
-#if login.csv does not exist then create it
-try:
-    users=pd.read_csv('login.csv')
-except:
-    users=pd.DataFrame(columns=['Name','Email','Password'])
-    users.to_csv('login.csv',index=False)
+
 
 # adding screens
 sm.add_widget(loginWindow(name='login'))
@@ -214,6 +229,7 @@ sm.add_widget(signupWindow(name='signup'))
 sm.add_widget(logDataWindow(name='logdata'))
 sm.add_widget(runningWindow(name='running'))
 sm.add_widget(VideoCapture(name='video'))
+sm.add_widget(View_Images(name = 'view_images'))
 # class that builds gui
 class loginMain(App):
 	def build(self):
