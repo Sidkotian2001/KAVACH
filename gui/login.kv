@@ -1,9 +1,12 @@
 # there are three screens
-windowManager:
+WindowManager:
 	loginWindow:
 	signupWindow:
 	logDataWindow:
 	runningWindow:
+	# VideoCapture:
+	View_Images:
+	GetPatientInfo:
 
 # GUI for the login window
 <loginWindow>:
@@ -82,37 +85,37 @@ windowManager:
 		Label:
 			text : "NAME: "
 			color: 0,0,0,1
-			size_hint : 0.2, 0.1
-			pos_hint : {"x":0.25, "top":0.9}
+			size_hint : 0.3, 0.1
+			pos_hint : {"center_x":0.40, "center_y":0.9}
 		TextInput:
 			id : name2
 			multiline : False
-			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.45, "top" : 0.9}
+			size_hint : 0.3, 0.075
+			pos_hint : {"center_x" : 0.65, "center_y" : 0.9}
 		Label:
 			text : "EMAIL: "
 			color: 0,0,0,1
 			size_hint : 0.2, 0.1
-			pos_hint : {"x" : 0.25, "top" : 0.7}
+			pos_hint : {"center_x" : 0.40, "center_y" : 0.7}
 		TextInput:
 			id : email
 			multiline : False
-			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.45, "top" : 0.7}
+			size_hint : 0.3, 0.075
+			pos_hint : {"center_x" : 0.65, "center_y" : 0.7}
 		Label:
 			text : "PASSWORD: "
 			color: 0,0,0,1
 			size_hint : 0.2, 0.1
-			pos_hint : {"x" : 0.25, "top" : 0.5}
+			pos_hint : {"center_x" : 0.40, "center_y" : 0.5}
 		TextInput:
 			id : pwd
 			multiline : False
-			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.45, "top" : 0.5}
+			size_hint : 0.3, 0.075
+			pos_hint : {"center_x" : 0.65, "center_y" : 0.5}
 		Button:
 			text : "SUBMIT"
 			size_hint : 0.3, 0.1
-			pos_hint : {"x" : 0.39, "top" : 0.28}
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.28}
 			on_press :
 				root.signupbtn()
 				root.manager.transition.direction = "right"
@@ -144,9 +147,10 @@ windowManager:
 			size_hint : 0.4, 0.1
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.40}
 			on_release:
-				app.root.current = 'view_images'
+				app.root.current = 'video'
 				root.manager.transition.direction = "left"
-<runningwindow>
+
+<runningwindow>:
 	Label:
 		text : "Running model"
 		size_hint : 0.2, 0.1
@@ -159,6 +163,12 @@ windowManager:
 		text : "Please enter valid information"
 		size_hint : 0.2, 0.1
 		pos_hint : {"x" : 0.3, "top" : 0.8}
+
+# <VideoCapture>:
+# 	FloatLayout:
+# 		Button:
+# 			text:'Hello'
+# 			pos_hint : {'center_x' : 0.5, 'center_y' : 0.1}
 
 <View_Images>:
 	FloatLayout:
@@ -177,11 +187,11 @@ windowManager:
 			pos_hint: {'center_x': 0.25, 'center_y' : 0.5}
 		
 		Label:
-			id: 'left_eye_lbl'
+			id: 'left eye lbl'
 			text: 'Left eye'
 			color: 1,1,1,1
 			size_hint: 0.3, 0.2
-			pos_hint: {'center_x' : 0.25, 'center_y' : 0.8}
+			pos_hint: {'center_x' : 0.25, 'center_y' : 0.75}
 
 		
 		Image:
@@ -190,4 +200,90 @@ windowManager:
 			keep_ratio: False
 			size_hint: 0.4, 0.4
 			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+		
+		Label:
+			id: 'right eye lbl'
+			text: 'Right eye'
+			color: 1,1,1,1
+			size_hint: 0.3, 0.2
+			pos_hint: {'center_x' : 0.75, 'center_y' : 0.75}
+		
+		Button:
+			id: 'continue'
+			text: 'Continue'
+			size_hint : 0.2, 0.1
+			pos_hint: {'center_x' : 0.5, 'center_y' : 0.20}
+
+		
+		Button:
+			id: 'retake image'
+			text: 'Retake Images'
+			size_hint: 0.2, 0.1
+			pos_hint: {'center_x' : 0.5, 'center_y': 0.075}
+			on_release:
+				app.root.current = 'video'
+				root.manager.transition.direction = "left"
+
+<GetPatientInfo>:
+	FloatLayout:
+		patient_name : patient_name
+		patient_email : patient_email
+		# patient_mobile : patient_mobile
+		# patient_gender : patient_gender
+		# patient_age : patient_age
+		# patient_priormedicalhistory : patient_priormedicalhistory
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+
+		Label:
+			text: 'Name'
+			color : 0,0,0,1
+			pos_hint : {'left' : 0.075, 'center_y' : 0.80}
+
+		TextInput:
+			id : patient_name
+			multiline : False
+			size_hint : 0.3, 0.05
+			pos_hint : {"center_x" : 0.2, "center_y" : 0.74}
+
+		Label:
+			text : 'Email'
+			color : 0,0,0,1
+			pos_hint : {"left" : 0.075, "center_y" : 0.66}
+
+		TextInput:
+			id : patient_email
+			multiline : False
+			size_hint : 0.3, 0.05
+			pos_hint : {"center_x" : 0.2, "center_y" : 0.60}
+
+		Label:
+			text : 'Mobile number'
+			color: 0,0,0,1
+			pos_hint : {"left" : 0.075, "center_y" : 0.52}
+
+		TextInput:
+			id : patient_mobile
+			multiline : False
+			size_hint : 0.3, 0.05
+			pos_hint : {"center_x" : 0.2, "center_y" : 0.46}
+
+		# Label:
+		# 	id: 'Gender'
+		# 	size_hint : 0.2, 0.1
+		# 	pos_hint : {'center_x' : 0.2, 'center_y' : 0.40}
+		
+		# CheckBox:
+		# 	size_hint : 0.1, 0.1
+		# 	pos_hint : {'center_x' : 0.45, 'center_y' : 0.40}
+
+		
+
+
+
+		
 
