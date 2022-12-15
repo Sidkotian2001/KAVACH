@@ -8,9 +8,7 @@ Config.set('graphics', 'height', '480')
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.image import Image
-from kivy.core.window import Window
 from kivy.uix.widget import Widget
-from kivy.uix.checkbox import CheckBox
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
@@ -25,15 +23,6 @@ import os
 import struct
 import socket
 import numpy as np
-
-#Make background color white
-Window.clearcolor = (1,1,1,1)
-
-
-# class for managing screens
-class WindowManager(ScreenManager):
-	def __init__(self, **kwargs):
-		super(WindowManager, self).__init__(**kwargs)
 
 #class for running model
 class runningWindow(Screen):
@@ -125,23 +114,20 @@ class logDataWindow(Screen):
 		os.system('python3 ../models/detect.py')
 	pass
 
+# class for managing screens
+class windowManager(ScreenManager):
+	pass
 
-
-#Class for capturing the images from video feed
 class VideoCapture(Screen):
 	def __init__(self, **kwargs):
 		super(VideoCapture, self).__init__(**kwargs)
-		# Screen.__init__(self, **kwargs)
-
-		self.MAX_DGRAM = 2**16
-		self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		self.s.bind(('192.168.237.170', 12348))
-		self.dat = b''
-
+		
+		self.texture = None
 		self.iris_obj = None
 		self.number_of_eyes_captured = 0
 		self.is_eye_in_square = False
 		self.frame_original = None
+        # self.layout = FloatLayout(
 		self.img1 = Image(size_hint = (.96, .72),
                         pos_hint = {'center_x' : .5, 'center_y': .60}
                         )
@@ -150,26 +136,25 @@ class VideoCapture(Screen):
 		self.button0 = Button(text = "Start video",
                         size_hint = (0.15, 0.1),
                         pos_hint = {'center_x' : .25, 'center_y': .15},
-                        disabled = False,
-						on_release = self.start_video
+                        disabled = False
                         )
+		self.button0.bind(on_press = self.start_video)
 
         #Button 1
 		self.button1 = Button(text = "Capture",
 					size_hint = (0.15, 0.1),
 					pos_hint = {'center_x' : .50, 'center_y': .15},
-					disabled = True,
-					on_release = self.save_img
+					disabled = True
 					)
+		self.button1.bind(on_press = self.save_img)
 
 		#Button 2
 		self.button2 = Button(text = "Flash",
 					size_hint = (0.15, 0.1),
 					pos_hint = {'center_x' : .75, 'center_y': .15},
-					disabled = True,
-					on_release = self.change_illumination
+					disabled = True
 					)
-
+		# self.button2.bind(on_press = self.change_illumination)
 		self.iris_obj = iris_voice()
 		self.add_widget(self.img1)
 		self.add_widget(self.button0)
@@ -177,51 +162,28 @@ class VideoCapture(Screen):
 		self.add_widget(self.button2)
 		self.clock_schedule()
 
-	def dump_buffer(self, s):
-		''' Emptying buffer frame '''
-		
-		seg, addr = s.recvfrom(self.MAX_DGRAM)
-		# print(seg[0])
-		if struct.unpack('B', seg[0:1])[0] == 1:
-			print('finish emptying buffer')
+        # p1 = multiprocessing.Process(target = self.clock_schedule)
+        # p2 = multiprocessing.Process(target = self.print_shit)
 
+        # p1.start()
+        # p2.start()
+
+        # p1.join()
+        # p2.join()
 	def clock_schedule(self):
 		Clock.schedule_interval(self.update, 0.1)
 
 	def update(self, _):
 		if self.button0.disabled == True:
 			
-			seg, _ = self.s.recvfrom(self.MAX_DGRAM)
-			# if struct.unpack('B', seg[0:1])[0] > 1:
-			# 	self.dat += seg[1:]
-			# 	print("hwllo")
-			# else:
-			# self.dat += seg[1:]
-			# print(len(seg))
-			# print(len(self.dat))
+			self.texture = Texture.create(size = (640, 480), 
+							colorfmt = 'bgr')
+			#if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
 			
-			# if seg:
-			self.dat += seg
-			if len(self.dat) >= 9216000:
-				img = cv2.imdecode(np.frombuffer(self.dat[:9216000], dtype = np.uint8), 1)
-				# if img:
-				# frame = self.iris_obj.capture(img, self.number_of_eyes_captured)
-				# self.frame_original = self.iris_obj.frame_original
-				# self.is_eye_in_square = self.iris_obj.is_eye_in_square
-				# frame = cv2.flip(img, 0)
-				# cv2.imshow("framer", frame)
+			self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
 
-				buf = img.tobytes()
-			
-				texture = Texture.create(size = (640, 480), 
-								colorfmt = 'bgr')
-				#if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
-				
-				texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
+			self.img1.texture = self.texture
 
-				self.img1.texture = texture
-				self.dat = self.dat[9216000:]
-				self.dump_buffer(self.s)
 			
 		else:
 			self.img1.source = 'camera_icon.png'
@@ -248,24 +210,27 @@ class VideoCapture(Screen):
 		self.button0.disabled = True
 		self.button1.disabled = True
 		self.button2.disabled = True
-		# self.manager.current = 'view_images'
-		# self.root.manager.transition.direction = "right"
 
 
-#Class for viewing the captured images
 class View_Images(Screen):
 	pass
 
-#Class to display patient information
 class GetPatientInfo(Screen):
 	pass
 
-
-
 # kv file
 kv = Builder.load_file('login.kv')
-sm = WindowManager()
-		
+sm = windowManager()
+
+
+
+# adding screens
+sm.add_widget(loginWindow(name='login'))
+sm.add_widget(signupWindow(name='signup'))
+sm.add_widget(logDataWindow(name='logdata'))
+sm.add_widget(runningWindow(name='running'))
+sm.add_widget(VideoCapture(name='video'))
+sm.add_widget(View_Images(name = 'view_images'))
 # class that builds gui
 class loginMain(App):
 	def build(self):
