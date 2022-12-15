@@ -8,6 +8,7 @@ Config.set('graphics', 'height', '480')
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.image import Image
+from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
@@ -20,9 +21,8 @@ from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
 import os
-import struct
-import socket
-import numpy as np
+
+Window.clearcolor = (1,1,1,1)
 
 #class for running model
 class runningWindow(Screen):
@@ -110,12 +110,11 @@ class signupWindow(Screen):
 # class to display validation result
 class logDataWindow(Screen):
 	def runbtn(self):
-		print("running")
-		os.system('python3 ../models/detect.py')
+		os.system('../models/detect.py')
 	pass
 
 # class for managing screens
-class windowManager(ScreenManager):
+class WindowManager(ScreenManager):
 	pass
 
 class VideoCapture(Screen):
@@ -162,19 +161,20 @@ class VideoCapture(Screen):
 		self.add_widget(self.button2)
 		self.clock_schedule()
 
-        # p1 = multiprocessing.Process(target = self.clock_schedule)
-        # p2 = multiprocessing.Process(target = self.print_shit)
 
-        # p1.start()
-        # p2.start()
-
-        # p1.join()
-        # p2.join()
 	def clock_schedule(self):
-		Clock.schedule_interval(self.update, 0.1)
+		Clock.schedule_interval(self.update, 1.0/33.0)
 
 	def update(self, _):
 		if self.button0.disabled == True:
+			
+			frame = self.iris_obj.capture(self.number_of_eyes_captured)
+			self.frame_original = self.iris_obj.frame_original
+			self.is_eye_in_square = self.iris_obj.is_eye_in_square
+			frame = cv2.flip(frame, 0)	
+			
+
+			buf = frame.tobytes()
 			
 			self.texture = Texture.create(size = (640, 480), 
 							colorfmt = 'bgr')
@@ -187,7 +187,6 @@ class VideoCapture(Screen):
 			
 		else:
 			self.img1.source = 'camera_icon.png'
-	
 
 	def start_video(self, _):
 		self.button0.disabled = True
@@ -220,7 +219,7 @@ class GetPatientInfo(Screen):
 
 # kv file
 kv = Builder.load_file('login.kv')
-sm = windowManager()
+sm = WindowManager()
 
 
 
@@ -229,19 +228,11 @@ sm.add_widget(loginWindow(name='login'))
 sm.add_widget(signupWindow(name='signup'))
 sm.add_widget(logDataWindow(name='logdata'))
 sm.add_widget(runningWindow(name='running'))
-sm.add_widget(VideoCapture(name='video'))
+sm.add_widget(VideoCapture(name='videofeed'))
 sm.add_widget(View_Images(name = 'view_images'))
 # class that builds gui
 class loginMain(App):
 	def build(self):
-		# adding screens
-		sm.add_widget(loginWindow(name='login'))
-		sm.add_widget(signupWindow(name='signup'))
-		sm.add_widget(logDataWindow(name='logdata'))
-		sm.add_widget(runningWindow(name='running'))
-		sm.add_widget(VideoCapture(name='videofeed'))
-		sm.add_widget(View_Images(name = 'view_images'))
-		sm.add_widget(GetPatientInfo(name = 'patient_info'))
 		return sm
 
 # driver function
