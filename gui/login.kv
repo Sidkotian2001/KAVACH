@@ -1,4 +1,4 @@
-# there are three screens
+#:kivy 2.1.0
 WindowManager:
 	loginWindow:
 	signupWindow:
@@ -13,10 +13,10 @@ WindowManager:
 	email : email
 	pwd : pwd
 	FloatLayout:
-		Image:
-            source: 'Infysuva.png'
-            allow_stretch: True
-            keep_ratio: False
+		# Image:
+        #     source: 'Infysuva.png'
+        #     allow_stretch: True
+        #     keep_ratio: False
 		Image:
 			source: 'Infyuva.png'
 			allow_stretch: True
@@ -71,9 +71,9 @@ WindowManager:
 	FloatLayout:
 		 # Add the background image to the FloatLayout
         Image:
-            source: '/home/ayush/Downloads/eye.png'
-            allow_stretch: True
-            keep_ratio: False
+            # source: '/home/ayush/Downloads/eye.png'
+            # allow_stretch: True
+            # keep_ratio: False
 		
 		Image:
 			source: 'Infyuva.png'
@@ -123,10 +123,10 @@ WindowManager:
 # GUI to show validation result
 <logDataWindow>:
 	FloatLayout:
-		Image:
-            source: '/home/ayush/Downloads/eye.png'
-            allow_stretch: True
-            keep_ratio: False
+		# Image:
+        #     source: '/home/ayush/Downloads/eye.png'
+        #     allow_stretch: True
+        #     keep_ratio: False
 		
 		Image:
 			source: 'Infyuva.png'
@@ -147,7 +147,7 @@ WindowManager:
 			size_hint : 0.4, 0.1
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.40}
 			on_release:
-				app.root.current = 'video'
+				app.root.current = 'videofeed'
 				root.manager.transition.direction = "left"
 
 <runningwindow>:
@@ -221,7 +221,7 @@ WindowManager:
 			size_hint: 0.2, 0.1
 			pos_hint: {'center_x' : 0.5, 'center_y': 0.075}
 			on_release:
-				app.root.current = 'video'
+				app.root.current = 'videofeed'
 				root.manager.transition.direction = "left"
 
 <GetPatientInfo>:

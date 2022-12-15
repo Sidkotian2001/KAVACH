@@ -22,6 +22,9 @@ from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
 import os
+import struct
+import socket
+import numpy as np
 
 #Make background color white
 Window.clearcolor = (1,1,1,1)
@@ -81,7 +84,7 @@ class loginWindow(Screen):
 		# 	else:
 
 		# 		popFun()
-		sm.current = 'patient_info'
+		sm.current = 'logdata'
 			
 
 
@@ -130,6 +133,11 @@ class VideoCapture(Screen):
 		super(VideoCapture, self).__init__(**kwargs)
 		# Screen.__init__(self, **kwargs)
 
+		self.MAX_DGRAM = 2**16
+		self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		self.s.bind(('192.168.237.170', 12348))
+		self.dat = b''
+
 		self.iris_obj = None
 		self.number_of_eyes_captured = 0
 		self.is_eye_in_square = False
@@ -169,29 +177,55 @@ class VideoCapture(Screen):
 		self.add_widget(self.button2)
 		self.clock_schedule()
 
+	def dump_buffer(self, s):
+		''' Emptying buffer frame '''
+		
+		seg, addr = s.recvfrom(self.MAX_DGRAM)
+		# print(seg[0])
+		if struct.unpack('B', seg[0:1])[0] == 1:
+			print('finish emptying buffer')
+
 	def clock_schedule(self):
-		Clock.schedule_interval(self.update, 1.0/33.0)
+		Clock.schedule_interval(self.update, 0.1)
 
 	def update(self, _):
 		if self.button0.disabled == True:
+			
+			seg, _ = self.s.recvfrom(self.MAX_DGRAM)
+			# if struct.unpack('B', seg[0:1])[0] > 1:
+			# 	self.dat += seg[1:]
+			# 	print("hwllo")
+			# else:
+			# self.dat += seg[1:]
+			# print(len(seg))
+			# print(len(self.dat))
+			
+			# if seg:
+			self.dat += seg
+			if len(self.dat) >= 9216000:
+				img = cv2.imdecode(np.frombuffer(self.dat[:9216000], dtype = np.uint8), 1)
+				# if img:
+				# frame = self.iris_obj.capture(img, self.number_of_eyes_captured)
+				# self.frame_original = self.iris_obj.frame_original
+				# self.is_eye_in_square = self.iris_obj.is_eye_in_square
+				# frame = cv2.flip(img, 0)
+				# cv2.imshow("framer", frame)
+
+				buf = img.tobytes()
+			
+				texture = Texture.create(size = (640, 480), 
+								colorfmt = 'bgr')
+				#if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
 				
-			frame = self.iris_obj.capture(self.number_of_eyes_captured)
-			self.frame_original = self.iris_obj.frame_original
-			self.is_eye_in_square = self.iris_obj.is_eye_in_square
-			frame = cv2.flip(frame, 0)
+				texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
 
-			buf = frame.tobytes()
-			
-			texture = Texture.create(size = (640, 480), 
-							colorfmt = 'bgr')
-			#if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
-			
-			texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
-
-			self.img1.texture = texture
+				self.img1.texture = texture
+				self.dat = self.dat[9216000:]
+				self.dump_buffer(self.s)
 			
 		else:
 			self.img1.source = 'camera_icon.png'
+	
 
 	def start_video(self, _):
 		self.button0.disabled = True
@@ -240,7 +274,7 @@ class loginMain(App):
 		sm.add_widget(signupWindow(name='signup'))
 		sm.add_widget(logDataWindow(name='logdata'))
 		sm.add_widget(runningWindow(name='running'))
-		sm.add_widget(VideoCapture(name='video'))
+		sm.add_widget(VideoCapture(name='videofeed'))
 		sm.add_widget(View_Images(name = 'view_images'))
 		sm.add_widget(GetPatientInfo(name = 'patient_info'))
 		return sm

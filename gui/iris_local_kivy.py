@@ -9,7 +9,7 @@ import multiprocessing
 
 class iris_voice():
     def __init__(self):
-        self.cap = cv.VideoCapture(0)
+        # self.cap = cv.VideoCapture(0)
         self.is_eye_in_square = False
         self.frame_original = None
 
@@ -189,7 +189,7 @@ class iris_voice():
         #Place the text on frame
         cv.putText(image, voice_commands[self.shared_variable.value], (200, 100), cv.FONT_HERSHEY_SIMPLEX, 1, colour, 2, cv.LINE_AA)
 
-    def capture(self, number_of_eyes_captured):
+    def capture(self, frame, number_of_eyes_captured):
         with self.mp_face_mesh.FaceMesh(
             max_num_faces = 1,
             refine_landmarks = True,
@@ -198,9 +198,9 @@ class iris_voice():
         ) as face_mesh:
 
             
-            ret, frame = self.cap.read()
-            if not ret:
-                print("Not ret")
+            # ret, frame = self.cap.read()
+            # if not ret:
+            #     print("Not ret")
                 
 
             #Flipping the frame
