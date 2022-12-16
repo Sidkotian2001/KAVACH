@@ -121,7 +121,7 @@ WindowManager:
 				root.manager.transition.direction = "right"
 
 # GUI to show validation result
-<logDataWindow>:
+<logDataWindow>:	
 	FloatLayout:
 		Image:
             source: '/home/ayush/Downloads/eye.png'
@@ -271,7 +271,13 @@ WindowManager:
 			multiline : False
 			size_hint : 0.3, 0.05
 			pos_hint : {"center_x" : 0.2, "center_y" : 0.46}
-
+		Button:
+			text: 'Submit'
+			size_hint : 0.2, 0.1
+			pos_hint: {'center_x' : 0.5, 'center_y' : 0.20}
+			on_release:
+				app.root.current = 'video'
+				root.manager.transition.direction = "left"
 		# Label:
 		# 	id: 'Gender'
 		# 	size_hint : 0.2, 0.1
