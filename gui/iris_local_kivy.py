@@ -235,6 +235,8 @@ class iris_voice():
                 self.is_eye_in_square = False
 
             return image
+    def __del__(self):
+        print('Destructor called, camera deleted.')
 
 
 

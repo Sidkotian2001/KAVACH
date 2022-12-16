@@ -158,6 +158,13 @@ class VideoCapture(Screen):
 					pos_hint = {'center_x' : .75, 'center_y': .15},
 					disabled = True
 					)
+		self.button3 = Button(text = "Next",
+                    size_hint = (0.15, 0.1),
+                    pos_hint = {'center_x' : .75, 'center_y': .05},
+                    disabled = True,
+                    #change to next screen
+                    on_release = self.change_screen
+                    )
 		# self.button2.bind(on_press = self.change_illumination)
 		self.iris_obj = iris_voice()
 		self.add_widget(self.img1)
@@ -216,6 +223,7 @@ class VideoCapture(Screen):
 		Clock.schedule_interval(self.update, 1.0/33.0)
 
 	def update(self, _):
+
 		if self.button0.disabled == True:
 			
 			frame = self.iris_obj.capture(self.number_of_eyes_captured)
@@ -300,10 +308,7 @@ class VideoCapture(Screen):
 	def change_illumination(self, _):
 		print("This button will adjust the illumination")
 
-	def next_page(self):
-		self.button0.disabled = True
-		self.button1.disabled = True
-		self.button2.disabled = True
+
 
 
 class View_Images(Screen):
