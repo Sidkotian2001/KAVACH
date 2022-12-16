@@ -2,8 +2,7 @@ import numpy as np
 import cv2 as cv
 import mediapipe as mp
 import math
-from playsound import playsound
-import time
+# from playsound import playsound
 import multiprocessing
 
 
@@ -234,7 +233,7 @@ class iris_voice():
                 self.is_eye_in_square = True
             else:
                 self.is_eye_in_square = False
-            
+
             return image
     def __del__(self):
         print('Destructor called, camera deleted.')
