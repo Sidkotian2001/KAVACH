@@ -70,7 +70,6 @@ class Main(App):
         # resize the window to (0,0) to make it invisible
         cv2.resizeWindow('Hidden', 0, 0)
         cam = cv2.VideoCapture(0)
-        iris_obj = iris_voice()
 
         # start processing loop
         while (self.do_vid):

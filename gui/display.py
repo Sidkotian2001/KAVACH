@@ -1,14 +1,9 @@
-from kivy.config import Config
-Config.set('graphics', 'resizable', False)
-Config.set('graphics', 'width', '640')
-Config.set('graphics', 'height', '480')
-
-
 # import all the relevant classes
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.core.window import Window
+from functools import partial
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
@@ -21,7 +16,12 @@ from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
 import os
+import threading
+import multiprocessing
+import socket
 
+#Setting window size and background color
+Window.size = (640, 480)
 Window.clearcolor = (1,1,1,1)
 
 #class for running model
@@ -121,12 +121,17 @@ class VideoCapture(Screen):
 	def __init__(self, **kwargs):
 		super(VideoCapture, self).__init__(**kwargs)
 		
+		self.shared_variable = multiprocessing.Value('i')
+		# self.shared_variable.Value = 0
+		self.p1 = None
 		self.texture = None
 		self.iris_obj = None
 		self.number_of_eyes_captured = 0
 		self.is_eye_in_square = False
 		self.frame_original = None
-        # self.layout = FloatLayout(
+
+		
+
 		self.img1 = Image(size_hint = (.96, .72),
                         pos_hint = {'center_x' : .5, 'center_y': .60}
                         )
@@ -159,8 +164,53 @@ class VideoCapture(Screen):
 		self.add_widget(self.button0)
 		self.add_widget(self.button1)
 		self.add_widget(self.button2)
-		self.clock_schedule()
+		# self.clock_schedule()
 
+
+	def imshow(self):
+		#Flag to stop the video
+		self.do_vid = True
+
+		# cv2.namedWindow('Hidden', cv2.WINDOW_NORMAL | cv2.WINDOW_FREERATIO)
+		# resize the window to (0,0) to make it invisible
+		# cv2.resizeWindow('Hidden', 0, 0)
+		cam = cv2.VideoCapture(0)
+		
+
+		# start processing loop
+		while (self.do_vid):
+			_, frame = cam.read()
+			
+			img = self.iris_obj.capture(frame, self.number_of_eyes_captured)
+			self.frame_original = self.iris_obj.frame_original
+			self.is_eye_in_square = self.iris_obj.is_eye_in_square
+
+
+			# send this frame to the kivy Image Widget
+			# Must use Clock.schedule_once to get this bit of code
+			# to run back on the main thread (required for GUI operations)
+			# the partial function just says to call the specified method with the provided argument (Clock adds a time argument)
+			Clock.schedule_once(partial(self.display_frame, img))
+
+			cv2.imshow('Hidden', img)
+			cv2.waitKey(1)
+		cam.release()
+		cv2.destroyAllWindows()
+	
+	def display_frame(self, frame, dt):
+		# display the current video frame in the kivy Image widget
+
+		# create a Texture the correct size and format for the frame
+		texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+
+		# copy the frame data into the texture
+		texture.blit_buffer(frame.tobytes(order=None), colorfmt='bgr', bufferfmt='ubyte')
+
+		# flip the texture (otherwise the video is upside down
+		texture.flip_vertical()
+
+		# actually put the texture in the kivy Image widget
+		self.img1.texture = texture
 
 	def clock_schedule(self):
 		Clock.schedule_interval(self.update, 1.0/33.0)
@@ -192,15 +242,60 @@ class VideoCapture(Screen):
 		self.button0.disabled = True
 		self.button1.disabled = False
 		self.button2.disabled = False
+		# self.shared_variable.Value = 1
+		threading.Thread(target = self.imshow, daemon = True).start()
+		# self.p1 = multiprocessing.Process(target = self.imshow, args = ()).start()
+
 
 	def save_img(self, _):
-		if self.is_eye_in_square == True:
-			cv2.imwrite('image_taken_{}.png'.format(str(self.number_of_eyes_captured)), self.frame_original)
-			self.number_of_eyes_captured += 1
-			if self.number_of_eyes_captured > 1:
-				self.next_page()
-		else:
-			pass
+		# if self.is_eye_in_square == True:
+		cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured)), self.frame_original)
+		self.number_of_eyes_captured += 1
+		if self.number_of_eyes_captured > 1:
+			self.do_vid = False
+			# self.shared_variable.Value = 0
+			# self.p1.join()
+			self.send_images()
+			self.next_page()
+		# else:
+		# 	pass
+
+	def send_images(self):
+		#Read the images
+		image1 = cv2.imread('image_taken_0.jpg', 1 )
+		image2 = cv2.imread('image_taken_1.jpg', 1 )
+
+		# cv2.imshow("image1", image1)
+		# cv2.imshow("Image2", image2)
+
+		#Encode the images to a byte string
+		image1_bytes = cv2.imencode('.jpg', image1)[1].tostring()
+		image2_bytes = cv2.imencode('.jpg', image2)[1].tostring()
+
+		#Set up the server socket
+		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		server_socket.bind(('192.168.237.170', 5000))
+
+		print("Started listening")
+		server_socket.listen(1)
+		print("Finished listening")
+
+		#Accept a connection from the client
+		client_socket, addr = server_socket.accept()
+
+		#Send the length of the image data to the client
+		client_socket.send(str(len(image1_bytes)).encode())
+		#Send the entire image
+		client_socket.sendall(image1_bytes)
+
+		client_socket.send(str(len(image2_bytes)).encode())
+		client_socket.sendall(image2_bytes)
+
+		print("Sent the two images")
+		client_socket.close()
+
+
+
 
 	def change_illumination(self, _):
 		print("This button will adjust the illumination")
