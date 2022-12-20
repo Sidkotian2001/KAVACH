@@ -1,11 +1,12 @@
 #:kivy 2.1.0
 WindowManager:
-	loginWindow:
-	signupWindow:
-	logDataWindow:
-	runningWindow:
-	GetPatientInfo:
-	DisplayPatientInfo:
+    loginWindow:
+    signupWindow:
+    logDataWindow:
+    patientWindow:
+    DisplayPatientWindow:
+
+
 
 # GUI for the login window
 <loginWindow>:
@@ -50,6 +51,7 @@ WindowManager:
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.45}
 			on_release:
 				root.validate()
+				app.root.current = 'patient_details'
 				root.manager.transition.direction = "left"
 		Button:
 			text : "Create an account"
@@ -122,39 +124,101 @@ WindowManager:
 # GUI to show validation result
 <logDataWindow>:	
 	FloatLayout:
-		# Image:
-        #     source: '/home/ayush/Downloads/eye.png'
-        #     allow_stretch: True
-        #     keep_ratio: False
-		
-		Image:
-			source: 'Infyuva.png'
-			allow_stretch: True
-			keep_ratio: False
-			size_hint: 0.15,0.15
-			pos_hint: {"x": 0, "y": 0.85}
-	
-		Button:
-			text : "Start model"
-			size_hint : 0.4, 0.1
-			pos_hint : {"center_x" : 0.5, "center_y" : 0.60}
-			on_press :
-				root.runbtn()
+    # Image:
+    #     source: '/home/ayush/Downloads/eye.png'
+    #     allow_stretch: True
+    #     keep_ratio: False
 
-		Button:
-			text : "Capture Image"
-			size_hint : 0.4, 0.1
-			pos_hint : {"center_x" : 0.5, "center_y" : 0.40}
-			on_release:
-				app.root.current = 'videofeed'
-				root.manager.transition.direction = "left"
-<runningwindow>
+    Image:
+        source: 'Infyuva.png'
+        allow_stretch: True
+        keep_ratio: False
+        size_hint: 0.15,0.15
+        pos_hint: {"x": 0, "y": 0.85}
+
+    Button:
+        text : "Start model"
+        size_hint : 0.4, 0.1
+        pos_hint : {"center_x" : 0.25, "center_y" : 0.30}
+        on_press :
+            root.runbtn()
+
+    Button:
+        text : "Capture Image"
+        size_hint : 0.4, 0.1
+        pos_hint : {"center_x" : 0.75, "center_y" : 0.30}
+        on_release:
+            # app.root.current = 'videofeed'
+            app.root.current = 'display_patient_details'
+            root.manager.transition.direction = "left"
 	Label:
-		text : "Running model"
-		size_hint : 0.2, 0.1
-		pos_hint : {"x" : 0.3, "top" : 0.8}
-		
-		
+		text: "Which of the following defects should be evaluated"
+		color: [0,0,0,1]
+		size_hint : 0.6, 0.4
+        pos_hint : {"center_x" : 0.55, "center_y" : 0.80}
+    CheckBox:
+        id: dr
+		color: 0,0,0,1
+        active: False
+        pos_hint: {"x": 0.55, "y": 0.5}
+        size_hint: None, None
+        size: (30, 30)
+
+    CheckBox:
+        id: amd
+		color: 0,0,0,1
+        active: False
+        pos_hint: {"x": 0.55, "y": 0.6}
+        size_hint: None, None
+        size: (30, 30)
+
+    CheckBox:
+        id: cataract
+		color: 0,0,0,1
+        active: False
+        pos_hint: {"x": 0.55, "y": 0.7}
+        size_hint: None, None
+        size: (30, 30)
+
+    CheckBox:
+        id: glaucoma
+		color: 0,0,0,1
+        active: False
+        pos_hint: {"x": 0.55, "y": 0.4}
+        size_hint: None, None
+        size: (30, 30)
+
+    Label:
+        text: 'Diabetic Retinopathy'
+		color: [0,0,0,1]
+        pos_hint: {"x": 0.4, "y": 0.5}
+        size_hint: None, None
+        size: (30, 30)
+
+    Label:
+        text: 'Macular Degeneration'
+		color: [0,0,0,1]
+        pos_hint: {"x": 0.4, "y": 0.6}
+        size_hint: None, None
+        size: (30, 30)
+
+    Label:
+        text: 'Cataract'
+		color: [0,0,0,1]
+        pos_hint: {"x": 0.4, "y": 0.7}
+        size_hint: None, None
+        size: (30, 30)
+
+    Label:
+        text: 'Glaucoma'
+		color: [0,0,0,1]
+        pos_hint: {"x": 0.4, "y": 0.4}
+        size_hint: None, None
+		size: (30,30)
+
+
+ 
+            
 # GUI for pop up window
 <P>:
 	Label:
@@ -172,31 +236,33 @@ WindowManager:
 			pos_hint: {"x": 0, "y": 0.85}
 
 		Image:
-			source: 'image_taken_0.jpg'
+			source: 'image_taken_0.png'
 			allow_stretch: True
 			keep_ratio: False
 			size_hint: 0.4, 0.4
 			pos_hint: {'center_x': 0.25, 'center_y' : 0.5}
 		
 		Label:
+			id: 'left_eye_lbl'
 			text: 'Left eye'
-			color: 0,0,0,1
+			color: 1,1,1,1
 			size_hint: 0.3, 0.2
 			pos_hint: {'center_x' : 0.25, 'center_y' : 0.8}
 
 		
 		Image:
-			source : 'image_taken_1.jpg'
+			source : 'image_taken_1.png'
 			allow_stretch: True
 			keep_ratio: False
 			size_hint: 0.4, 0.4
 			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
 		
 		Label:
+			id: 'right eye lbl'
 			text: 'Right eye'
-			color: 0,0,0,1
+			color: 1,1,1,1
 			size_hint: 0.3, 0.2
-			pos_hint: {'center_x' : 0.75, 'center_y' : 0.8}
+			pos_hint: {'center_x' : 0.75, 'center_y' : 0.75}
 		
 		Button:
 			id: 'continue'
@@ -204,8 +270,8 @@ WindowManager:
 			size_hint : 0.2, 0.1
 			pos_hint: {'center_x' : 0.5, 'center_y' : 0.20}
 			on_release:
-				app.root.current = 'getpatientinfo'
-				root.manager.transition.direction = 'left'
+				app.root.current = 'logdata'
+				root.manager.transition.direction = "left"
 
 		
 		Button:
@@ -215,14 +281,15 @@ WindowManager:
 			pos_hint: {'center_x' : 0.5, 'center_y': 0.075}
 			on_release:
 				app.root.current = 'videofeed'
-				root.manager.transition.direction = "right"
+				root.manager.transition.direction = "left"
 
-<GetPatientInfo>:
+<patientWindow>:
 	patient_name : patient_name
 	patient_email : patient_email
 	patient_mobile : patient_mobile
 	patient_age : patient_age
 	patient_gender : patient_gender
+
 	FloatLayout:
 		
 		Image:
@@ -308,21 +375,134 @@ WindowManager:
 			pos_hint : {'x' : 0.5, 'y' : 0.05}
 			on_press:
 				root.submit_info()
-				app.root.current = 'displaypatientinfo'
+				app.root.current = 'display_patient_details'
 				app.root.transition.direction = 'left'
+
+<DisplayPatientWindow>:
+
+    FloatLayout:
+        Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+
+        Label:
+            text: 'Patient name :'
+            color : 0,0,0,1
+            text_size : root.width, root.height
+            halign : 'left'
+			padding_x : 150
+            pos_hint : {'y' : 0.93}
 			
-<DisplayPatientInfo>:
-	FloatLayout:
+        
+        Label :
+            text : root.patient_name
+            color : 0,0,0,1
+            text_size : root.width, root.height
+            halign : 'left'
+            padding_x : 300
+            pos_hint : {'y' : 0.93}
 
-		Button:
-			text: 'Submit'
+        
+        Label:
+            text: 'Patient age  :'
+            color : 0,0,0,1
+            text_size : root.width, root.height
+            halign : 'left'
+			padding_x : 150
+			pos_hint : {'y' : 0.83}
+        
+        Label :
+            text : root.patient_age
+            color : 0,0,0,1
+            text_size : root.width, root.height
+            halign : 'left'
+            padding_x : 300
+            pos_hint : {'y' : 0.83}
+
+        Label:
+            text: 'Patient gender   :'
+            color : 0,0,0,1
+            text_size : root.width, root.height
+            halign : 'left'
+			padding_x : 150
+			pos_hint : {'y' : 0.73}
+        
+        Label :
+            text : root.patient_gender
+            color : 0,0,0,1
+            text_size : root.width, root.height
+            halign : 'left'
+            padding_x : 300
+            pos_hint : {'y' : 0.73}
+        
+        # Label:
+        #     text: 'Patient mobile   :'
+        #     color : 0,0,0,1
+        #     text_size : root.width, root.height
+        #     halign : 'left'
+		# 	padding_x : 30
+		# 	pos_hint : {'y' : 0.53}
+        
+        #  Label :
+        #     text : root.patient_age
+        #     color : 0,0,0,1
+        #     text_size : root.width, root.height
+        #     halign : 'left'
+        #     padding_x : 150
+        #     pos_hint : {'y' : 0.83}
+        
+        Label:
+            text: 'Diabetic Retinopathy :'
+            color: [0,0,0,1]
+            text_size : root.width, root.height
+            halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.63}
+
+        Label:
+            text: 'Macular Degeneration :'
+            color: [0,0,0,1]
+            text_size : root.width, root.height
+            halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.53}
+
+        Label:
+            text: 'Cataract :'
+            color: [0,0,0,1]
+            text_size : root.width, root.height
+            halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.43}
+
+        Label:
+            text: 'Glaucoma :'
+            color: [0,0,0,1]
+            text_size : root.width, root.height
+            halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.33}
+        
+        Button:
+			text: 'Display'
 			size_hint : 0.2, 0.1
-			pos_hint : {'x' : 0.5, 'y' : 0.05}
+			pos_hint : {'center_x' : 0.3, 'y' : 0.1}
 			on_press:
-				root.print_info()
-				# app.root.current = 'displaypatientinfo'
+				root.display_info()
+				# app.root.current = 'display_patient_details'
 				# app.root.transition.direction = 'left'
+        
+        Button:
+            text: 'Generate PDF'
+            size_hint : 0.2, 0.1
+            pos_hint : {'center_x' : 0.7, 'y' : 0.1}
+            on_press:
+                root.generate_pdf()
 
+        
 
-		
-
+        
+        

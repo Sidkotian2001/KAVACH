@@ -1,0 +1,327 @@
+#:kivy 2.1.0
+WindowManager:
+	loginWindow:
+	signupWindow:
+	logDataWindow:
+	runningWindow:
+	GetPatientInfo:
+	DisplayPatientInfo:
+
+# GUI for the login window
+<loginWindow>:
+	email : email
+	pwd : pwd
+	FloatLayout:
+		# Image:
+        #     source: 'Infysuva.png'
+        #     allow_stretch: True
+        #     keep_ratio: False
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+		Label:
+			text : "Email: "
+			color: 0,0,0,1
+			size_hint : 0.2, 0.1
+			pos_hint : {"center_x":0.25, "center_y":0.75}
+		TextInput:
+			id : email
+			multiline :False
+			size_hint : 0.3, 0.075
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.75}
+		Label:
+			text : "Password: "
+			color: 0,0,0,1
+			size_hint : 0.2, 0.1
+			pos_hint : {"center_x" : 0.25, "center_y" : 0.60}
+		TextInput:
+			id : pwd
+			multiline :False
+			size_hint : 0.3, 0.075
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.60}
+		Button:
+			text : "LOGIN"
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			size_hint : 0.2, 0.1
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.45}
+			on_release:
+				root.validate()
+				root.manager.transition.direction = "left"
+		Button:
+			text : "Create an account"
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			size_hint : 0.3, 0.1
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.25}
+			on_release:
+				app.root.current = 'signup'
+				root.manager.transition.direction = "left"
+		
+
+# GUI for the signup window
+<signupWindow>:
+	name2 : name2
+	email : email
+	pwd : pwd
+	FloatLayout:
+		 # Add the background image to the FloatLayout
+        Image:
+            # source: '/home/ayush/Downloads/eye.png'
+            # allow_stretch: True
+            # keep_ratio: False
+		
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+
+		Label:
+			text : "NAME: "
+			color: 0,0,0,1
+			size_hint : 0.2, 0.1
+			pos_hint : {"x":0.25, "top":0.9}
+		TextInput:
+			id : name2
+			multiline : False
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.45, "top" : 0.9}
+		Label:
+			text : "EMAIL: "
+			color: 0,0,0,1
+			size_hint : 0.2, 0.1
+			pos_hint : {"x" : 0.25, "top" : 0.7}
+		TextInput:
+			id : email
+			multiline : False
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.45, "top" : 0.7}
+		Label:
+			text : "PASSWORD: "
+			color: 0,0,0,1
+			size_hint : 0.2, 0.1
+			pos_hint : {"x" : 0.25, "top" : 0.5}
+		TextInput:
+			id : pwd
+			multiline : False
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.45, "top" : 0.5}
+		Button:
+			text : "SUBMIT"
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.39, "top" : 0.28}
+			on_press :
+				root.signupbtn()
+				root.manager.transition.direction = "right"
+
+# GUI to show validation result
+<logDataWindow>:	
+	FloatLayout:
+		# Image:
+        #     source: '/home/ayush/Downloads/eye.png'
+        #     allow_stretch: True
+        #     keep_ratio: False
+		
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+	
+		Button:
+			text : "Start model"
+			size_hint : 0.4, 0.1
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.60}
+			on_press :
+				root.runbtn()
+
+		Button:
+			text : "Capture Image"
+			size_hint : 0.4, 0.1
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.40}
+			on_release:
+				app.root.current = 'videofeed'
+				root.manager.transition.direction = "left"
+<runningwindow>
+	Label:
+		text : "Running model"
+		size_hint : 0.2, 0.1
+		pos_hint : {"x" : 0.3, "top" : 0.8}
+		
+		
+# GUI for pop up window
+<P>:
+	Label:
+		text : "Please enter valid information"
+		size_hint : 0.2, 0.1
+		pos_hint : {"x" : 0.3, "top" : 0.8}
+
+<View_Images>:
+	FloatLayout:
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+
+		Image:
+			source: 'image_taken_0.jpg'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.4, 0.4
+			pos_hint: {'center_x': 0.25, 'center_y' : 0.5}
+		
+		Label:
+			text: 'Left eye'
+			color: 0,0,0,1
+			size_hint: 0.3, 0.2
+			pos_hint: {'center_x' : 0.25, 'center_y' : 0.8}
+
+		
+		Image:
+			source : 'image_taken_1.jpg'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.4, 0.4
+			pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+		
+		Label:
+			text: 'Right eye'
+			color: 0,0,0,1
+			size_hint: 0.3, 0.2
+			pos_hint: {'center_x' : 0.75, 'center_y' : 0.8}
+		
+		Button:
+			id: 'continue'
+			text: 'Continue'
+			size_hint : 0.2, 0.1
+			pos_hint: {'center_x' : 0.5, 'center_y' : 0.20}
+			on_release:
+				app.root.current = 'getpatientinfo'
+				root.manager.transition.direction = 'left'
+
+		
+		Button:
+			id: 'retake image'
+			text: 'Retake Images'
+			size_hint: 0.2, 0.1
+			pos_hint: {'center_x' : 0.5, 'center_y': 0.075}
+			on_release:
+				app.root.current = 'videofeed'
+				root.manager.transition.direction = "right"
+
+<GetPatientInfo>:
+	patient_name : patient_name
+	patient_email : patient_email
+	patient_mobile : patient_mobile
+	patient_age : patient_age
+	patient_gender : patient_gender
+	FloatLayout:
+		
+		Image:
+			source: 'Infyuva.png'
+			allow_stretch: True
+			keep_ratio: False
+			size_hint: 0.15,0.15
+			pos_hint: {"x": 0, "y": 0.85}
+
+		Label:
+			text: 'Name'
+			text_size : root.width, root.height
+			color : 0,0,0,1
+			halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.75}
+
+		TextInput:
+			id : patient_name
+			multiline : False
+			pos_hint : {'x' : 0.047, 'y' : 0.68}
+			size_hint : 0.3, 0.05
+
+		Label:
+			text : 'Email'
+			text_size : root.width, root.height
+			color : 0,0,0,1
+			halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.61}
+
+		TextInput:
+			id : patient_email
+			multiline : False
+			pos_hint : {"x" : 0.047, "y" : 0.54}
+			size_hint : 0.3, 0.05
+
+		Label:
+			text : 'Mobile number'
+			text_size : root.width, root.height
+			color: 0,0,0,1
+			halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.47}
+
+		TextInput:
+			id : patient_mobile
+			multiline : False
+			pos_hint : {'x' : 0.047, 'y' : 0.40}
+			size_hint : 0.3, 0.05
+
+		Label:
+			text : 'Age'
+			text_size : root.width, root.height
+			color : 0,0,0,1
+			halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.33}
+		
+		TextInput:
+			id : patient_age
+			multiline : False
+			pos_hint : {'x' : 0.047, 'y' : 0.26}
+			size_hint : 0.3, 0.05
+		
+		Label:
+			text : 'Gender'
+			text_size : root.width, root.height
+			color : 0,0,0,1
+			halign : 'left'
+			padding_x : 30
+			pos_hint : {'y' : 0.19}
+		
+		TextInput:
+			id : patient_gender
+			multiline : False
+			size_hint : 0.3, 0.05
+			pos_hint : {'x' : 0.047, 'y' : 0.12}
+		
+		Button:
+			text: 'Submit'
+			size_hint : 0.2, 0.1
+			pos_hint : {'x' : 0.5, 'y' : 0.05}
+			on_press:
+				root.submit_info()
+				app.root.current = 'displaypatientinfo'
+				app.root.transition.direction = 'left'
+			
+<DisplayPatientInfo>:
+	FloatLayout:
+		Button:
+			text: 'Submit'
+			size_hint : 0.2, 0.1
+			pos_hint : {'x' : 0.5, 'y' : 0.05}
+			on_press:
+				root.print_info()
+				# app.root.current = 'displaypatientinfo'
+				# app.root.transition.direction = 'left'
+
+
+		
+
