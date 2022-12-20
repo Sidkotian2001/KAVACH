@@ -121,9 +121,11 @@ class VideoCapture(Screen):
 	def __init__(self, **kwargs):
 		super(VideoCapture, self).__init__(**kwargs)
 		
+		self.shared_variable = multiprocessing.Value('i')
+		# self.shared_variable.Value = 0
 		self.p1 = None
 		self.texture = None
-		self.iris_obj = iris_voice()
+		self.iris_obj = None
 		self.number_of_eyes_captured = 0
 		self.is_eye_in_square = False
 		self.frame_original = None
@@ -138,40 +140,84 @@ class VideoCapture(Screen):
 		self.button0 = Button(text = "Start video",
                         size_hint = (0.15, 0.1),
                         pos_hint = {'center_x' : .25, 'center_y': .15},
-                        disabled = False,
-						on_press = self.start_video
+                        disabled = False
                         )
+		self.button0.bind(on_press = self.start_video)
 
         #Button 1
 		self.button1 = Button(text = "Capture",
 					size_hint = (0.15, 0.1),
 					pos_hint = {'center_x' : .50, 'center_y': .15},
-					disabled = True,
-					on_press = self.save_img
+					disabled = True
 					)
+		self.button1.bind(on_press = self.save_img)
 
 		#Button 2
 		self.button2 = Button(text = "Flash",
 					size_hint = (0.15, 0.1),
 					pos_hint = {'center_x' : .75, 'center_y': .15},
-					disabled = True,
-					on_press = self.change_illumination
+					disabled = True
 					)
-
-		self.button3 = Button(text = "Next",
-                    size_hint = (0.15, 0.1),
-                    pos_hint = {'center_x' : .75, 'center_y': .05},
-                    disabled = False,
-                    on_release = self.change_screen
-                    )
-
+		# self.button3 = Button(text = "Next",
+        #             size_hint = (0.15, 0.1),
+        #             pos_hint = {'center_x' : .75, 'center_y': .05},
+        #             disabled = True,
+        #             #change to next screen
+        #             on_release = self.change_screen
+        #             )
+		# self.button2.bind(on_press = self.change_illumination)
+		self.iris_obj = iris_voice()
 		self.add_widget(self.img1)
 		self.add_widget(self.button0)
 		self.add_widget(self.button1)
 		self.add_widget(self.button2)
-		self.add_widget(self.button3)
-		self.clock_schedule()
+		# self.clock_schedule()
 
+
+	def imshow(self):
+		#Flag to stop the video
+		self.do_vid = True
+
+		# cv2.namedWindow('Hidden', cv2.WINDOW_NORMAL | cv2.WINDOW_FREERATIO)
+		# resize the window to (0,0) to make it invisible
+		# cv2.resizeWindow('Hidden', 0, 0)
+		cam = cv2.VideoCapture(0)
+		
+
+		# start processing loop
+		while (self.do_vid):
+			_, frame = cam.read()
+			
+			img = self.iris_obj.capture(frame, self.number_of_eyes_captured)
+			self.frame_original = self.iris_obj.frame_original
+			self.is_eye_in_square = self.iris_obj.is_eye_in_square
+
+
+			# send this frame to the kivy Image Widget
+			# Must use Clock.schedule_once to get this bit of code
+			# to run back on the main thread (required for GUI operations)
+			# the partial function just says to call the specified method with the provided argument (Clock adds a time argument)
+			Clock.schedule_once(partial(self.display_frame, img))
+
+			cv2.imshow('Hidden', img)
+			cv2.waitKey(1)
+		cam.release()
+		cv2.destroyAllWindows()
+	
+	def display_frame(self, frame, dt):
+		# display the current video frame in the kivy Image widget
+
+		# create a Texture the correct size and format for the frame
+		texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+
+		# copy the frame data into the texture
+		texture.blit_buffer(frame.tobytes(order=None), colorfmt='bgr', bufferfmt='ubyte')
+
+		# flip the texture (otherwise the video is upside down
+		texture.flip_vertical()
+
+		# actually put the texture in the kivy Image widget
+		self.img1.texture = texture
 
 	def clock_schedule(self):
 		Clock.schedule_interval(self.update, 1.0/33.0)
@@ -204,28 +250,63 @@ class VideoCapture(Screen):
 		self.button0.disabled = True
 		self.button1.disabled = False
 		self.button2.disabled = False
+		# self.shared_variable.Value = 1
+		threading.Thread(target = self.imshow, daemon = True).start()
+		# self.p1 = multiprocessing.Process(target = self.imshow, args = ()).start()
+
 
 	def save_img(self, _):
-		if self.is_eye_in_square == True:
-			cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured)), self.frame_original)
-			self.number_of_eyes_captured += 1
-			if self.number_of_eyes_captured > 1:
-				self.change_screen()
-		else:
-			pass
+		# if self.is_eye_in_square == True:
+		cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured)), self.frame_original)
+		self.number_of_eyes_captured += 1
+		if self.number_of_eyes_captured > 1:
+			self.do_vid = False
+			# self.shared_variable.Value = 0
+			# self.p1.join()
+			self.send_images()
+			self.next_page()
+		# else:
+		# 	pass
+
+	def send_images(self):
+		#Read the images
+		image1 = cv2.imread('image_taken_0.jpg', 1 )
+		image2 = cv2.imread('image_taken_1.jpg', 1 )
+
+		# cv2.imshow("image1", image1)
+		# cv2.imshow("Image2", image2)
+
+		#Encode the images to a byte string
+		image1_bytes = cv2.imencode('.jpg', image1)[1].tostring()
+		image2_bytes = cv2.imencode('.jpg', image2)[1].tostring()
+
+		#Set up the server socket
+		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		server_socket.bind(('192.168.237.170', 5000))
+
+		print("Started listening")
+		server_socket.listen(1)
+		print("Finished listening")
+
+		#Accept a connection from the client
+		client_socket, addr = server_socket.accept()
+
+		#Send the length of the image data to the client
+		client_socket.send(str(len(image1_bytes)).encode())
+		#Send the entire image
+		client_socket.sendall(image1_bytes)
+
+		client_socket.send(str(len(image2_bytes)).encode())
+		client_socket.sendall(image2_bytes)
+
+		print("Sent the two images")
+		client_socket.close()
+
+
+
 
 	def change_illumination(self, _):
 		print("This button will adjust the illumination")
-	
-	def change_screen(self, _):
-		del self.iris_obj
-		self.iris_obj = iris_voice()
-		self.button0.disabled = False		
-		self.button1.disabled = True
-		self.button2.disabled = True
-		
-		
-		sm.current = 'view_images'
 
 
 
@@ -234,17 +315,6 @@ class View_Images(Screen):
 	pass
 
 class GetPatientInfo(Screen):
-	patient_name = ObjectProperty(None)
-	patient_email = ObjectProperty(None)
-	patient_mobile = ObjectProperty(None)
-	patient_age = ObjectProperty(None)
-	patient_gender = ObjectProperty(None)
-
-	pass
-
-class DisplayPatientInfo(Screen):
-
-	def __init__(self)
 	pass
 
 # kv file
@@ -253,20 +323,16 @@ sm = WindowManager()
 
 
 
-
+# adding screens
+sm.add_widget(loginWindow(name='login'))
+sm.add_widget(signupWindow(name='signup'))
+sm.add_widget(logDataWindow(name='logdata'))
+sm.add_widget(runningWindow(name='running'))
+sm.add_widget(VideoCapture(name='videofeed'))
+sm.add_widget(View_Images(name = 'view_images'))
 # class that builds gui
 class loginMain(App):
 	def build(self):
-		# adding screens
-		sm.add_widget(DisplayPatientInfo(name = 'displaypatientinfo'))
-		sm.add_widget(loginWindow(name='login'))
-		sm.add_widget(signupWindow(name='signup'))
-		sm.add_widget(logDataWindow(name='logdata'))
-		sm.add_widget(runningWindow(name='running'))
-		sm.add_widget(VideoCapture(name='videofeed'))
-		sm.add_widget(View_Images(name = 'view_images'))
-		sm.add_widget(GetPatientInfo(name = 'getpatientinfo'))
-		
 		return sm
 
 # driver function
