@@ -6,7 +6,7 @@ from kivy.core.window import Window
 from functools import partial
 from kivy.uix.widget import Widget
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
@@ -228,10 +228,15 @@ class VideoCapture(Screen):
 		sm.current = 'view_images'
 
 
-
-
 class View_Images(Screen):
 	pass
+
+
+p_n = None
+p_e = None
+p_m = None
+p_a = None
+p_g = None
 
 class GetPatientInfo(Screen):
 	patient_name = ObjectProperty(None)
@@ -239,12 +244,22 @@ class GetPatientInfo(Screen):
 	patient_mobile = ObjectProperty(None)
 	patient_age = ObjectProperty(None)
 	patient_gender = ObjectProperty(None)
-
-	pass
+	
+	def submit_info(self):
+		globals()['p_n'] = self.patient_name.text
+		globals()['p_e'] = self.patient_email.text
+		globals()['p_m'] = self.patient_mobile.text
+		globals()['p_a'] = self.patient_age.text
+		globals()['p_g'] = self.patient_gender.text
 
 class DisplayPatientInfo(Screen):
 
-	def __init__(self)
+	# def __init__(self, **kw):
+	# 	super().__init__(**kw)
+	def print_info(self):
+		print(globals()['p_a'])
+		print(globals()['p_e'])
+
 	pass
 
 # kv file
@@ -258,6 +273,7 @@ sm = WindowManager()
 class loginMain(App):
 	def build(self):
 		# adding screens
+		sm.add_widget(GetPatientInfo(name = 'getpatientinfo'))
 		sm.add_widget(DisplayPatientInfo(name = 'displaypatientinfo'))
 		sm.add_widget(loginWindow(name='login'))
 		sm.add_widget(signupWindow(name='signup'))
@@ -265,7 +281,7 @@ class loginMain(App):
 		sm.add_widget(runningWindow(name='running'))
 		sm.add_widget(VideoCapture(name='videofeed'))
 		sm.add_widget(View_Images(name = 'view_images'))
-		sm.add_widget(GetPatientInfo(name = 'getpatientinfo'))
+		# sm.add_widget(GetPatientInfo(name = 'getpatientinfo'))
 		
 		return sm
 

@@ -5,6 +5,7 @@ WindowManager:
 	logDataWindow:
 	runningWindow:
 	GetPatientInfo:
+	DisplayPatientInfo:
 
 # GUI for the login window
 <loginWindow>:
@@ -217,22 +218,19 @@ WindowManager:
 				root.manager.transition.direction = "right"
 
 <GetPatientInfo>:
+	patient_name : patient_name
+	patient_email : patient_email
+	patient_mobile : patient_mobile
+	patient_age : patient_age
+	patient_gender : patient_gender
 	FloatLayout:
 		
-		patient_name : patient_name
-		patient_email : patient_email
-		patient_mobile : patient_mobile
-		patient_age : patient_age
-		patient_gender : patient_gender
-		# patient_priormedicalhistory : patient_priormedicalhistory
 		Image:
 			source: 'Infyuva.png'
 			allow_stretch: True
 			keep_ratio: False
 			size_hint: 0.15,0.15
 			pos_hint: {"x": 0, "y": 0.85}
-
-
 
 		Label:
 			text: 'Name'
@@ -308,13 +306,22 @@ WindowManager:
 			text: 'Submit'
 			size_hint : 0.2, 0.1
 			pos_hint : {'x' : 0.5, 'y' : 0.05}
-			on_release :
+			on_press:
+				root.submit_info()
 				app.root.current = 'displaypatientinfo'
 				app.root.transition.direction = 'left'
 			
+<DisplayPatientInfo>:
+	FloatLayout:
 
-		
-
+		Button:
+			text: 'Submit'
+			size_hint : 0.2, 0.1
+			pos_hint : {'x' : 0.5, 'y' : 0.05}
+			on_press:
+				root.print_info()
+				# app.root.current = 'displaypatientinfo'
+				# app.root.transition.direction = 'left'
 
 
 		
