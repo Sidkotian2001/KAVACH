@@ -148,8 +148,8 @@ WindowManager:
         size_hint : 0.4, 0.1
         pos_hint : {"center_x" : 0.75, "center_y" : 0.30}
         on_release:
-            # app.root.current = 'videofeed'
-            app.root.current = 'display_patient_details'
+            app.root.current = 'videofeed'
+            # app.root.current = 'display_patient_details'
             root.manager.transition.direction = "left"
 	Label:
 		text: "Which of the following defects should be evaluated"
@@ -375,7 +375,7 @@ WindowManager:
 			pos_hint : {'x' : 0.5, 'y' : 0.05}
 			on_press:
 				root.submit_info()
-				app.root.current = 'display_patient_details'
+				app.root.current = 'logdata'
 				app.root.transition.direction = 'left'
 
 <DisplayPatientWindow>:

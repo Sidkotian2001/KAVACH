@@ -1,4 +1,3 @@
-# import all the relevant classes
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.image import Image
@@ -14,8 +13,12 @@ from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
-import os
 from fpdf import FPDF
+from models.detect import Checkup
+import logging, os
+logging.disable(logging.WARNING)
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
 Window.size = (640, 480)
 Window.clearcolor = (1,1,1,1)
@@ -103,10 +106,14 @@ class signupWindow(Screen):
 	
 # class to display validation result
 class logDataWindow(Screen):
-	def runbtn(self):
-		os.system('python3 ../models/detect.py')
-		sm.current = 'patient_details'
-	pass
+    def runbtn(self):
+        # os.system('python3  ../models/detect.py')
+        global obj, categories
+        obj = Checkup("../images/2_cataract/cataract_004.png")
+        obj.call_model()
+        obj.show_categories()
+        categories = obj.categories
+        sm.current = 'display_patient_details'
 
 # class for managing screens
 class WindowManager(ScreenManager):
@@ -265,6 +272,7 @@ class DisplayPatientWindow(Screen):
         self.patient_gender = globals()['p_g']
         
     def generate_pdf(self):
+        categories = globals()['categories']
         pdf = FPDF()
         pdf.add_page()
         
@@ -300,19 +308,20 @@ sm = WindowManager()
 
 
 
-# adding screens
-sm.add_widget(patientWindow(name='patient_details'))
-sm.add_widget(DisplayPatientWindow(name = 'display_patient_details'))
-sm.add_widget(loginWindow(name='login'))
-sm.add_widget(signupWindow(name='signup'))
-sm.add_widget(logDataWindow(name='logdata'))
-sm.add_widget(VideoCapture(name='videofeed'))
-sm.add_widget(View_Images(name = 'view_images'))
+
 
 # class that builds gui
 class loginMain(App):
-	def build(self):
-		return sm
+    def build(self):
+        # adding screens
+        sm.add_widget(loginWindow(name='login'))
+        sm.add_widget(signupWindow(name='signup'))
+        sm.add_widget(logDataWindow(name='logdata'))
+        sm.add_widget(VideoCapture(name='videofeed'))
+        sm.add_widget(View_Images(name = 'view_images'))
+        sm.add_widget(patientWindow(name='patient_details'))
+        sm.add_widget(DisplayPatientWindow(name = 'display_patient_details'))
+        return sm
 
 # driver function
 if __name__=="__main__":

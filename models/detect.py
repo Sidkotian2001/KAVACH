@@ -3,6 +3,7 @@ from diabetic_retinopathy_model import diabetic_retinopathy
 from AMD_classification import macular_degeneration
 import cv2
 import os 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
 '''
 A class for checkup it calls the model for prediction of diseases
@@ -40,10 +41,10 @@ class Checkup:
     def show_categories(self):
         print(self.categories)
 
-def main():
-    obj = Checkup("/home/ayush/Documents/Machine_learning/INFYUVA/final/images/2_cataract/cataract_004.png")
-    obj.call_model()
-    obj.show_categories()
+# def main():
+#     obj = Checkup("../images/2_cataract/cataract_004.png")
+#     obj.call_model()
+#     obj.show_categories()
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
