@@ -15,10 +15,9 @@ import cv2
 from iris_local_kivy import iris_voice
 from fpdf import FPDF
 from models.detect import Checkup
-import logging, os
-logging.disable(logging.WARNING)
+import os
+from pdf import create_pdf
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
 Window.size = (640, 480)
 Window.clearcolor = (1,1,1,1)
@@ -106,14 +105,34 @@ class signupWindow(Screen):
 	
 # class to display validation result
 class logDataWindow(Screen):
-    def runbtn(self):
-        # os.system('python3  ../models/detect.py')
-        global obj, categories
-        obj = Checkup("../images/2_cataract/cataract_004.png")
-        obj.call_model()
-        obj.show_categories()
-        categories = obj.categories
-        sm.current = 'display_patient_details'
+	dr = ObjectProperty(None)
+	amd = ObjectProperty(None)
+	cataract = ObjectProperty(None)
+	glaucoma = ObjectProperty(None)
+
+	def runbtn(self):
+		global obj, categories
+		obj = Checkup("../images/2_cataract/cataract_004.png")
+
+		dr_flag = amd_flag = cataract_flag = glaucoma_flag = False
+
+		if self.dr.active:
+			dr_flag = True
+
+		if self.amd.active :
+			amd_flag = True
+
+		if self.cataract.active :
+			cataract_flag = True
+
+		if self.glaucoma.active :
+			glaucoma_flag = True
+
+		obj.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
+		obj.show_categories()
+		categories = obj.categories
+
+		sm.current = 'display_patient_details'
 
 # class for managing screens
 class WindowManager(ScreenManager):
@@ -171,19 +190,23 @@ class VideoCapture(Screen):
 		self.add_widget(self.button2)
 		self.add_widget(self.button3)
 		self.clock_schedule()
+
 	def view_image(self, _):
 		self.button0.disabled = False
 		del self.iris_obj
 		self.iris_obj = iris_voice()
 		sm.current = 'view_images'
+
 	def next_screen(self, _):
 		self.change_screen()
+
 	def change_screen(self):
         #cdestroy the camera object
 		self.button0.disabled = False
 		del self.iris_obj
 		self.iris_obj = iris_voice()
 		sm.current = 'logdata'
+
 	def clock_schedule(self):
 		Clock.schedule_interval(self.update, 1.0/33.0)
 
@@ -219,7 +242,7 @@ class VideoCapture(Screen):
 
 	def save_img(self, _):
 		if self.is_eye_in_square == True:
-			cv2.imwrite('image_taken_{}.png'.format(str(self.number_of_eyes_captured)), self.frame_original)
+			cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured)), self.frame_original)
 			self.number_of_eyes_captured += 1
 			if self.number_of_eyes_captured > 1:
 				self.change_screen()
@@ -253,47 +276,33 @@ class patientWindow(Screen):
         
     
 class DisplayPatientWindow(Screen):
-    patient_name = StringProperty()
-    patient_email = StringProperty()
-    patient_mobile = StringProperty()
-    patient_age = StringProperty()
-    patient_gender = StringProperty()
-    DR = ObjectProperty(None)
-    MD = ObjectProperty(None)
-    Cat = ObjectProperty(None)
-    Gla = ObjectProperty(None)
+	patient_name = StringProperty()
+	patient_email = StringProperty()
+	patient_mobile = StringProperty()
+	patient_age = StringProperty()
+	patient_gender = StringProperty()
+	DR = ObjectProperty(None)
+	MD = ObjectProperty(None)
+	Cat = ObjectProperty(None)
+	Gla = ObjectProperty(None)
 
 
-    def display_info(self):
-        self.patient_name = globals()['p_n']
-        # self.patient_email = globals()['p_e']
-        # self.patient_mobile = globals()['p_m']
-        self.patient_age = globals()['p_a']
-        self.patient_gender = globals()['p_g']
-        
-    def generate_pdf(self):
-        categories = globals()['categories']
-        pdf = FPDF()
-        pdf.add_page()
-        
-        
-        
-        pdf.set_font("Arial", size = 35)
-        pdf.cell(w = 200, h = 30, txt = 'Medical Report', ln = 1, align = 'C', fill = False)
-        
-        pdf.set_font("Arial", size = 15)
-        pdf.cell(w = 40, h = 10, txt = self.patient_name, ln = 1, align = 'left', fill = False)
-        
+	def display_info(self):
+		self.patient_name = globals()['p_n']
+		# self.patient_email = globals()['p_e']
+		self.patient_mobile = globals()['p_m']
+		self.patient_age = globals()['p_a']
+		self.patient_gender = globals()['p_g']
 
-        pdf.set_font("Arial", size = 15)
-        pdf.cell(w = 49, h = 10, txt = self.patient_age, ln = 1, align = 'L', fill = False)
+	def generate_pdf(self):
+		categories = globals()['categories']
+		
+		pdf_obj = create_pdf('Medical Report.pdf', self.patient_name, self.patient_age,
+						self.patient_mobile, self.patient_gender)
+		
+		pdf_obj.build_pdf(categories)
 
-        pdf.output('trial.pdf')
-
-        # w = pdf.GetPageWidth
-        # print(w)
-        pass
-
+		exit()
 
         
 

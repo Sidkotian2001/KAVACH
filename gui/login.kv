@@ -122,7 +122,12 @@ WindowManager:
 				root.manager.transition.direction = "right"
 
 # GUI to show validation result
-<logDataWindow>:	
+<logDataWindow>:
+	dr : dr
+	amd : amd
+	cataract : cataract
+	glaucoma : glaucoma
+
 	FloatLayout:
     # Image:
     #     source: '/home/ayush/Downloads/eye.png'
@@ -156,6 +161,7 @@ WindowManager:
 		color: [0,0,0,1]
 		size_hint : 0.6, 0.4
         pos_hint : {"center_x" : 0.55, "center_y" : 0.80}
+
     CheckBox:
         id: dr
 		color: 0,0,0,1
@@ -236,7 +242,7 @@ WindowManager:
 			pos_hint: {"x": 0, "y": 0.85}
 
 		Image:
-			source: 'image_taken_0.png'
+			source: 'image_taken_0.jpg'
 			allow_stretch: True
 			keep_ratio: False
 			size_hint: 0.4, 0.4
@@ -251,7 +257,7 @@ WindowManager:
 
 		
 		Image:
-			source : 'image_taken_1.png'
+			source : 'image_taken_1.jpg'
 			allow_stretch: True
 			keep_ratio: False
 			size_hint: 0.4, 0.4
