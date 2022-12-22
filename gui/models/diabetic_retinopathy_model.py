@@ -6,9 +6,7 @@ from torchvision.transforms.functional import resize
 import cv2
 from models.abstract_class import Image,Model
 import matplotlib.pyplot as plt
-import logging, os
-logging.disable(logging.WARNING)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+import os
 
 class diabetic_retinopathy(Image, Model):
     def __init__(self,image):

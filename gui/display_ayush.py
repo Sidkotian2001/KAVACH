@@ -3,6 +3,7 @@ from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
+from kivy.uix.colorpicker import Color
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 from kivy.lang import Builder
@@ -139,6 +140,8 @@ class logDataWindow(Screen):
 class WindowManager(ScreenManager):
 	pass
 
+counter = 0
+
 class VideoCapture(Screen):
 	def __init__(self, **kwargs):
 		super(VideoCapture, self).__init__(**kwargs)
@@ -149,6 +152,10 @@ class VideoCapture(Screen):
 		self.is_eye_in_square = False
 		self.frame_original = None
 
+		self.background = Image(source = 'wp_3.jpg',
+						allow_stretch = True,
+						keep_ratio = False
+						)
 		self.img1 = Image(size_hint = (.96, .72),
                         pos_hint = {'center_x' : .5, 'center_y': .60}
                         )
@@ -157,23 +164,29 @@ class VideoCapture(Screen):
 		self.button0 = Button(text = "Start video",
                         size_hint = (0.15, 0.1),
                         pos_hint = {'center_x' : .25, 'center_y': .15},
-                        disabled = False
+						background_normal = '',
+    					background_color = (0.50, 0.50,0.80, 1),
+                        disabled = False,
+						on_release = self.start_video
                         )
-		self.button0.bind(on_press = self.start_video)
 
         #Button 1
 		self.button1 = Button(text = "Capture",
 					size_hint = (0.15, 0.1),
 					pos_hint = {'center_x' : .50, 'center_y': .15},
-					disabled = True
+					background_normal = '',
+    				background_color = (0.50, 0.50,0.80, 1),
+					disabled = True,
+					on_release = self.save_img
 					)
-		self.button1.bind(on_press = self.save_img)
 
 		#Button 2
 		self.button2 = Button(text = "View Image",
 					size_hint = (0.15, 0.1),
 					pos_hint = {'center_x' : .75, 'center_y': .15},
 					disabled = True,
+					background_normal = '',
+    				background_color = (0.50, 0.50,0.80, 1),
 					on_release =  self.view_image
 					)
 		
@@ -182,16 +195,18 @@ class VideoCapture(Screen):
                     size_hint = (0.15, 0.1),
                     pos_hint = {'center_x' : .75, 'center_y': .05},
                     disabled = True,
-                    #change to next screen
+                    background_normal = '',
+    				background_color = (0.50, 0.50,0.80, 1),
                     on_release = self.next_screen
                     )
 
 		self.iris_obj = iris_voice()
+		self.add_widget(self.background)
 		self.add_widget(self.img1)
 		self.add_widget(self.button0)
 		self.add_widget(self.button1)
 		self.add_widget(self.button2)
-		self.add_widget(self.button3)
+		# self.add_widget(self.button3)
 		self.clock_schedule()
 
 	def view_image(self, _):
@@ -243,7 +258,8 @@ class VideoCapture(Screen):
 
 	def save_img(self, _):
 		if self.is_eye_in_square == True:
-			cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured)), self.frame_original)
+			c = globals()['counter']
+			cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured + c)), self.frame_original)
 			self.number_of_eyes_captured += 1
 			if self.number_of_eyes_captured > 1:
 				self.next_screen()
@@ -303,21 +319,35 @@ class DisplayPatientWindow(Screen):
 
 class View_Images(Screen):
 
-	def show_images(self):
-		img1 = Image(source = 'image_taken_0.jpg', 
+	def __init__(self, **kw):
+		super().__init__(**kw)
+		self.c = globals()['counter']
+		self.img1 = Image(source = 'camera_icon.png', 
 			allow_stretch = True,
 			keep_ratio = False,
-			size_hint_x = 0.4,
-			size_hint_y = 0.4,
+			size_hint = (0.4, 0.4),
 			pos_hint = {'center_x': 0.25, 'center_y' : 0.5}
 			)
 		
-		# img2 = Image(source = 'image_taken_1.jpg',
-		# 	allow_stretc = True,
-		# 	keep_ratio =  False,
-		# 	size_hint =  (0.4, 0.4),
-		# 	pos_hint = {'center_x': 0.75, 'center_y': 0.5}
-		# )
+		self.img2 = Image(source = 'camera_icon.png',
+			allow_stretch = True,
+			keep_ratio =  False,
+			size_hint =  (0.4, 0.4),
+			pos_hint = {'center_x': 0.75, 'center_y': 0.5}
+		)
+
+		self.add_widget(self.img1)
+		self.add_widget(self.img2)
+
+	def show_images(self):
+		self.c = globals()['counter']
+		self.img1.source = 'image_taken_{}.jpg'.format(str(self.c))
+		self.img2.source = 'image_taken_{}.jpg'.format(str(self.c + 1))
+		globals()['counter'] += 2
+	
+	def previous_screen(self):
+		self.img1.source = self.img2.source = 'camera_icon.png'
+		sm.current = 'videofeed'
 
 
 # kv file
@@ -330,11 +360,11 @@ class loginMain(App):
 	def build(self):
 		# adding screens
 
-		sm.add_widget(loginWindow(name='login'))
-		sm.add_widget(signupWindow(name='signup'))
-		sm.add_widget(logDataWindow(name='logdata'))
-		sm.add_widget(VideoCapture(name='videofeed'))
-		sm.add_widget(View_Images(name = 'view_images'))
+		# sm.add_widget(loginWindow(name='login'))
+		# sm.add_widget(signupWindow(name='signup'))
+		# sm.add_widget(logDataWindow(name='logdata'))
+		# sm.add_widget(VideoCapture(name='videofeed'))
+		# sm.add_widget(View_Images(name = 'view_images'))
 		sm.add_widget(patientWindow(name='patient_details'))
 		sm.add_widget(DisplayPatientWindow(name = 'display_patient_details'))
 		return sm

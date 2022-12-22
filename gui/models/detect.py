@@ -2,10 +2,7 @@ from models.cataract_model import cataract
 from models.diabetic_retinopathy_model import diabetic_retinopathy
 from models.AMD_classification import macular_degeneration
 import cv2
-import logging, os
-logging.disable(logging.WARNING)
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+import os
 
 '''
 A class for checkup it calls the model for prediction of diseases

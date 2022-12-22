@@ -7,9 +7,7 @@ import torchvision.models as models
 from efficientnet_pytorch import EfficientNet
 from torchvision.io.image import read_image
 from torchvision.transforms.functional import resize
-import logging, os
-logging.disable(logging.WARNING)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+import os
 
 
 class macular_degeneration():

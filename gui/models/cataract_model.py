@@ -4,9 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from models.abstract_class import Image, Model
 import tensorflow as tf
-import logging, os
-logging.disable(logging.WARNING)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+import os
 
 class cataract(Image, Model):
    

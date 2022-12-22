@@ -24,9 +24,10 @@ WindowManager:
 		# 	size_hint: 0.15,0.15
 		# 	pos_hint: {"x": 0, "y": 0.85}
 		Image:
-			source : 'wp_1.jpeg'
+			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
+
 		
 		Label:
 			text : "Doctor Login"
@@ -34,6 +35,7 @@ WindowManager:
 			font_size : 35
 			bold : True
 			pos_hint : {'center_x' : 0.5, 'center_y' : 0.93}
+			
 		Label:
 			text : "Email: "
 			font_size : 20
@@ -64,6 +66,7 @@ WindowManager:
 			text : "LOGIN"
 			background_normal: ''
     		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			size_hint : 0.3, 0.1
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.40}
 			on_release:
@@ -74,6 +77,7 @@ WindowManager:
 			text : "Create an account"
 			background_normal: ''
     		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			size_hint : 0.3, 0.1
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.25}
 			on_release:
@@ -90,7 +94,7 @@ WindowManager:
 		 # Add the background image to the FloatLayout
 		
         Image:
-			source : 'wp_1.jpeg'
+			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
 		
@@ -144,6 +148,7 @@ WindowManager:
 			size_hint : 0.3, 0.1
 			background_normal: ''
     		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			pos_hint : {"center_x" : 0.5, "top" : 0.28}
 			on_press :
 				root.signupbtn()
@@ -163,90 +168,92 @@ WindowManager:
 		#     keep_ratio: False
 
 		Image:
-			source : 'wp_1.jpeg'
+			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
 
 		Button:
-			text : "Start model"
+			text : "Start Models"
 			size_hint : 0.4, 0.1
 			background_normal: ''
     		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			pos_hint : {"center_x" : 0.25, "center_y" : 0.20}
 			on_press :
 				root.runbtn()
 
 		Button:
-			text : "Capture Image"
+			text : "Capture Images"
 			size_hint : 0.4, 0.1
 			background_normal: ''
     		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			pos_hint : {"center_x" : 0.75, "center_y" : 0.20}
 			on_release:
 				app.root.current = 'videofeed'
 				# app.root.current = 'display_patient_details'
 				root.manager.transition.direction = "left"
 		Label:
-			text: "Which of the following defects should be evaluated"
+			text: "Which of the following conditions should be evaluated"
 			color: [0,0,0,1]
-			font_size : 20
-			pos_hint : {"center_x" : 0.4, "center_y" : 0.80}
+			font_size : 23
+			pos_hint : {"center_x" : 0.5, "center_y" : 0.80}
+		
+		CheckBox:
+			id: cataract
+			color: 0,0.5,0,1
+			active: False
+			pos_hint: {"center_x": 0.5, "center_y": 0.7}
+			size_hint: None, None
+			size: (30, 30)
+		
+		CheckBox:
+			id: amd
+			color: 0,0.5,0,1
+			active: False
+			pos_hint: {"center_x": 0.5, "center_y": 0.6}
+			size_hint: None, None
+			size: (30, 30)
 
 		CheckBox:
 			id: dr
-			color: 0,0,0,1
+			color: 0,0.5,0,1
 			active: False
-			pos_hint: {"center_x": 0.55, "center_y": 0.5}
+			pos_hint: {"center_x": 0.5, "center_y": 0.5}
 			size_hint: None, None
 			size: (30, 30)
-
-		CheckBox:
-			id: amd
-			color: 0,0,0,1
-			active: False
-			pos_hint: {"center_x": 0.55, "center_y": 0.6}
-			size_hint: None, None
-			size: (30, 30)
-
-		CheckBox:
-			id: cataract
-			color: 0,0,0,1
-			active: False
-			pos_hint: {"center_x": 0.55, "center_y": 0.7}
-			size_hint: None, None
-			size: (30, 30)
-
+		
 		CheckBox:
 			id: glaucoma
-			color: 0,1,0,1
+			color: 0,0.5,0,1
 			active: False
-			pos_hint: {"center_x": 0.55, "center_y": 0.4}
+			pos_hint: {"center_x": 0.5, "center_y": 0.4}
 			size_hint: None, None
 			size: (30, 30)
 
 		Label:
 			text: 'Cataract'
 			color: [0,0,0,1]
-			pos_hint: {"center_x": 0.2, "center_y": 0.7}
-			font_size : 15
+			pos_hint: {"center_x": 0.25, "center_y": 0.7}
+			font_size : 17
 		
 		Label:
 			text: 'Macular Degeneration'
 			color: [0,0,0,1]
-			pos_hint: {"center_x": 0.2, "center_y": 0.6}
-			font_size : 15
+			pos_hint: {"center_x": 0.25, "center_y": 0.6}
+			font_size : 17
 
 		Label:
 			text: 'Diabetic Retinopathy'
 			color: [0,0,0,1]
-			font_size : 15
-			pos_hint: {"center_x": 0.2, "center_y": 0.5}	
+			font_size : 17
+			pos_hint: {"center_x": 0.25, "center_y": 0.5}	
 
 		Label:
 			text: 'Glaucoma'
 			color: [0,0,0,1]
-			pos_hint: {"center_x": 0.2, "center_y": 0.4}
-			font_size : 15
+			pos_hint: {"center_x": 0.25, "center_y": 0.4}
+			font_size : 17
 
 
  
@@ -261,9 +268,16 @@ WindowManager:
 <View_Images>:
 	FloatLayout:
 		Image:
-			source : 'wp_1.jpeg'
+			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
+		
+		Label:
+			text : 'Captured Images'
+			color : 0,0,0,1
+			font_size : 35
+			bold : True
+			pos_hint : {'center_x' : 0.5, 'center_y' : 0.93}
 
 		# Image:
 		# 	source: 'image_taken_0.jpg'
@@ -273,11 +287,12 @@ WindowManager:
 		# 	pos_hint: {'center_x': 0.25, 'center_y' : 0.5}
 		
 		Label:
-			id: 'left_eye_lbl'
 			text: 'Left eye'
-			color: 1,1,1,1
+			font_size : 25
+			bold : True
+			color: 0.52,0,0.64,1
 			size_hint: 0.3, 0.2
-			pos_hint: {'center_x' : 0.25, 'center_y' : 0.8}
+			pos_hint: {'center_x' : 0.25, 'center_y' : 0.77}
 
 		
 		# Image:
@@ -289,25 +304,34 @@ WindowManager:
 
 		
 		Label:
-			id: 'right eye lbl'
 			text: 'Right eye'
-			color: 1,1,1,1
+			font_size : 25
+			bold : True
+			color: 0.52,0,0.64,1
 			size_hint: 0.3, 0.2
-			pos_hint: {'center_x' : 0.75, 'center_y' : 0.75}
+			pos_hint: {'center_x' : 0.75, 'center_y' : 0.77}
 
 		Button:
-			text: 'display images'
+			text: 'Display images'
 			size_hint : 0.2, 0.1
-			pos_hint: {'center_x' : 0.2, 'center_y' : 0.20}
+			# font_size : 20
+			bold : True
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			pos_hint: {'center_x' : 0.2, 'center_y' : 0.15}
 			on_release:
 				root.show_images()
 		
 		Button:
 			id: 'continue'
 			text: 'Continue'
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			size_hint : 0.2, 0.1
-			pos_hint: {'center_x' : 0.5, 'center_y' : 0.20}
+			pos_hint: {'center_x' : 0.5, 'center_y' : 0.15}
 			on_release:
+				
 				app.root.current = 'logdata'
 				root.manager.transition.direction = "left"
 
@@ -316,9 +340,13 @@ WindowManager:
 			id: 'retake image'
 			text: 'Retake Images'
 			size_hint: 0.2, 0.1
-			pos_hint: {'center_x' : 0.5, 'center_y': 0.075}
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			bold : True
+			pos_hint: {'center_x' : 0.8, 'center_y': 0.15}
 			on_release:
-				app.root.current = 'videofeed'
+				root.previous_screen()
+				# app.root.current = 'videofeed'
 				root.manager.transition.direction = "left"
 
 <patientWindow>:
@@ -331,7 +359,7 @@ WindowManager:
 	FloatLayout:
 		
 		Image:
-			source : 'wp_1.jpeg'
+			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
 
@@ -418,7 +446,7 @@ WindowManager:
 
     FloatLayout:
         Image:
-			source : 'wp_1.jpeg'
+			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
 
