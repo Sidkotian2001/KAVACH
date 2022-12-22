@@ -13,7 +13,6 @@ from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
-from fpdf import FPDF
 from models.detect import Checkup
 import os
 from pdf import create_pdf
@@ -43,10 +42,12 @@ def popFun():
 class loginWindow(Screen):
 	email = ObjectProperty(None)
 	pwd = ObjectProperty(None)
+
+
 	def validate(self):
 
-		# reading all the data stored
-		#if login.csv does not exist then create it
+		## reading all the data stored
+		## if login.csv does not exist then create it
 		# try:
 		# 	users=pd.read_csv('login.csv')
 		# except:
@@ -147,7 +148,7 @@ class VideoCapture(Screen):
 		self.number_of_eyes_captured = 0
 		self.is_eye_in_square = False
 		self.frame_original = None
-        # self.layout = FloatLayout(
+
 		self.img1 = Image(size_hint = (.96, .72),
                         pos_hint = {'center_x' : .5, 'center_y': .60}
                         )
@@ -175,6 +176,8 @@ class VideoCapture(Screen):
 					disabled = True,
 					on_release =  self.view_image
 					)
+		
+		#Button 3
 		self.button3 = Button(text = "Next",
                     size_hint = (0.15, 0.1),
                     pos_hint = {'center_x' : .75, 'center_y': .05},
@@ -182,7 +185,7 @@ class VideoCapture(Screen):
                     #change to next screen
                     on_release = self.next_screen
                     )
-		# self.button2.bind(on_press = self.change_illumination)
+
 		self.iris_obj = iris_voice()
 		self.add_widget(self.img1)
 		self.add_widget(self.button0)
@@ -197,15 +200,13 @@ class VideoCapture(Screen):
 		self.iris_obj = iris_voice()
 		sm.current = 'view_images'
 
-	def next_screen(self, _):
-		self.change_screen()
-
-	def change_screen(self):
+	def next_screen(self):
         #cdestroy the camera object
 		self.button0.disabled = False
 		del self.iris_obj
 		self.iris_obj = iris_voice()
-		sm.current = 'logdata'
+		self.number_of_eyes_captured = 0
+		sm.current = 'view_images'
 
 	def clock_schedule(self):
 		Clock.schedule_interval(self.update, 1.0/33.0)
@@ -245,7 +246,7 @@ class VideoCapture(Screen):
 			cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured)), self.frame_original)
 			self.number_of_eyes_captured += 1
 			if self.number_of_eyes_captured > 1:
-				self.change_screen()
+				self.next_screen()
 		else:
 			pass
 
@@ -281,10 +282,6 @@ class DisplayPatientWindow(Screen):
 	patient_mobile = StringProperty()
 	patient_age = StringProperty()
 	patient_gender = StringProperty()
-	DR = ObjectProperty(None)
-	MD = ObjectProperty(None)
-	Cat = ObjectProperty(None)
-	Gla = ObjectProperty(None)
 
 
 	def display_info(self):
@@ -304,11 +301,23 @@ class DisplayPatientWindow(Screen):
 
 		exit()
 
-        
-
 class View_Images(Screen):
-	pass
 
+	def show_images(self):
+		img1 = Image(source = 'image_taken_0.jpg', 
+			allow_stretch = True,
+			keep_ratio = False,
+			size_hint_x = 0.4,
+			size_hint_y = 0.4,
+			pos_hint = {'center_x': 0.25, 'center_y' : 0.5}
+			)
+		
+		# img2 = Image(source = 'image_taken_1.jpg',
+		# 	allow_stretc = True,
+		# 	keep_ratio =  False,
+		# 	size_hint =  (0.4, 0.4),
+		# 	pos_hint = {'center_x': 0.75, 'center_y': 0.5}
+		# )
 
 
 # kv file
@@ -316,21 +325,19 @@ kv = Builder.load_file('login.kv')
 sm = WindowManager()
 
 
-
-
-
 # class that builds gui
 class loginMain(App):
-    def build(self):
-        # adding screens
-        sm.add_widget(loginWindow(name='login'))
-        sm.add_widget(signupWindow(name='signup'))
-        sm.add_widget(logDataWindow(name='logdata'))
-        sm.add_widget(VideoCapture(name='videofeed'))
-        sm.add_widget(View_Images(name = 'view_images'))
-        sm.add_widget(patientWindow(name='patient_details'))
-        sm.add_widget(DisplayPatientWindow(name = 'display_patient_details'))
-        return sm
+	def build(self):
+		# adding screens
+
+		sm.add_widget(loginWindow(name='login'))
+		sm.add_widget(signupWindow(name='signup'))
+		sm.add_widget(logDataWindow(name='logdata'))
+		sm.add_widget(VideoCapture(name='videofeed'))
+		sm.add_widget(View_Images(name = 'view_images'))
+		sm.add_widget(patientWindow(name='patient_details'))
+		sm.add_widget(DisplayPatientWindow(name = 'display_patient_details'))
+		return sm
 
 # driver function
 if __name__=="__main__":

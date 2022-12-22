@@ -1,5 +1,5 @@
 from fpdf import FPDF
-from datetime import date
+# from datetime import date
 
 class create_pdf:
     
@@ -95,7 +95,7 @@ class create_pdf:
         self.pdf.image('image_taken_0.jpg', x = 20, y = break_amount, w = 80, h = 60)
         self.pdf.image('image_taken_1.jpg', x = 110, y = break_amount, w = 80, h = 60)
 
-        self.pdf.ln(87)
+        self.pdf.ln(90)
         self.pdf.cell(30)
         self.pdf.set_font('Arial', 'UB', size = 15)
         self.pdf.cell(w = 40, h = 10, txt = 'Left Eye', ln = 0, align = 'C')
