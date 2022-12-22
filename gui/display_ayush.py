@@ -115,7 +115,7 @@ class logDataWindow(Screen):
 
 	def runbtn(self):
 		global obj, categories
-		obj = Checkup("../images/2_cataract/cataract_004.png")
+		obj = Checkup("../images/3_retina_disease/Retina_006.png")
 
 		dr_flag = amd_flag = cataract_flag = glaucoma_flag = False
 
@@ -154,12 +154,12 @@ class VideoCapture(Screen):
 		self.frame_original = None
 
 		#create a Label widget
-		self.label = Label(text = "Image Capture",
-						font_size = 30,
-						color = (0,0,0,1),
-						size_hint = (0.5, 0.1),
-						pos_hint = {'center_x' : .5, 'center_y': .9}
-						)
+		# self.label = Label(text = "Image Capture",
+		# 				font_size = 30,
+		# 				color = (0,0,0,1),
+		# 				size_hint = (0.5, 0.1),
+		# 				pos_hint = {'center_x' : .5, 'center_y': .9}
+		# 				)
 		self.background = Image(source = 'wp_3.jpg',
 						allow_stretch = True,
 						keep_ratio = False
@@ -211,7 +211,7 @@ class VideoCapture(Screen):
 		self.iris_obj = iris_voice()
 		self.add_widget(self.background)
 		self.add_widget(self.img1)
-		self.add_widget(self.label)
+		# self.add_widget(self.label)
 		self.add_widget(self.button0)
 		self.add_widget(self.button1)
 		self.add_widget(self.button2)
@@ -307,14 +307,33 @@ class DisplayPatientWindow(Screen):
 	patient_mobile = StringProperty()
 	patient_age = StringProperty()
 	patient_gender = StringProperty()
+	cataract = StringProperty()
+	dr = StringProperty()
+	amd = StringProperty()
+	glaucoma = StringProperty()
 
 
 	def display_info(self):
+		categories = globals()['categories']
 		self.patient_name = globals()['p_n']
 		# self.patient_email = globals()['p_e']
 		self.patient_mobile = globals()['p_m']
 		self.patient_age = globals()['p_a']
 		self.patient_gender = globals()['p_g']
+
+		self.cataract = str(categories['CATARACT'])
+		self.dr = str(categories['DIABETIC RETINOPATHY'])
+		self.amd = str(categories['Macular Degeneration'])
+		self.glaucoma = str(categories['Glaucoma'])
+
+		if self.cataract == '-1':
+			self.cataract = 'NA'
+		if self.dr == '-1':
+			self.dr = 'NA'
+		if self.amd == '-1':
+			self.amd = 'NA'
+		if self.glaucoma == '-1':
+			self.glaucoma = 'NA'
 
 	def generate_pdf(self):
 		categories = globals()['categories']

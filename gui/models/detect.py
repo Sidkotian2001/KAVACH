@@ -16,10 +16,10 @@ class Checkup:
         self.categories = { "CATARACT": -1,
                             "DIABETIC RETINOPATHY": -1,
                             "Macular Degeneration": -1,
-                            "Glucama":-1}
+                            "Glaucoma":-1}
         self.diabetic_retinopathy_classes = { "No DR":0, "Mild NPDR":1, "Moderate NPDR":2, "Severe NPDR":3, "PDR":4, "Ungradable":5}
     
-    def call_model(self, cat, dr, md, glaucama):
+    def call_model(self, cat, dr, md, glaucoma):
         '''
         Calls the model for prediction
         and then updates the categories dictionary
@@ -27,9 +27,9 @@ class Checkup:
         if cat == True:
             cataract_pred = cataract(self.image).prediction()
             if cataract_pred[0] == 1:
-                self.categories["CATARACT"] = 1
+                self.categories["CATARACT"] = 'Cataract Present'
             else :
-                self.categories["CATARACT"] = 0
+                self.categories["CATARACT"] = 'Normal'
         
         if dr == True:
             diabetic_retinopathy_pred = diabetic_retinopathy(self.image).prediction()
@@ -41,8 +41,8 @@ class Checkup:
             macular_degeneration_pred = macular_degeneration(self.image_path).prediction()
             self.categories['Macular Degeneration'] = macular_degeneration_pred
 
-        if glaucama == True:
-            self.categories['Glucama'] = 1
+        if glaucoma == True:
+            self.categories['Glaucoma'] = 1
 
     def show_categories(self):
         print(self.categories)

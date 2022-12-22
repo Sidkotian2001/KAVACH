@@ -325,3 +325,136 @@ WindowManager:
 
 		
 
+<DisplayPatientWindow>:
+
+    FloatLayout:
+        Image:
+			source : 'wp_3.jpg'
+			allow_stretch : True
+			keep_ratio : False
+		Label:
+			text : "Patient Report"
+			color : 0,0,0,1
+			font_size : 35
+			bold : True
+			padding_x : 50
+			halign : 'left'
+			pos_hint : {'center_x' : 0.5, 'center_y' : 0.93}
+
+        Label:
+            text: 'Patient name :'
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+            pos_hint : {'center_x':0.4, 'center_y' : 0.81}
+			
+        
+        Label :
+            text : root.patient_name
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+			padding_x : 50
+			halign : 'left'
+            # text_size : root.width, root.height
+            pos_hint : {'center_x': 0.6, 'center_y' : 0.81}
+
+        
+        Label:
+            text: 'Patient age :'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+			pos_hint : {'center_x':0.4, 'center_y' : 0.74}
+        
+        Label :
+            text : root.patient_age
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+            pos_hint : {'center_x':0.6,'center_y' : 0.74}
+
+        Label:
+            text: 'Patient gender :'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+			pos_hint : {'center_x':0.4,'center_y' : 0.67}
+        
+        Label :
+            text : root.patient_gender
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+            pos_hint : {'center_x':0.6,'center_y' : 0.67}
+        
+        Label:
+            text: 'Diabetic Retinopathy : NA'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+			pos_hint : {'center_x':0.4,'center_y' : 0.60}
+
+        Label:
+            text: 'Macular Degeneration : NA'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+            
+			pos_hint : {'center_x':0.4,'center_y' : 0.53}
+
+
+        Label:
+            text: 'Cataract : NA'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+			pos_hint : {'center_x':0.4,'center_y' : 0.46}
+
+        Label:
+            text: 'Glaucoma : NA'
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+            # text_size : root.width, root.height
+			pos_hint : {'center_x':0.4,'center_y' : 0.39}
+        
+        Button:
+			text: 'Display'
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			bold : True
+			size_hint : 0.2, 0.1
+			pos_hint : {'center_x' : 0.3, 'center_y' : 0.26}
+			on_press:
+				root.display_info()
+				# app.root.current = 'display_patient_details'
+				# app.root.transition.direction = 'left'
+        
+        Button:
+            text: 'Generate PDF'
+            background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			bold : True
+			size_hint : 0.2, 0.1
+            pos_hint : {'center_x' : 0.7, 'center_y' : 0.26}
+            on_press:
+                root.generate_pdf()
+		Button:
+			text: 'Home Page'
+			background_normal: ''
+			background_color: 0.50, 0.50,0.80, 1
+			bold : True
+			size_hint : 0.2, 0.1
+			pos_hint : {'center_x' : 0.5, 'center_y' : 0.1}
+			on_press:
+				app.root.current = 'login'
+				app.root.transition.direction = 'right'

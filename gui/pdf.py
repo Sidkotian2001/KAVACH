@@ -81,12 +81,12 @@ class create_pdf:
             self.pdf.set_font('Arial', size = 15)
             self.pdf.cell(w = 60, h = 10, txt = str5, ln = 1, border = True)
 
-        if categories['Glucama'] != -1:
+        if categories['Glaucoma'] != -1:
             counter -= 1
             self.pdf.set_font("Arial", 'B', size = 15)
             self.pdf.cell(w = 60, h = 10, txt = 'Glaucoma', ln = 0, border = True)
 
-            str5 = str(categories['Glucama'])
+            str5 = str(categories['Glaucoma'])
             self.pdf.set_font('Arial', size = 15)
             self.pdf.cell(w = 60, h = 10, txt = str5, ln = 1, border = True)
 
