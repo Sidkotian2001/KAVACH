@@ -1,5 +1,6 @@
 from fpdf import FPDF
 # from datetime import date
+from datetime import date
 
 class create_pdf:
     

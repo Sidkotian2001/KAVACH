@@ -3,6 +3,7 @@ from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
+from kivy.uix.label import Label
 from kivy.uix.colorpicker import Color
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
@@ -17,7 +18,7 @@ from iris_local_kivy import iris_voice
 from models.detect import Checkup
 import os
 from pdf import create_pdf
-
+import subprocess
 
 Window.size = (640, 480)
 Window.clearcolor = (1,1,1,1)
@@ -152,6 +153,13 @@ class VideoCapture(Screen):
 		self.is_eye_in_square = False
 		self.frame_original = None
 
+		#create a Label widget
+		self.label = Label(text = "Image Capture",
+						font_size = 30,
+						color = (0,0,0,1),
+						size_hint = (0.5, 0.1),
+						pos_hint = {'center_x' : .5, 'center_y': .9}
+						)
 		self.background = Image(source = 'wp_3.jpg',
 						allow_stretch = True,
 						keep_ratio = False
@@ -203,6 +211,7 @@ class VideoCapture(Screen):
 		self.iris_obj = iris_voice()
 		self.add_widget(self.background)
 		self.add_widget(self.img1)
+		self.add_widget(self.label)
 		self.add_widget(self.button0)
 		self.add_widget(self.button1)
 		self.add_widget(self.button2)
@@ -271,30 +280,30 @@ class VideoCapture(Screen):
 
 
 p_n = ''
-p_e = ''
+# p_e = ''
 p_m = ''
 p_a = ''
 p_g = ''
 class patientWindow(Screen):
     patient_name = ObjectProperty(None)
-    patient_email = ObjectProperty(None)
+    # patient_email = ObjectProperty(None)
     patient_mobile = ObjectProperty(None)
     patient_age = ObjectProperty(None)
     patient_gender = ObjectProperty(None)
 
     def submit_info(self):
         globals()['p_n'] = self.patient_name.text
-        globals()['p_e'] = self.patient_email.text
+        # globals()['p_e'] = self.patient_email.text
         globals()['p_m'] = self.patient_mobile.text
         globals()['p_a'] = self.patient_age.text
         globals()['p_g'] = self.patient_gender.text
         print(globals()['p_n'])
-        print(globals()['p_e'])
+        print(globals()['p_m'])
         
     
 class DisplayPatientWindow(Screen):
 	patient_name = StringProperty()
-	patient_email = StringProperty()
+	# patient_email = StringProperty()
 	patient_mobile = StringProperty()
 	patient_age = StringProperty()
 	patient_gender = StringProperty()
@@ -310,12 +319,12 @@ class DisplayPatientWindow(Screen):
 	def generate_pdf(self):
 		categories = globals()['categories']
 		
-		pdf_obj = create_pdf('Medical Report.pdf', self.patient_name, self.patient_age,
+		pdf_obj = create_pdf('Medical.pdf', self.patient_name, self.patient_age,
 						self.patient_mobile, self.patient_gender)
 		
 		pdf_obj.build_pdf(categories)
-
-		exit()
+	
+		# exit()
 
 class View_Images(Screen):
 
@@ -360,11 +369,11 @@ class loginMain(App):
 	def build(self):
 		# adding screens
 
-		# sm.add_widget(loginWindow(name='login'))
-		# sm.add_widget(signupWindow(name='signup'))
-		# sm.add_widget(logDataWindow(name='logdata'))
-		# sm.add_widget(VideoCapture(name='videofeed'))
-		# sm.add_widget(View_Images(name = 'view_images'))
+		sm.add_widget(loginWindow(name='login'))
+		sm.add_widget(signupWindow(name='signup'))
+		sm.add_widget(logDataWindow(name='logdata'))
+		sm.add_widget(VideoCapture(name='videofeed'))
+		sm.add_widget(View_Images(name = 'view_images'))
 		sm.add_widget(patientWindow(name='patient_details'))
 		sm.add_widget(DisplayPatientWindow(name = 'display_patient_details'))
 		return sm

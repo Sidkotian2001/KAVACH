@@ -63,7 +63,7 @@ WindowManager:
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.60}
 
 		Button:
-			text : "LOGIN"
+			text : "Login"
 			background_normal: ''
     		background_color: 0.50, 0.50,0.80, 1
 			bold : True
@@ -106,7 +106,7 @@ WindowManager:
 			pos_hint : {'center_x' : 0.5, 'center_y' : 0.93}
 
 		Label:
-			text : "NAME:"
+			text : "Name:"
 			font_size : 20
 			color: 0.52,0,0.64,1
 			bold : True
@@ -119,7 +119,7 @@ WindowManager:
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.75}
 
 		Label:
-			text : "EMAIL: "
+			text : "Email: "
 			font_size : 20
 			color : 0.52,0,0.64,1
 			bold : True
@@ -132,7 +132,7 @@ WindowManager:
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.60}
 
 		Label:
-			text : "PASSWORD: "
+			text : "Password: "
 			color: 0.52,0,0.64,1
 			font_size : 20
 			bold : True
@@ -144,7 +144,7 @@ WindowManager:
 			size_hint : 0.3, 0.1
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.45}
 		Button:
-			text : "SUBMIT"
+			text : "Submit"
 			size_hint : 0.3, 0.1
 			background_normal: ''
     		background_color: 0.50, 0.50,0.80, 1
@@ -171,6 +171,12 @@ WindowManager:
 			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
+		Label:
+			text : "Evaluation Parameters"
+			color : 0,0,0,1
+			font_size : 35
+			bold : True
+			pos_hint : {'center_x' : 0.5, 'center_y' : 0.93}
 
 		Button:
 			text : "Start Models"
@@ -195,8 +201,9 @@ WindowManager:
 				root.manager.transition.direction = "left"
 		Label:
 			text: "Which of the following conditions should be evaluated"
-			color: [0,0,0,1]
-			font_size : 23
+			color: 0.52,0,0.64,1
+			font_size : 20
+			bold : True
 			pos_hint : {"center_x" : 0.5, "center_y" : 0.80}
 		
 		CheckBox:
@@ -233,27 +240,30 @@ WindowManager:
 
 		Label:
 			text: 'Cataract'
-			color: [0,0,0,1]
+			color: [0.52,0,0.64,1]
+			font_size : 20
+			bold : True
 			pos_hint: {"center_x": 0.25, "center_y": 0.7}
-			font_size : 17
 		
 		Label:
 			text: 'Macular Degeneration'
-			color: [0,0,0,1]
+			color: [0.52,0,0.64,1]
+			font_size : 20
+			bold : True
 			pos_hint: {"center_x": 0.25, "center_y": 0.6}
-			font_size : 17
-
 		Label:
 			text: 'Diabetic Retinopathy'
-			color: [0,0,0,1]
-			font_size : 17
+			color: [0.52,0,0.64,1]
+			font_size : 20
+			bold : True
 			pos_hint: {"center_x": 0.25, "center_y": 0.5}	
 
 		Label:
 			text: 'Glaucoma'
-			color: [0,0,0,1]
+			color: [0.52,0,0.64,1]
+			font_size : 20
+			bold : True
 			pos_hint: {"center_x": 0.25, "center_y": 0.4}
-			font_size : 17
 
 
  
@@ -348,99 +358,177 @@ WindowManager:
 				root.previous_screen()
 				# app.root.current = 'videofeed'
 				root.manager.transition.direction = "left"
-
 <patientWindow>:
+
 	patient_name : patient_name
-	patient_email : patient_email
 	patient_mobile : patient_mobile
 	patient_age : patient_age
 	patient_gender : patient_gender
 
 	FloatLayout:
-		
-		Image:
+		 # Add the background image to the FloatLayout
+
+        Image:
 			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
-
 		Label:
-			text: 'Name'
-			text_size : root.width, root.height
+			text : "Patient Details"
 			color : 0,0,0,1
-			halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.75}
-
+			font_size : 35
+			bold : True
+			pos_hint : {'center_x' : 0.5, 'center_y' : 0.93}
+		Label:
+			text : "Name: "
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+			size_hint : 0.2, 0.1
+			pos_hint : {"x":0.25, "top":0.8}
 		TextInput:
 			id : patient_name
 			multiline : False
-			pos_hint : {'x' : 0.047, 'y' : 0.68}
-			size_hint : 0.3, 0.05
-
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.45, "top" : 0.8}
 		Label:
-			text : 'Email'
-			text_size : root.width, root.height
-			color : 0,0,0,1
-			halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.61}
-
-		TextInput:
-			id : patient_email
-			multiline : False
-			pos_hint : {"x" : 0.047, "y" : 0.54}
-			size_hint : 0.3, 0.05
-
-		Label:
-			text : 'Mobile number'
-			text_size : root.width, root.height
-			color: 0,0,0,1
-			halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.47}
-
-		TextInput:
-			id : patient_mobile
-			multiline : False
-			pos_hint : {'x' : 0.047, 'y' : 0.40}
-			size_hint : 0.3, 0.05
-
-		Label:
-			text : 'Age'
-			text_size : root.width, root.height
-			color : 0,0,0,1
-			halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.33}
-		
+			text : "Age: "
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+			size_hint : 0.2, 0.1
+			pos_hint : {"x" : 0.25, "top" : 0.65}
 		TextInput:
 			id : patient_age
 			multiline : False
-			pos_hint : {'x' : 0.047, 'y' : 0.26}
-			size_hint : 0.3, 0.05
-		
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.45, "top" : 0.65}
 		Label:
-			text : 'Gender'
-			text_size : root.width, root.height
-			color : 0,0,0,1
-			halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.19}
-		
+			text : "Gender: "
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+			size_hint : 0.2, 0.1
+			pos_hint : {"x" : 0.25, "top" : 0.5}
 		TextInput:
 			id : patient_gender
 			multiline : False
-			size_hint : 0.3, 0.05
-			pos_hint : {'x' : 0.047, 'y' : 0.12}
-		
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.45, "top" : 0.5}
+		Label:
+			text : "Phone No.: "
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
+			size_hint : 0.2, 0.1
+			pos_hint : {"x" : 0.25, "top" : 0.35}
+		TextInput:
+			id : patient_mobile
+			multiline : False
+			size_hint : 0.3, 0.1
+			pos_hint : {"x" : 0.45, "top" : 0.35}
 		Button:
 			text: 'Submit'
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			size_hint : 0.2, 0.1
 			pos_hint : {'x' : 0.5, 'y' : 0.05}
 			on_press:
 				root.submit_info()
 				app.root.current = 'logdata'
 				app.root.transition.direction = 'left'
+# <patientWindow>:
+	# patient_name : patient_name
+	# patient_email : patient_email
+	# patient_mobile : patient_mobile
+	# patient_age : patient_age
+	# patient_gender : patient_gender
+
+# 	FloatLayout:
+		
+		# Image:
+		# 	source : 'wp_3.jpg'
+		# 	allow_stretch : True
+		# 	keep_ratio : False
+
+# 		Label:
+# 			text: 'Name'
+# 			text_size : root.width, root.height
+# 			color : 0,0,0,1
+# 			halign : 'left'
+# 			padding_x : 30
+# 			pos_hint : {'y' : 0.75}
+
+# 		TextInput:
+# 			id : patient_name
+# 			multiline : False
+# 			pos_hint : {'x' : 0.047, 'y' : 0.68}
+# 			size_hint : 0.3, 0.05
+
+# 		Label:
+# 			text : 'Email'
+# 			text_size : root.width, root.height
+# 			color : 0,0,0,1
+# 			halign : 'left'
+# 			padding_x : 30
+# 			pos_hint : {'y' : 0.61}
+
+# 		TextInput:
+# 			id : patient_email
+# 			multiline : False
+# 			pos_hint : {"x" : 0.047, "y" : 0.54}
+# 			size_hint : 0.3, 0.05
+
+# 		Label:
+# 			text : 'Mobile number'
+# 			text_size : root.width, root.height
+# 			color: 0,0,0,1
+# 			halign : 'left'
+# 			padding_x : 30
+# 			pos_hint : {'y' : 0.47}
+
+# 		TextInput:
+# 			id : patient_mobile
+# 			multiline : False
+# 			pos_hint : {'x' : 0.047, 'y' : 0.40}
+# 			size_hint : 0.3, 0.05
+
+# 		Label:
+# 			text : 'Age'
+# 			text_size : root.width, root.height
+# 			color : 0,0,0,1
+# 			halign : 'left'
+# 			padding_x : 30
+# 			pos_hint : {'y' : 0.33}
+		
+# 		TextInput:
+# 			id : patient_age
+# 			multiline : False
+# 			pos_hint : {'x' : 0.047, 'y' : 0.26}
+# 			size_hint : 0.3, 0.05
+		
+# 		Label:
+# 			text : 'Gender'
+# 			text_size : root.width, root.height
+# 			color : 0,0,0,1
+# 			halign : 'left'
+# 			padding_x : 30
+# 			pos_hint : {'y' : 0.19}
+		
+# 		TextInput:
+# 			id : patient_gender
+# 			multiline : False
+# 			size_hint : 0.3, 0.05
+# 			pos_hint : {'x' : 0.047, 'y' : 0.12}
+		
+		# Button:
+		# 	text: 'Submit'
+		# 	size_hint : 0.2, 0.1
+		# 	pos_hint : {'x' : 0.5, 'y' : 0.05}
+		# 	on_press:
+		# 		root.submit_info()
+		# 		app.root.current = 'logdata'
+		# 		app.root.transition.direction = 'left'
 
 <DisplayPatientWindow>:
 
@@ -449,109 +537,103 @@ WindowManager:
 			source : 'wp_3.jpg'
 			allow_stretch : True
 			keep_ratio : False
-
+		Label:
+			text : "Patient Report"
+			color : 0,0,0,1
+			font_size : 35
+			bold : True
+			pos_hint : {'center_x' : 0.5, 'center_y' : 0.93}
         Label:
-            text: 'Patient name :'
-            color : 0,0,0,1
+            text: 'Patient name:'
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-			padding_x : 150
-            pos_hint : {'y' : 0.93}
+            pos_hint : {'x':0.1, 'y' : 0.81}
 			
         
         Label :
             text : root.patient_name
-            color : 0,0,0,1
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-            padding_x : 300
-            pos_hint : {'y' : 0.93}
+            pos_hint : {'x': 0.3, 'y' : 0.81}
 
         
         Label:
-            text: 'Patient age  :'
-            color : 0,0,0,1
+            text: 'Patient age:'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-			padding_x : 150
-			pos_hint : {'y' : 0.83}
+			pos_hint : {'x':0.1, 'y' : 0.74}
         
         Label :
             text : root.patient_age
-            color : 0,0,0,1
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-            padding_x : 300
-            pos_hint : {'y' : 0.83}
+            pos_hint : {'x':0.28,'y' : 0.74}
 
         Label:
-            text: 'Patient gender   :'
-            color : 0,0,0,1
+            text: 'Patient gender:'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-			padding_x : 150
-			pos_hint : {'y' : 0.73}
+			pos_hint : {'x':0.1,'y' : 0.67}
         
         Label :
             text : root.patient_gender
-            color : 0,0,0,1
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-            padding_x : 300
-            pos_hint : {'y' : 0.73}
-        
-        # Label:
-        #     text: 'Patient mobile   :'
-        #     color : 0,0,0,1
-        #     text_size : root.width, root.height
-        #     halign : 'left'
-		# 	padding_x : 30
-		# 	pos_hint : {'y' : 0.53}
-        
-        #  Label :
-        #     text : root.patient_age
-        #     color : 0,0,0,1
-        #     text_size : root.width, root.height
-        #     halign : 'left'
-        #     padding_x : 150
-        #     pos_hint : {'y' : 0.83}
+            pos_hint : {'x':0.32,'y' : 0.67}
         
         Label:
-            text: 'Diabetic Retinopathy :'
-            color: [0,0,0,1]
+            text: 'Diabetic Retinopathy : NA'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.63}
+			pos_hint : {'x':0.1,'y' : 0.60}
 
         Label:
-            text: 'Macular Degeneration :'
-            color: [0,0,0,1]
+            text: 'Macular Degeneration : NA'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.53}
+            
+			pos_hint : {'x':0.1,'y' : 0.53}
+
 
         Label:
-            text: 'Cataract :'
-            color: [0,0,0,1]
+            text: 'Cataract : NA'
+            font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.43}
+			pos_hint : {'x':0.1,'y' : 0.46}
 
         Label:
-            text: 'Glaucoma :'
-            color: [0,0,0,1]
+            text: 'Glaucoma : NA'
+			font_size : 20
+			color : 0.52,0,0.64,1
+			bold : True
             text_size : root.width, root.height
-            halign : 'left'
-			padding_x : 30
-			pos_hint : {'y' : 0.33}
+			pos_hint : {'x':0.1,'y' : 0.39}
         
         Button:
 			text: 'Display'
+			background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			bold : True
 			size_hint : 0.2, 0.1
-			pos_hint : {'center_x' : 0.3, 'y' : 0.1}
+			pos_hint : {'center_x' : 0.3, 'y' : 0.26}
 			on_press:
 				root.display_info()
 				# app.root.current = 'display_patient_details'
@@ -559,12 +641,22 @@ WindowManager:
         
         Button:
             text: 'Generate PDF'
-            size_hint : 0.2, 0.1
-            pos_hint : {'center_x' : 0.7, 'y' : 0.1}
+            background_normal: ''
+    		background_color: 0.50, 0.50,0.80, 1
+			bold : True
+			size_hint : 0.2, 0.1
+            pos_hint : {'center_x' : 0.7, 'y' : 0.26}
             on_press:
                 root.generate_pdf()
-
-        
-
+		Button:
+			text: 'Home Page'
+			background_normal: ''
+			background_color: 0.50, 0.50,0.80, 1
+			bold : True
+			size_hint : 0.2, 0.1
+			pos_hint : {'center_x' : 0.5, 'y' : 0.1}
+			on_press:
+				app.root.current = 'login'
+				app.root.transition.direction = 'right'
         
         
