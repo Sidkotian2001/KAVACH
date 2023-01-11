@@ -14,9 +14,11 @@ WindowManager:
             radius: [10]
 
 <patientWindow>:
+    
     canvas:
         Color:
             rgba: 0,0.267,0.4,1
+            # rgba: 0,0,0,1
     
         Rectangle:
             pos: self.pos
@@ -29,76 +31,177 @@ WindowManager:
             size: (self.width - 70, self.height - 70)
             radius: [20]
         
+    patient_firstname : patient_firstname
+    patient_lastname : patient_lastname
+    patient_mobile : patient_mobile
+	patient_age : patient_age
+	patient_gender : patient_gender
+
     FloatLayout:
+
+        Image:
+            source: 'infyuva_tech.jpeg'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.15, 0.1
+            pos_hint: {'center_x': 0.13, 'center_y': 0.89}
         
         Label:
-            text: "User"
-            font_size : 50
+            text: '[b]User[/b] Profile'
+            # font_name : 'Inter/static/Inter-Regular.ttf'
+            markup: True
+            font_size: 50
             color : (0,0,0,1)
-            pos_hint : {'center_x' : 0.3, 'center_y' : 0.8}
-        TextInput:
-            hint_text: 'First Name*'
-            halign: 'center'
-            background_color: (0.85, 0.85, 0.85, 0.92)
-            multiline: False
-            background_normal: ""
-            background_active: ""
-            size_hint : 0.4225, 0.075
-            pos_hint : {'center_x' : 0.30, 'center_y' : 0.7}
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.81}
         
-        TextInput:
-            hint_text: 'Last Name*'
-            halign: 'center'
-            background_color: (0.85, 0.85, 0.85, 0.92)
-            multiline: False
-            background_normal: ""
-            background_active: ""
-            size_hint : 0.4225, 0.075
-            pos_hint : {'center_x' : 0.30, 'center_y' : 0.6}
-        
-        TextInput:
-            hint_text: 'Email'
-            halign: 'center'
-            background_color: (0.85, 0.85, 0.85, 0.92)
-            multiline: False
-            background_normal: ""
-            background_active: ""
-            size_hint : 0.4225, 0.075
-            pos_hint : {'center_x' : 0.30, 'center_y' : 0.5}
-        
-        TextInput:
-            hint_text: 'Age*'
-            halign: 'center'
-            background_color: (0.85, 0.85, 0.85, 0.92)
-            multiline: False
-            background_normal: ""
-            background_active: ""
-            size_hint : 0.4225, 0.075
-            pos_hint : {'center_x' : 0.30, 'center_y' : 0.4}
-        
-        TextInput:
-            hint_text: 'Gender*'
-            halign: 'center'
-            background_color: (0.85, 0.85, 0.85, 0.92)
-            multiline: False
-            background_normal: ""
-            background_active: ""
-            size_hint : 0.4225, 0.075
-            pos_hint : {'center_x' : 0.30, 'center_y' : 0.3}
+        Label:
+            text: '     Please enter\nall the patient details'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            font_size: 25
+            color: (0,0,0,1)
+            pos_hint: {'center_x': 0.275, 'center_y': 0.7}
 
-            # canvas.before:
-            #     Color:
-            #         rgba: (0,0,1,1)
-            #     RoundedRectangle:
-            #         size: self.size
-            #         pos:self.pos
-            #         radius: 20,
+        TextInput:
+            id: patient_firstname
+            hint_text: 'First Name'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.575}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: patient_lastname
+            hint_text: 'Last Name'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.5}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: patient_mobile
+            hint_text: 'Mobile'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.425}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: patient_age
+            hint_text: 'Age'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.35}
+
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 10,
+            
+        
+        TextInput:
+            id: patient_gender
+            hint_text: 'Gender'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.275}
+
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
         
         RoundedButton:
             text:"Submit"
-            size_hint : 0.4225, 0.1
-            pos_hint : {'center_x' : 0.30, 'center_y' : 0.175}
-            on_press: print("Goodbye")
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
+            on_press:
+                root.submit_info()
+
+
+        Image:
+            source: 'infyuvaFigma 1.png'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.475, 0.8835
+            pos_hint: {'center_x': 0.73, 'center_y': 0.505}
+ 
+
+        Label:
+            id:'Welcome to Infyuva'
+            
+            text:'[b][size=25]Welcome to Infyuva\n\nTech Solutions![/size][/b]\n \nInfyuva Tech Solutions offer\ninnovative AI-based diagnosis\nscreening tools for improved\npatient care.'
+            # font_name : 'Inter/static/Inter-Regular.ttf'
+            lineheight: 3.5
+            markup: True
+            multiline: True
+            color: (1,1,1,1)
+            size_hint: 0.3, 0.4
+            pos_hint: {'center_x': 0.725, 'center_y': 0.5}
+            canvas.before:
+                Color:
+                    rgba: (0,0,0,0.6)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 10,
+
         
 
         
