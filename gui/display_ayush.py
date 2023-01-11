@@ -338,7 +338,7 @@ class DisplayPatientWindow(Screen):
 	def generate_pdf(self):
 		categories = globals()['categories']
 		
-		pdf_obj = create_pdf('Medical.pdf', self.patient_name, self.patient_age,
+		pdf_obj = create_pdf('Medical_Report.pdf', self.patient_name, self.patient_age,
 						self.patient_mobile, self.patient_gender)
 		
 		pdf_obj.build_pdf(categories)

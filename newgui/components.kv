@@ -1,0 +1,112 @@
+#:kivy 2.1.0
+WindowManager:
+    patientWindow:
+
+<RoundedButton@Button>:
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (0,0,0, 1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+
+<patientWindow>:
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
+        
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20]
+        
+    FloatLayout:
+        
+        Label:
+            text: "User"
+            font_size : 50
+            color : (0,0,0,1)
+            pos_hint : {'center_x' : 0.3, 'center_y' : 0.8}
+        TextInput:
+            hint_text: 'First Name*'
+            halign: 'center'
+            background_color: (0.85, 0.85, 0.85, 0.92)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.4225, 0.075
+            pos_hint : {'center_x' : 0.30, 'center_y' : 0.7}
+        
+        TextInput:
+            hint_text: 'Last Name*'
+            halign: 'center'
+            background_color: (0.85, 0.85, 0.85, 0.92)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.4225, 0.075
+            pos_hint : {'center_x' : 0.30, 'center_y' : 0.6}
+        
+        TextInput:
+            hint_text: 'Email'
+            halign: 'center'
+            background_color: (0.85, 0.85, 0.85, 0.92)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.4225, 0.075
+            pos_hint : {'center_x' : 0.30, 'center_y' : 0.5}
+        
+        TextInput:
+            hint_text: 'Age*'
+            halign: 'center'
+            background_color: (0.85, 0.85, 0.85, 0.92)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.4225, 0.075
+            pos_hint : {'center_x' : 0.30, 'center_y' : 0.4}
+        
+        TextInput:
+            hint_text: 'Gender*'
+            halign: 'center'
+            background_color: (0.85, 0.85, 0.85, 0.92)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.4225, 0.075
+            pos_hint : {'center_x' : 0.30, 'center_y' : 0.3}
+
+            # canvas.before:
+            #     Color:
+            #         rgba: (0,0,1,1)
+            #     RoundedRectangle:
+            #         size: self.size
+            #         pos:self.pos
+            #         radius: 20,
+        
+        RoundedButton:
+            text:"Submit"
+            size_hint : 0.4225, 0.1
+            pos_hint : {'center_x' : 0.30, 'center_y' : 0.175}
+            on_press: print("Goodbye")
+        
+
+        
+            
+
+
+
+
+
+        
+       
