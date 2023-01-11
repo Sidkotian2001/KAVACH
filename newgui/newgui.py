@@ -9,11 +9,10 @@ from kivy.uix.label import Label
 from kivy.uix.effectwidget import AdvancedEffectBase, EffectWidget
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
-
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.graphics import Rectangle, Color
-
-
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)
 
 Window.size = (940, 600)
 # Window.clearcolor = (0,0.267,0.4,1)
@@ -46,12 +45,16 @@ class patientWindow(Screen):
         print(globals()['p_fn'])
         print(globals()['p_g'])
 
+class evalautionWindow(Screen):
+    pass
+
 kv = Builder.load_file('components.kv')
 sm = WindowManager()
 
 class loginMain(App):
     def build(self):
         sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
         return sm
 
 if __name__ == '__main__':
