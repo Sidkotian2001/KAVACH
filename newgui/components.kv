@@ -2,6 +2,8 @@
 WindowManager:
     patientWindow:
     evalautionWindow:
+    videofeed:
+
 <RoundedButton@Button>:
     background_color: (0,0,0,0)
     background_normal: ''
@@ -22,6 +24,9 @@ WindowManager:
             size: self.size
             pos: self.pos
             radius: [10]
+
+
+
 <patientWindow>:
     
     canvas:
@@ -52,8 +57,8 @@ WindowManager:
             source: 'infyuva_tech.jpeg'
             allow_stretch: True
             keep_ratio: False
-            size_hint: 0.15, 0.1
-            pos_hint: {'center_x': 0.13, 'center_y': 0.89}
+            size_hint: 0.175, 0.1
+            pos_hint: {'center_x': 0.145, 'center_y': 0.89}
         
         Label:
             text: '[b]User[/b] Profile'
