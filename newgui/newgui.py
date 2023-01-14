@@ -10,7 +10,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from kivy.properties import ObjectProperty
-from kivy.graphics import RoundedRectangle, Rectangle, Color
+from kivy.graphics import Ellipse, RoundedRectangle, Rectangle, Color
 from kivy.config import Config
 
 from kivy.clock import Clock
@@ -51,6 +51,25 @@ class patientWindow(Screen):
         print(globals()['p_fn'])
         print(globals()['p_g'])
 
+class RoundButton(Button):
+    def __init__(self, **kwargs):
+        super(RoundButton, self).__init__(**kwargs)
+        with self.canvas.before:
+            Color(0.85,0.85,0.85,1)
+            self.ellipse = Ellipse(size = (100,100),
+                                pos = (252, 30),
+                                angle_start = 0,
+                                angle_end = 360
+                                )
+            self.bind(pos = self.update_ellipse, size = self.update_ellipse)
+    
+    def update_ellipse(self, *args):
+        self.ellipse.pos = (252, 30)
+        self.ellipse.size = (90,90)
+
+#Global counter varible
+counter = 0
+
 class VideoCapture(Screen):
 
     def __init__(self, **kwargs):
@@ -62,72 +81,100 @@ class VideoCapture(Screen):
         self.is_eye_in_square = False
         self.frame_original = None
         self.pos_dim = 75
-        self.width_dim = 100
-        self.height_dim = 200
+        self.width_dim = 200
+        self.height_dim = 199
 
         with self.canvas:
             Color(0,0.267,0.4,1)
             self.rect = Rectangle(pos = self.pos, size = (self.width, self.height))
             self.bind(pos = self.update_rect, size = self.update_rect)
 
-            Color(0.5,0.5,0.5,1)
-            self.round_rect = RoundedRectangle(pos = (self.center_x - ((self.width - self.width_dim) / 2), self.center_y - ((self.height - self.height_dim) / 2) + 50),
+            Color(0.85,0.85,0.85,1)
+            self.round_rect = RoundedRectangle(pos = (self.center_x - ((self.width - self.width_dim) / 2), self.center_y - ((self.height - self.height_dim) / 2) + 55),
                                             size = (self.width - self.width_dim, self.height - self.height_dim),
                                             radius = [20])
             self.bind(pos = self.update_round_rect, size = self.update_round_rect)
 
-        self.img1 = Image(size_hint = (.48, .32),
-                        pos_hint = {'center_x' : .5, 'center_y' : .6}
-                )
+            Color(0.85,0.85,0.85,1)
+            self.ellipse0 = Ellipse(pos= (200, 25),
+                size = (90 , 90),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipse0, size = self.update_ellipse0)
 
-        #Button 0
-        self.button0 = Button(text = "Start video",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .25, 'center_y': .15},
-                        background_normal = '',
-                        background_color = (0.50, 0.50,0.80, 1),
+            Color(0.85,0.85,0.85,1)
+            self.ellipse1 = Ellipse(pos= (350, 25),
+                size = (90 , 90),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipse1, size = self.update_ellipse1)
+
+            Color(0.85,0.85,0.85,1)
+            self.ellipse2 = Ellipse(pos= (500, 25),
+                size = (90 , 90),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipse2, size = self.update_ellipse2)
+
+            Color(0.85,0.85,0.85,1)
+            self.ellipse3 = Ellipse(pos= (650, 25),
+                size = (90 , 90),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipse3, size = self.update_ellipse3)
+
+
+
+
+        #Infyuva tech image
+        self.img0 = Image(source = 'infyuva_tech-removebg-preview.png',
+                        size_hint = (0.171, 0.1),
+                        pos_hint = {'center_x' : .2, 'center_y' : .840}
+                        )
+
+        #Button 0 - Start/Stop Video
+        self.button0 = Button(size_hint = (0.08, 0.13),
+                        pos = (207, 32),
+                        background_normal = 'power_button.png',
+                        background_disabled_normal = 'power_button.png',
                         disabled = False,
                         on_release = self.start_video
         )
 
-        #Button 1
-        self.button1 = Button(text = "Capture",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .50, 'center_y': .15},
-                        background_normal = '',
-                        background_color = (0.50, 0.50,0.80, 1),
+        #Button 1 - Capture Image
+        self.button1 = Button(size_hint = (0.08, 0.09),
+                        pos = (357 , 45),
+                        # pos_hint = {'center_x' : .423, 'center_y': .1230},
+                        background_normal = 'cam_1-removebg-preview.png',
+                        background_disabled_normal = 'cam_1-removebg-preview_disabled.png',
                         disabled = True,
-                        on_release = self.save_img
+                        on_release = self.capture_img
         )
 
-        #Button 2
-        self.button2 = Button(text = "View Image",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .75, 'center_y': .15},
+        #Button 2 - Flash
+        self.button2 = Button(size_hint = (0.08, 0.12),
+                        pos = (507, 30),
+                        background_normal = 'flash.png',
+                        background_disabled_normal = 'flash.png',
                         disabled = True,
-                        background_normal = '',
-                        background_color = (0.50, 0.50,0.80, 1),
-                        on_release =  self.view_image
+                        on_release =  self.change_flash
         )
 
-        #Button 3
-        self.button3 = Button(text = "Next",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .75, 'center_y': .05},
+        #Button 3 - View Images
+        self.button3 = Button(size_hint = (0.1, 0.15),
+                        pos = (647, 28),
+                        background_normal = 'gallery.png',
+                        background_disabled_normal = 'gallery.png',
                         disabled = True,
-                        background_normal = '',
-                        background_color = (0.50, 0.50,0.80, 1),
-                        on_release = self.next_screen
+                        on_release = self.view_image
         )
 
         self.iris_obj = iris_voice()
-        # self.add_widget(self.background)
-        self.add_widget(self.img1)
-        # self.add_widget(self.label)
+        self.add_widget(self.img0)
         self.add_widget(self.button0)
         self.add_widget(self.button1)
         self.add_widget(self.button2)
-        # self.add_widget(self.button3)
+        self.add_widget(self.button3)
         self.clock_schedule()
     
     def update_rect(self, *args):
@@ -135,9 +182,28 @@ class VideoCapture(Screen):
         self.rect.size = self.size
     
     def update_round_rect(self, *args):
-        self.round_rect.pos = (self.center_x - ((self.width - self.width_dim) / 2), self.center_y - ((self.height - self.height_dim) / 2) + 50)
+        self.round_rect.pos = (self.center_x - ((self.width - self.width_dim) / 2), self.center_y - ((self.height - self.height_dim) / 2) + 30)
         self.round_rect.size = (self.width - self.width_dim, self.height - self.height_dim)
         self.round_rect.radius = [20]
+    
+    def update_ellipse0(self, *args):
+        self.ellipse0.pos = (200, 25)
+        self.ellipse0.size = (90 , 90)
+    
+    def update_ellipse1(self, *args):
+        self.ellipse1.pos = (350, 25)
+        self.ellipse1.size = (90 , 90)
+        
+    def update_ellipse2(self, *args):
+        self.ellipse2.pos = (500, 25)
+        self.ellipse2.size = (90 , 90)
+
+    def update_ellipse3(self, *args):
+        self.ellipse3.pos = (650, 25)
+        self.ellipse3.size = (90 , 90)
+
+    def change_flash(self, _):
+        print("This function works on the flash hardware")
 
     def view_image(self, _):
         self.button0.disabled = False
@@ -162,18 +228,17 @@ class VideoCapture(Screen):
             frame = self.iris_obj.capture(self.number_of_eyes_captured)
             self.frame_original = self.iris_obj.frame_original
             self.is_eye_in_square = self.iris_obj.is_eye_in_square
-            frame = cv2.flip(frame, 0)	
+            # frame = cv2.flip(frame, 0)	
 
 
             buf = frame.tobytes()
 
-            self.texture = Texture.create(size = (640, 480), 
-            colorfmt = 'bgr')
+            self.texture = Texture.create(size = (640, 480), colorfmt = 'bgr')
             #if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
 
             self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
 
-            self.img1.texture = self.texture
+            self.round_rect.texture = self.texture
         else:
             pass
             # self.img1.source = 'camera_icon.png'
@@ -184,7 +249,7 @@ class VideoCapture(Screen):
         self.button2.disabled = False
         self.button3.disabled = False
 
-    def save_img(self, _):
+    def capture_img(self, _):
         if self.is_eye_in_square == True:
             c = globals()['counter']
             cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured + c)), self.frame_original)
