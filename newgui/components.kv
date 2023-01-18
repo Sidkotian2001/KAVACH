@@ -2,7 +2,8 @@
 WindowManager:
     patientWindow:
     evalautionWindow:
-    videofeed:
+    VideoCapture:
+    signupWindow:
 
 <RoundedButton@Button>:
     background_color: (0,0,0,0)
@@ -24,8 +25,197 @@ WindowManager:
             size: self.size
             pos: self.pos
             radius: [10]
+        
+<signupWindow>:
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+            # rgba: 0,0,0,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
+        
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20]
+        
+    doctor_firstname : doctor_firstname
+    doctor_lastname : doctor_lastname
+    doctor_mobile : doctor_mobile
+	doctor_age : doctor_age
+	doctor_password : doctor_password
+
+    FloatLayout:
+
+        Image:
+            source: 'infyuva_tech.jpeg'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.175, 0.1
+            pos_hint: {'center_x': 0.145, 'center_y': 0.89}
+        
+        Label:
+            text: '[b]Doctor[/b] Profile'
+            # font_name : 'Inter/static/Inter-Regular.ttf'
+            markup: True
+            font_size: 50
+            color : (0,0,0,1)
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.81}
+        
+        Label:
+            text: '         Please enter\nall the personal details'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            font_size: 25
+            color: (0,0,0,1)
+            pos_hint: {'center_x': 0.275, 'center_y': 0.7}
+
+        TextInput:
+            id: doctor_firstname
+            hint_text: 'First Name'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.575}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: doctor_lastname
+            hint_text: 'Last Name'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.5}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: doctor_mobile
+            hint_text: 'Mobile'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.425}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: doctor_age
+            hint_text: 'Age'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.35}
+
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 10,
+            
+        
+        TextInput:
+            id: doctor_password
+            hint_text: 'Password'
+            hint_text_color: (0,0,0,1)
+            password : True
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.275}
+
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        RoundedButton:
+            text:"Submit"
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
+            on_press:
+                root.submit_info()
+                app.root.current = 'evalautioninfoWindow'
+				root.manager.transition.direction = "left"
 
 
+        Image:
+            source: 'infyuvaFigma 1.png'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.475, 0.8835
+            pos_hint: {'center_x': 0.73, 'center_y': 0.505}
+ 
+
+        Label:
+            id:'Welcome to Infyuva'
+            
+            text:'[b][size=25]Welcome to Infyuva\n\nTech Solutions![/size][/b]\n \nInfyuva Tech Solutions offer\ninnovative AI-based diagnosis\nscreening tools for improved\npatient care.'
+            # font_name : 'Inter/static/Inter-Regular.ttf'
+            lineheight: 3.5
+            markup: True
+            multiline: True
+            color: (1,1,1,1)
+            size_hint: 0.3, 0.4
+            pos_hint: {'center_x': 0.725, 'center_y': 0.5}
+            canvas.before:
+                Color:
+                    rgba: (0,0,0,0.6)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 10,
 
 <patientWindow>:
     

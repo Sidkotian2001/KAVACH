@@ -7,6 +7,8 @@ from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
+from kivy.uix.widget import Widget
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from kivy.properties import ObjectProperty
@@ -17,12 +19,29 @@ from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
+import pandas as pd
 
 Config.set('graphics', 'resizable', False)
 
 Window.size = (940, 600)
-# Window.clearcolor = (0,0.267,0.4,1)
-Window.clearcolor = (0,0,0,1)
+Window.clearcolor = (0,0.267,0.4,1)
+
+
+# class to call the popup function
+class PopupWindow(Widget):
+	def btn(self):
+		popFun()
+
+# class to build GUI for a popup window
+class P(FloatLayout):		
+	pass
+
+# function that displays the content
+def popFun():
+	show = P()
+	window = Popup(title = "popup", content = show,
+				size_hint = (None, None), size = (300, 300))
+	window.open()
 
 class WindowManager(ScreenManager):
     pass
@@ -32,8 +51,6 @@ p_ln = ''
 p_m = ''
 p_a = ''
 p_g = ''
-
-
 
 class patientWindow(Screen):
     patient_firstname = ObjectProperty(None)
@@ -50,22 +67,6 @@ class patientWindow(Screen):
         globals()['p_g'] = self.patient_gender.text
         print(globals()['p_fn'])
         print(globals()['p_g'])
-
-class RoundButton(Button):
-    def __init__(self, **kwargs):
-        super(RoundButton, self).__init__(**kwargs)
-        with self.canvas.before:
-            Color(0.85,0.85,0.85,1)
-            self.ellipse = Ellipse(size = (100,100),
-                                pos = (252, 30),
-                                angle_start = 0,
-                                angle_end = 360
-                                )
-            self.bind(pos = self.update_ellipse, size = self.update_ellipse)
-    
-    def update_ellipse(self, *args):
-        self.ellipse.pos = (252, 30)
-        self.ellipse.size = (90,90)
 
 #Global counter varible
 counter = 0
@@ -265,14 +266,51 @@ class VideoCapture(Screen):
 class evalautionWindow(Screen):
     pass
 
+d_fn = ''
+d_ln = ''
+d_m = ''
+d_a = ''
+d_pass = ''
+
+class signupWindow(Screen):
+    doctor_firstname = ObjectProperty(None)
+    doctor_lastname = ObjectProperty(None)
+    doctor_mobile = ObjectProperty(None)
+    doctor_age = ObjectProperty(None)
+    doctor_password = ObjectProperty(None)
+
+    def submit_info(self):
+        try:
+            users = pd.read_csv('login.csv')
+        except:
+            users = pd.DataFrame(columns = ['First Name','Last Name', 'Mobile', 'Age', 'Password'])
+            users.to_csv('login.csv', index = False)
+        
+        user = pd.DataFrame([[self.doctor_firstname.text, self.doctor_lastname.text,
+                            self.doctor_mobile.text, self.doctor_age.text, 
+                            self.doctor_password.text]])        
+        if self.doctor_mobile.text != '':
+            if self.doctor_mobile.text not in users['Mobile'].unique():
+                user.to_csv('login.csv', mode = 'a', header = False, index = False)
+                # sm.current = 'login'
+                self.doctor_firstname.text = ''
+                self.doctor_lastname.text = ''
+                self.doctor_mobile = ''
+                self.doctor_age = ''
+                self.doctor_password = ''
+
+        else:
+            popFun()
+    
 kv = Builder.load_file('components.kv')
 sm = WindowManager()
 
 class loginMain(App):
     def build(self):
-        sm.add_widget(VideoCapture(name='videofeed'))
-        sm.add_widget(patientWindow(name = 'patientinfowindow'))
-        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        sm.add_widget(signupWindow(name = 'signup'))
+        # sm.add_widget(VideoCapture(name='videofeed'))
+        # sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
         return sm
 
 if __name__ == '__main__':
