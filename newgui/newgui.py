@@ -68,6 +68,8 @@ class patientWindow(Screen):
         print(globals()['p_fn'])
         print(globals()['p_g'])
 
+    pass
+
 #Global counter varible
 counter = 0
 
@@ -81,6 +83,7 @@ class VideoCapture(Screen):
         self.number_of_eyes_captured = 0
         self.is_eye_in_square = False
         self.frame_original = None
+
         self.pos_dim = 75
         self.width_dim = 200
         self.height_dim = 199
@@ -101,28 +104,25 @@ class VideoCapture(Screen):
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse0, size = self.update_ellipse0)
+            self.bind(pos = self.update_all_ellipsess, size = self.update_all_ellipsess)
 
-            Color(0.85,0.85,0.85,1)
             self.ellipse1 = Ellipse(pos= (350, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse1, size = self.update_ellipse1)
+            self.bind(pos = self.update_all_ellipsess, size = self.update_all_ellipsess)
 
-            Color(0.85,0.85,0.85,1)
             self.ellipse2 = Ellipse(pos= (500, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse2, size = self.update_ellipse2)
+            self.bind(pos = self.update_all_ellipsess, size = self.update_all_ellipsess)
 
-            Color(0.85,0.85,0.85,1)
             self.ellipse3 = Ellipse(pos= (650, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse3, size = self.update_ellipse3)
+            self.bind(pos = self.update_all_ellipsess, size = self.update_all_ellipsess)
 
 
 
@@ -134,17 +134,17 @@ class VideoCapture(Screen):
                         )
 
         #Button 0 - Start/Stop Video
-        self.button0 = Button(size_hint = (0.08, 0.13),
-                        pos = (207, 32),
+        self.button0 = Button(size_hint = (0.07, 0.12),
+                        pos = (212, 35),
                         background_normal = 'power_button.png',
-                        background_disabled_normal = 'power_button.png',
+                        background_disabled_normal = 'power_button_disabled.png',
                         disabled = False,
                         on_release = self.start_video
         )
 
         #Button 1 - Capture Image
-        self.button1 = Button(size_hint = (0.08, 0.09),
-                        pos = (357 , 45),
+        self.button1 = Button(size_hint = (0.07, 0.09),
+                        pos = (362 , 45),
                         # pos_hint = {'center_x' : .423, 'center_y': .1230},
                         background_normal = 'cam_1-removebg-preview.png',
                         background_disabled_normal = 'cam_1-removebg-preview_disabled.png',
@@ -153,10 +153,10 @@ class VideoCapture(Screen):
         )
 
         #Button 2 - Flash
-        self.button2 = Button(size_hint = (0.08, 0.12),
-                        pos = (507, 30),
+        self.button2 = Button(size_hint = (0.07, 0.12),
+                        pos = (512, 30),
                         background_normal = 'flash.png',
-                        background_disabled_normal = 'flash.png',
+                        background_disabled_normal = 'flash_disabled.png',
                         disabled = True,
                         on_release =  self.change_flash
         )
@@ -165,7 +165,7 @@ class VideoCapture(Screen):
         self.button3 = Button(size_hint = (0.1, 0.15),
                         pos = (647, 28),
                         background_normal = 'gallery.png',
-                        background_disabled_normal = 'gallery.png',
+                        background_disabled_normal = 'gallery_disabled.png',
                         disabled = True,
                         on_release = self.view_image
         )
@@ -187,22 +187,38 @@ class VideoCapture(Screen):
         self.round_rect.size = (self.width - self.width_dim, self.height - self.height_dim)
         self.round_rect.radius = [20]
     
-    def update_ellipse0(self, *args):
+    def update_all_ellipsess(self, *args):
         self.ellipse0.pos = (200, 25)
         self.ellipse0.size = (90 , 90)
-    
-    def update_ellipse1(self, *args):
         self.ellipse1.pos = (350, 25)
         self.ellipse1.size = (90 , 90)
-        
-    def update_ellipse2(self, *args):
         self.ellipse2.pos = (500, 25)
         self.ellipse2.size = (90 , 90)
-
-    def update_ellipse3(self, *args):
         self.ellipse3.pos = (650, 25)
         self.ellipse3.size = (90 , 90)
 
+    # def update_ellipse0(self, *args):
+    #     self.ellipse0.pos = (200, 25)
+    #     self.ellipse0.size = (90 , 90)
+    
+    # def update_ellipse1(self, *args):
+    #     self.ellipse1.pos = (350, 25)
+    #     self.ellipse1.size = (90 , 90)
+        
+    # def update_ellipse2(self, *args):
+    #     self.ellipse2.pos = (500, 25)
+    #     self.ellipse2.size = (90 , 90)
+
+    # def update_ellipse3(self, *args):
+    #     self.ellipse3.pos = (650, 25)
+    #     self.ellipse3.size = (90 , 90)
+
+    def start_video(self, _):
+        self.button0.disabled = True
+        self.button1.disabled = False
+        self.button2.disabled = False
+        self.button3.disabled = False
+        
     def change_flash(self, _):
         print("This function works on the flash hardware")
 
@@ -229,26 +245,13 @@ class VideoCapture(Screen):
             frame = self.iris_obj.capture(self.number_of_eyes_captured)
             self.frame_original = self.iris_obj.frame_original
             self.is_eye_in_square = self.iris_obj.is_eye_in_square
-            # frame = cv2.flip(frame, 0)	
-
+            frame = cv2.flip(frame, 0)
 
             buf = frame.tobytes()
-
             self.texture = Texture.create(size = (640, 480), colorfmt = 'bgr')
-            #if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
-
             self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
-
             self.round_rect.texture = self.texture
-        else:
-            pass
-            # self.img1.source = 'camera_icon.png'
 
-    def start_video(self, _):
-        self.button0.disabled = True
-        self.button1.disabled = False
-        self.button2.disabled = False
-        self.button3.disabled = False
 
     def capture_img(self, _):
         if self.is_eye_in_square == True:
@@ -257,8 +260,6 @@ class VideoCapture(Screen):
             self.number_of_eyes_captured += 1
         if self.number_of_eyes_captured > 1:
             self.next_screen()
-        else:
-            pass
 
     def change_illumination(self, _):
         print("This button will adjust the illumination")
@@ -275,42 +276,78 @@ d_pass = ''
 class signupWindow(Screen):
     doctor_firstname = ObjectProperty(None)
     doctor_lastname = ObjectProperty(None)
+    doctor_username = ObjectProperty(None)
     doctor_mobile = ObjectProperty(None)
-    doctor_age = ObjectProperty(None)
+    doctor_email = ObjectProperty(None)
+    # doctor_age = ObjectProperty(None)
     doctor_password = ObjectProperty(None)
 
     def submit_info(self):
         try:
             users = pd.read_csv('login.csv')
         except:
-            users = pd.DataFrame(columns = ['First Name','Last Name', 'Mobile', 'Age', 'Password'])
+            users = pd.DataFrame(columns = ['First Name','Last Name', 'Mobile', 'Email', 'Username','Password'])
             users.to_csv('login.csv', index = False)
         
         user = pd.DataFrame([[self.doctor_firstname.text, self.doctor_lastname.text,
-                            self.doctor_mobile.text, self.doctor_age.text, 
-                            self.doctor_password.text]])        
+                            self.doctor_mobile.text, self.doctor_email.text, 
+                            self.doctor_username.text, self.doctor_password.text]])        
         if self.doctor_mobile.text != '':
             if self.doctor_mobile.text not in users['Mobile'].unique():
                 user.to_csv('login.csv', mode = 'a', header = False, index = False)
                 # sm.current = 'login'
                 self.doctor_firstname.text = ''
                 self.doctor_lastname.text = ''
-                self.doctor_mobile = ''
-                self.doctor_age = ''
-                self.doctor_password = ''
+                self.doctor_mobile.text = ''
+                self.doctor_email.text = ''
+                self.doctor_username.text = ''
+                self.doctor_password.text = ''
 
         else:
             popFun()
-    
+    pass
+
+class ReportWindow(Screen):
+    pass
+
+class loginWindow(Screen):
+    login_username = ObjectProperty(None)
+    login_password = ObjectProperty(None)
+
+    def validate(self):
+        #Reading all the data stored
+        try:
+            users = pd.read_csv('login.csv')
+        except:
+            users = pd.DataFrame(columns = ['First Name','Last Name', 'Mobile', 'Email', 'Username', 'Password'])
+            users.to_csv('login.csv', index = False)
+        
+        if self.login_username.text not in users['Username'].unique():
+            popFun()
+        
+        else:
+            username = users[users['Username'] == self.login_username.text]
+            if username['Password'].values[0] == self.login_password.text:
+                sm.current = 'videofeed'
+
+                self.login_username.text = ''
+                self.login_password.text = ''
+            
+            else:
+                popFun()
+    pass
+
 kv = Builder.load_file('components.kv')
 sm = WindowManager()
 
 class loginMain(App):
     def build(self):
+        sm.add_widget(VideoCapture(name = 'videofeed'))
+        sm.add_widget(loginWindow(name = 'logininfoWindow'))
         sm.add_widget(signupWindow(name = 'signup'))
-        # sm.add_widget(VideoCapture(name='videofeed'))
-        # sm.add_widget(patientWindow(name = 'patientinfowindow'))
-        # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         return sm
 
 if __name__ == '__main__':

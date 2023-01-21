@@ -94,12 +94,12 @@ class iris_voice():
                 arr.append((i,j))
         return arr
 
-    #Play the voice command at particular intervals
-    def play_sound(self):
-        msgs = ['Go left', 'Go right', 'Go up', 'Go down', 'Get closer', 'Go Farther', 'Stay in Square']
-        if self.shared_variable.value != -1:
-            print("sound:", msgs[self.shared_variable.value])
-            playsound("Voice_commands/{}.mp3".format(msgs[self.shared_variable.value]))
+    # #Play the voice command at particular intervals
+    # def play_sound(self):
+    #     msgs = ['Go left', 'Go right', 'Go up', 'Go down', 'Get closer', 'Go Farther', 'Stay in Square']
+    #     if self.shared_variable.value != -1:
+    #         print("sound:", msgs[self.shared_variable.value])
+    #         playsound("Voice_commands/{}.mp3".format(msgs[self.shared_variable.value]))
                 
 
     def correct_position(self, image, pupils_coords, left_iris_coords, right_iris_coords, number_of_eyes_captured):
@@ -204,6 +204,7 @@ class iris_voice():
 
             #Flipping the frame
             # image = cv.flip(frame, 0)
+
             image = cv.flip(frame, 1)
             self.frame_original = image.copy()
             image, results = self.mediapipe_detection(image, face_mesh)
@@ -235,8 +236,20 @@ class iris_voice():
                 self.is_eye_in_square = False
 
             return image
+        
     def __del__(self):
         print('Destructor called, camera deleted.')
+    
+# def main():
+#     iris_obj = iris_voice()
+#     while(1):
+#         frame = iris_obj.capture(0)
+#         cv.imshow('frmae', frame)
+
+#         if cv.waitKey(1) == ord('q'):
+#             break
+# if __name__ == '__main__':
+#     main()
 
 
 
