@@ -110,7 +110,7 @@ class VideoCapture(Screen):
         #Infyuva tech image
         self.img0 = Image(source = 'infyuva_tech-removebg-preview.png',
                         size_hint = (0.171, 0.1),
-                        pos_hint = {'center_x' : .2, 'center_y' : .840}
+                        pos_hint = {'center_x' : .16, 'center_y' : .840}
                         )
 
         #Button 0 - Start/Stop Video
