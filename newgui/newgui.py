@@ -84,31 +84,28 @@ class VideoCapture(Screen):
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse0, size = self.update_ellipse0)
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
             Color(0.85,0.85,0.85,1)
             self.ellipse1 = Ellipse(pos= (350, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse1, size = self.update_ellipse1)
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
             Color(0.85,0.85,0.85,1)
             self.ellipse2 = Ellipse(pos= (500, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse2, size = self.update_ellipse2)
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
             Color(0.85,0.85,0.85,1)
             self.ellipse3 = Ellipse(pos= (650, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
-            self.bind(pos = self.update_ellipse3, size = self.update_ellipse3)
-
-
-
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
         #Infyuva tech image
         self.img0 = Image(source = 'infyuva_tech-removebg-preview.png',
@@ -120,24 +117,24 @@ class VideoCapture(Screen):
         self.button0 = Button(size_hint = (0.08, 0.13),
                         pos = (207, 32),
                         background_normal = 'power_button.png',
-                        background_disabled_normal = 'power_button_disabled.png',
+                        background_disabled_normal = 'power_button.png',
                         disabled = False,
                         on_release = self.start_video
         )
 
         #Button 1 - Capture Image
-        self.button1 = Button(size_hint = (0.08, 0.09),
-                        pos = (357 , 45),
+        self.button1 = Button(size_hint = (0.075, 0.09),
+                        pos = (359 , 45),
                         # pos_hint = {'center_x' : .423, 'center_y': .1230},
-                        background_normal = 'cam_1-removebg-preview.png',
-                        background_disabled_normal = 'cam_1-removebg-preview_disabled.png',
+                        background_normal = 'camera.png',
+                        background_disabled_normal = 'camera_disabled.png',
                         disabled = True,
                         on_release = self.save_img
         )
 
         #Button 2 - Flash
         self.button2 = Button(size_hint = (0.08, 0.12),
-                        pos = (507, 30),
+                        pos = (508, 32),
                         background_normal = 'flash.png',
                         background_disabled_normal = 'flash_disabled.png',
                         disabled = True,
@@ -147,9 +144,9 @@ class VideoCapture(Screen):
 
         #Button 3 - View Images
         self.button3 = Button(size_hint = (0.1, 0.15),
-                        pos = (647, 28),
+                        pos = (648, 26),
                         background_normal = 'gallery.png',
-                        background_disabled_normal = 'gallery.png',
+                        background_disabled_normal = 'gallery_disabled.png',
                         disabled = True,
                         background_color = (0.50, 0.50,0.80, 1),
                         on_release = self.next_screen
@@ -172,19 +169,13 @@ class VideoCapture(Screen):
         self.round_rect.size = (self.width - self.width_dim, self.height - self.height_dim)
         self.round_rect.radius = [20]
     
-    def update_ellipse0(self, *args):
+    def update_ellipses(self, *args):
         self.ellipse0.pos = (200, 25)
         self.ellipse0.size = (90 , 90)
-    
-    def update_ellipse1(self, *args):
         self.ellipse1.pos = (350, 25)
         self.ellipse1.size = (90 , 90)
-        
-    def update_ellipse2(self, *args):
         self.ellipse2.pos = (500, 25)
         self.ellipse2.size = (90 , 90)
-
-    def update_ellipse3(self, *args):
         self.ellipse3.pos = (650, 25)
         self.ellipse3.size = (90 , 90)
 
@@ -225,9 +216,6 @@ class VideoCapture(Screen):
             self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
 
             self.round_rect.texture = self.texture
-        else:
-            pass
-            # self.img1.source = 'camera_icon.png'
 
     def start_video(self, _):
         self.button0.disabled = True
