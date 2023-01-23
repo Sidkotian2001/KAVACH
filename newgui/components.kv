@@ -3,10 +3,7 @@ WindowManager:
     patientWindow:
     evalautionWindow:
     VideoCapture:
-<<<<<<< HEAD
-=======
     signupWindow:
->>>>>>> parent of 155888b... Need to check videocapture
 
 <RoundedButton@Button>:
     background_color: (0,0,0,0)
@@ -29,10 +26,6 @@ WindowManager:
             pos: self.pos
             radius: [10]
         
-<<<<<<< HEAD
-        Label:
-            text: 'Please enter your\n      credentials'
-=======
 <signupWindow>:
     canvas:
         Color:
@@ -75,7 +68,6 @@ WindowManager:
         
         Label:
             text: '         Please enter\nall the personal details'
->>>>>>> parent of 155888b... Need to check videocapture
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             font_size: 25
@@ -83,13 +75,8 @@ WindowManager:
             pos_hint: {'center_x': 0.275, 'center_y': 0.7}
 
         TextInput:
-<<<<<<< HEAD
-            id: login_username
-            hint_text: 'Username'
-=======
             id: doctor_firstname
             hint_text: 'First Name'
->>>>>>> parent of 155888b... Need to check videocapture
             hint_text_color: (0,0,0,1)
             font_name : 'Inter/static/Inter-Regular.ttf'
             halign: 'center'
@@ -97,13 +84,8 @@ WindowManager:
             multiline: False
             background_normal: ""
             background_active: ""
-<<<<<<< HEAD
-            size_hint : 0.281, 0.07
-            pos_hint : {'center_x' : 0.275, 'center_y' : 0.55}
-=======
             size_hint : 0.281, 0.05
             pos_hint : {'center_x' : 0.275, 'center_y' : 0.575}
->>>>>>> parent of 155888b... Need to check videocapture
             canvas.after:
                 Color:
                     rgba: (0.85, 0.85, 0.85, 0.5)
@@ -113,12 +95,6 @@ WindowManager:
                     radius: 10,
         
         TextInput:
-<<<<<<< HEAD
-            id: login_password
-            hint_text: 'password'
-            hint_text_color: (0,0,0,1)
-            password : True
-=======
             id: doctor_lastname
             hint_text: 'Last Name'
             hint_text_color: (0,0,0,1)
@@ -142,20 +118,14 @@ WindowManager:
             id: doctor_mobile
             hint_text: 'Mobile'
             hint_text_color: (0,0,0,1)
->>>>>>> parent of 155888b... Need to check videocapture
             font_name : 'Inter/static/Inter-Regular.ttf'
             halign: 'center'
             background_color: (1,1,1,1)
             multiline: False
             background_normal: ""
             background_active: ""
-<<<<<<< HEAD
-            size_hint : 0.281, 0.07
-            pos_hint : {'center_x' : 0.275, 'center_y' : 0.445}
-=======
             size_hint : 0.281, 0.05
             pos_hint : {'center_x' : 0.275, 'center_y' : 0.425}
->>>>>>> parent of 155888b... Need to check videocapture
             canvas.after:
                 Color:
                     rgba: (0.85, 0.85, 0.85, 0.5)
@@ -163,31 +133,6 @@ WindowManager:
                     size: self.size
                     pos:self.pos
                     radius: 10,
-<<<<<<< HEAD
-
-        RoundedButton:
-            text:"login"
-            font_name : 'Inter/static/Inter-Regular.ttf'
-            font_size : 20
-            size_hint : 0.281, 0.075
-            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.25}
-            on_press:
-                root.validate()
-
-        #make a button to go to the register page
-        Button:
-            background_color: (0,0,0,0)
-            text:"New user ? Sign up here"
-            font_name : 'Inter/static/Inter-Regular.ttf'
-            color: (0,0,0,1)
-            font_size : 13.7
-            size_hint : 0.281, 0.075
-            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
-            on_press:
-                app.root.current = 'signup'
-                root.manager.transition.direction = "left"
-
-=======
         
         TextInput:
             id: doctor_age
@@ -251,7 +196,6 @@ WindowManager:
             keep_ratio: False
             size_hint: 0.475, 0.8835
             pos_hint: {'center_x': 0.73, 'center_y': 0.505}
->>>>>>> parent of 155888b... Need to check videocapture
  
  
 <patientWindow>:
@@ -575,7 +519,4 @@ WindowManager:
 			active: True
 
 			pos_hint: {"center_x": 0.46, "center_y": 0.30}
-<<<<<<< HEAD
-=======
 			
->>>>>>> parent of 155888b... Need to check videocapture

@@ -10,7 +10,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from kivy.properties import ObjectProperty
-from kivy.graphics import RoundedRectangle, Rectangle, Color
+from kivy.graphics import Ellipse, RoundedRectangle, Rectangle, Color
 from kivy.config import Config
 
 from kivy.clock import Clock
@@ -51,12 +51,9 @@ class patientWindow(Screen):
         print(globals()['p_fn'])
         print(globals()['p_g'])
 
-<<<<<<< HEAD
-=======
 #Global counter varible
 counter = 0
 
->>>>>>> parent of 155888b... Need to check videocapture
 class VideoCapture(Screen):
 
     def __init__(self, **kwargs):
@@ -82,18 +79,6 @@ class VideoCapture(Screen):
                                             radius = [20])
             self.bind(pos = self.update_round_rect, size = self.update_round_rect)
 
-<<<<<<< HEAD
-        self.img1 = Image(size_hint = (.48, .32),
-                        pos_hint = {'center_x' : .5, 'center_y' : .6}
-                )
-
-        #Button 0
-        self.button0 = Button(text = "Start video",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .25, 'center_y': .15},
-                        background_normal = '',
-                        background_color = (0.50, 0.50,0.80, 1),
-=======
             Color(0.85,0.85,0.85,1)
             self.ellipse0 = Ellipse(pos= (200, 25),
                 size = (90 , 90),
@@ -135,75 +120,47 @@ class VideoCapture(Screen):
         self.button0 = Button(size_hint = (0.08, 0.13),
                         pos = (207, 32),
                         background_normal = 'power_button.png',
-                        background_disabled_normal = 'power_button.png',
->>>>>>> parent of 155888b... Need to check videocapture
+                        background_disabled_normal = 'power_button_disabled.png',
                         disabled = False,
                         on_release = self.start_video
         )
 
-<<<<<<< HEAD
-        #Button 1
-        self.button1 = Button(text = "Capture",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .50, 'center_y': .15},
-                        background_normal = '',
-                        background_color = (0.50, 0.50,0.80, 1),
-=======
         #Button 1 - Capture Image
         self.button1 = Button(size_hint = (0.08, 0.09),
                         pos = (357 , 45),
                         # pos_hint = {'center_x' : .423, 'center_y': .1230},
                         background_normal = 'cam_1-removebg-preview.png',
                         background_disabled_normal = 'cam_1-removebg-preview_disabled.png',
->>>>>>> parent of 155888b... Need to check videocapture
                         disabled = True,
                         on_release = self.save_img
         )
 
-<<<<<<< HEAD
-        #Button 2
-        self.button2 = Button(text = "View Image",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .75, 'center_y': .15},
-=======
         #Button 2 - Flash
         self.button2 = Button(size_hint = (0.08, 0.12),
                         pos = (507, 30),
                         background_normal = 'flash.png',
-                        background_disabled_normal = 'flash.png',
->>>>>>> parent of 155888b... Need to check videocapture
+                        background_disabled_normal = 'flash_disabled.png',
                         disabled = True,
-                        background_normal = '',
                         background_color = (0.50, 0.50,0.80, 1),
                         on_release =  self.view_image
         )
 
-<<<<<<< HEAD
-        #Button 3
-        self.button3 = Button(text = "Next",
-                        size_hint = (0.15, 0.1),
-                        pos_hint = {'center_x' : .75, 'center_y': .05},
-=======
         #Button 3 - View Images
         self.button3 = Button(size_hint = (0.1, 0.15),
                         pos = (647, 28),
                         background_normal = 'gallery.png',
                         background_disabled_normal = 'gallery.png',
->>>>>>> parent of 155888b... Need to check videocapture
                         disabled = True,
-                        background_normal = '',
                         background_color = (0.50, 0.50,0.80, 1),
                         on_release = self.next_screen
         )
 
         self.iris_obj = iris_voice()
-        # self.add_widget(self.background)
-        self.add_widget(self.img1)
-        # self.add_widget(self.label)
+        self.add_widget(self.img0)
         self.add_widget(self.button0)
         self.add_widget(self.button1)
         self.add_widget(self.button2)
-        # self.add_widget(self.button3)
+        self.add_widget(self.button3)
         self.clock_schedule()
     
     def update_rect(self, *args):
@@ -214,8 +171,6 @@ class VideoCapture(Screen):
         self.round_rect.pos = (self.center_x - ((self.width - self.width_dim) / 2), self.center_y - ((self.height - self.height_dim) / 2) + 50)
         self.round_rect.size = (self.width - self.width_dim, self.height - self.height_dim)
         self.round_rect.radius = [20]
-<<<<<<< HEAD
-=======
     
     def update_ellipse0(self, *args):
         self.ellipse0.pos = (200, 25)
@@ -235,7 +190,6 @@ class VideoCapture(Screen):
 
     def change_flash(self, _):
         print("This function works on the flash hardware")
->>>>>>> parent of 155888b... Need to check videocapture
 
     def view_image(self, _):
         self.button0.disabled = False
@@ -260,28 +214,11 @@ class VideoCapture(Screen):
             frame = self.iris_obj.capture(self.number_of_eyes_captured)
             self.frame_original = self.iris_obj.frame_original
             self.is_eye_in_square = self.iris_obj.is_eye_in_square
-<<<<<<< HEAD
-            frame = cv2.flip(frame, 0)	
-=======
             # frame = cv2.flip(frame, 0)	
->>>>>>> parent of 155888b... Need to check videocapture
 
 
             buf = frame.tobytes()
 
-<<<<<<< HEAD
-            self.texture = Texture.create(size = (640, 480), 
-            colorfmt = 'bgr')
-            #if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
-
-            self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
-
-            self.img1.texture = self.texture
-        else:
-            pass
-            # self.img1.source = 'camera_icon.png'
-
-=======
             self.texture = Texture.create(size = (640, 480), colorfmt = 'bgr')
             #if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
 
@@ -292,7 +229,6 @@ class VideoCapture(Screen):
             pass
             # self.img1.source = 'camera_icon.png'
 
->>>>>>> parent of 155888b... Need to check videocapture
     def start_video(self, _):
         self.button0.disabled = True
         self.button1.disabled = False
@@ -315,8 +251,6 @@ class VideoCapture(Screen):
 class evalautionWindow(Screen):
     pass
 
-<<<<<<< HEAD
-=======
 d_fn = ''
 d_ln = ''
 d_m = ''
@@ -353,22 +287,15 @@ class signupWindow(Screen):
         else:
             popFun()
     
->>>>>>> parent of 155888b... Need to check videocapture
 kv = Builder.load_file('components.kv')
 sm = WindowManager()
 
 class loginMain(App):
     def build(self):
-<<<<<<< HEAD
+        # sm.add_widget(signupWindow(name = 'signup'))
         sm.add_widget(VideoCapture(name='videofeed'))
-        sm.add_widget(patientWindow(name = 'patientinfowindow'))
-        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
-=======
-        sm.add_widget(signupWindow(name = 'signup'))
-        # sm.add_widget(VideoCapture(name='videofeed'))
         # sm.add_widget(patientWindow(name = 'patientinfowindow'))
         # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
->>>>>>> parent of 155888b... Need to check videocapture
         return sm
 
 if __name__ == '__main__':
