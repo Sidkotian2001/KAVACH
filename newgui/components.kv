@@ -2,7 +2,7 @@
 WindowManager:
     patientWindow:
     evalautionWindow:
-    VideoCapture:
+    ViewImages:
     signupWindow:
 
 <RoundedButton@Button>:
@@ -520,3 +520,59 @@ WindowManager:
 
 			pos_hint: {"center_x": 0.46, "center_y": 0.30}
 			
+<ViewImages>:
+
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+            # rgba: 0,0,0,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
+        
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 80)/2), self.center_y  - ((self.height - 50)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20]
+        
+        Color:
+            rgba : 0.5,0.5,0.5,0.5
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 920)/2), self.center_y  - ((self.height - 50)/2))
+            size: (self.width - 490, self.height - 70)
+            radius: [20]
+
+        Color:
+            rgba : 0,0,0,1
+        # Line:
+        #     width : 12
+        #     points : self.center_x + 12.5, self.center_y - ((self.height - 70) / 2), self.center_x + 12.5, self.center_y + ((self.height - 110) / 2)
+        #     # ellipse: (self.x, self.y, self.width, self.height)
+
+
+	FloatLayout:
+
+        Image:
+            source: 'infyuva_tech.jpeg'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.175, 0.1
+            pos_hint: {'center_x': 0.14, 'center_y': 0.8675}
+		
+		Label:
+			text: 'LEFT EYE IMAGE'
+			font_size : 43
+			color: 0,0,0,1
+			size_hint: 0.3, 0.2
+			pos_hint: {'center_x' : 0.275, 'center_y' : 0.5}
+
+		
+		Label:
+			text: 'RIGHT EYE IMAGE'
+			font_size : 43
+			color: 0,0,0,1
+			size_hint: 0.3, 0.2
+			pos_hint: {'center_x' : 0.74, 'center_y' : 0.5}

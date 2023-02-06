@@ -95,11 +95,11 @@ class iris_voice():
         return arr
 
     #Play the voice command at particular intervals
-    def play_sound(self):
-        msgs = ['Go left', 'Go right', 'Go up', 'Go down', 'Get closer', 'Go Farther', 'Stay in Square']
-        if self.shared_variable.value != -1:
-            print("sound:", msgs[self.shared_variable.value])
-            playsound("Voice_commands/{}.mp3".format(msgs[self.shared_variable.value]))
+    # def play_sound(self):
+    #     msgs = ['Go left', 'Go right', 'Go up', 'Go down', 'Get closer', 'Go Farther', 'Stay in Square']
+    #     if self.shared_variable.value != -1:
+    #         print("sound:", msgs[self.shared_variable.value])
+    #         playsound("Voice_commands/{}.mp3".format(msgs[self.shared_variable.value]))
                 
 
     def correct_position(self, image, pupils_coords, left_iris_coords, right_iris_coords, number_of_eyes_captured):
@@ -189,6 +189,7 @@ class iris_voice():
         cv.putText(image, voice_commands[self.shared_variable.value], (200, 100), cv.FONT_HERSHEY_SIMPLEX, 1, colour, 2, cv.LINE_AA)
 
     def capture(self, number_of_eyes_captured):
+        
         with self.mp_face_mesh.FaceMesh(
             max_num_faces = 1,
             refine_landmarks = True,
@@ -200,6 +201,7 @@ class iris_voice():
             ret, frame = self.cap.read()
             if not ret:
                 print("Not ret")
+                return
                 
 
             #Flipping the frame

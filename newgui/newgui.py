@@ -14,15 +14,17 @@ from kivy.graphics import Ellipse, RoundedRectangle, Rectangle, Color
 from kivy.config import Config
 
 from kivy.clock import Clock
+import os
 from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
+import pandas as pd
 
 Config.set('graphics', 'resizable', False)
 
 Window.size = (940, 600)
-# Window.clearcolor = (0,0.267,0.4,1)
-Window.clearcolor = (0,0,0,1)
+Window.clearcolor = (0,0.267,0.4,1)
+# Window.clearcolor = (0,0,0,1)
 
 class WindowManager(ScreenManager):
     pass
@@ -64,6 +66,7 @@ class VideoCapture(Screen):
         self.number_of_eyes_captured = 0
         self.is_eye_in_square = False
         self.frame_original = None
+        
         self.pos_dim = 75
         self.width_dim = 100
         self.height_dim = 200
@@ -73,34 +76,34 @@ class VideoCapture(Screen):
             self.rect = Rectangle(pos = self.pos, size = (self.width, self.height))
             self.bind(pos = self.update_rect, size = self.update_rect)
 
-            Color(0.5,0.5,0.5,1)
+            Color(1,1,1,1)
             self.round_rect = RoundedRectangle(pos = (self.center_x - ((self.width - self.width_dim) / 2), self.center_y - ((self.height - self.height_dim) / 2) + 50),
                                             size = (self.width - self.width_dim, self.height - self.height_dim),
                                             radius = [20])
             self.bind(pos = self.update_round_rect, size = self.update_round_rect)
 
-            Color(0.85,0.85,0.85,1)
+            Color(1,1,1,1)
             self.ellipse0 = Ellipse(pos= (200, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
             self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
-            Color(0.85,0.85,0.85,1)
+            Color(1,1,1,1)
             self.ellipse1 = Ellipse(pos= (350, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
             self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
-            Color(0.85,0.85,0.85,1)
+            Color(1,1,1,1)
             self.ellipse2 = Ellipse(pos= (500, 25),
                 size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
             self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
-            Color(0.85,0.85,0.85,1)
+            Color(1,1,1,1)
             self.ellipse3 = Ellipse(pos= (650, 25),
                 size = (90 , 90),
                 angle_start = 0,
@@ -179,34 +182,33 @@ class VideoCapture(Screen):
         self.ellipse3.pos = (650, 25)
         self.ellipse3.size = (90 , 90)
 
-    def change_flash(self, _):
+    def change_flash(self, *args):
         print("This function works on the flash hardware")
 
-    def view_image(self, _):
+    def view_image(self, *args):
         self.button0.disabled = False
         del self.iris_obj
         self.iris_obj = iris_voice()
         sm.current = 'view_images'
 
-    def next_screen(self):
+    def next_screen(self, *args):
         #cdestroy the camera object
         self.button0.disabled = False
         del self.iris_obj
         self.iris_obj = iris_voice()
         self.number_of_eyes_captured = 0
-        # sm.current = 'view_images'
+        sm.current = 'viewimages'
+
 
     def clock_schedule(self):
         Clock.schedule_interval(self.update, 1.0/33.0)
 
     def update(self, _):
         if self.button0.disabled == True:
-
             frame = self.iris_obj.capture(self.number_of_eyes_captured)
             self.frame_original = self.iris_obj.frame_original
             self.is_eye_in_square = self.iris_obj.is_eye_in_square
             # frame = cv2.flip(frame, 0)	
-
 
             buf = frame.tobytes()
 
@@ -216,6 +218,9 @@ class VideoCapture(Screen):
             self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
 
             self.round_rect.texture = self.texture
+        else:
+            # self.round_rect.source = 'flash.png'
+            pass
 
     def start_video(self, _):
         self.button0.disabled = True
@@ -235,6 +240,109 @@ class VideoCapture(Screen):
 
     def change_illumination(self, _):
         print("This button will adjust the illumination")
+
+class ViewImages(Screen):
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.c = globals()['counter']
+
+        with self.canvas:
+            Color(0.5,0.5,0.5,0.5)
+            self.ellipse1 = Ellipse(pos= (310, 45),
+                size = (90 , 90),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
+
+            Color(1,1,1,1)
+            self.ellipse2 = Ellipse(pos= (525 , 45),
+                size = (90 , 90),
+                stroke_width = 20,
+                stroke = (1,0,0,1),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
+
+        self.img1 = Image(source = 'camera.png', 
+                        opacity = 0,
+                        allow_stretch = True,
+                        keep_ratio = False,
+                        size_hint = (0.4, 0.4),
+                        pos_hint = {'center_x': 0.27, 'center_y' : 0.5}
+                        )
+
+        self.img2 = Image(source = 'camera.png',
+                        opacity = 0,
+                        allow_stretch = True,
+                        keep_ratio =  False,
+                        size_hint =  (0.4, 0.4),
+                        pos_hint = {'center_x': 0.73, 'center_y': 0.5}
+                        )
+        
+        self.display_button = Button(size_hint = (0.1, 0.15),
+                                pos = (308 , 45),
+                                # pos_hint = {'center_x' : .423, 'center_y': .1230},
+                                background_normal = 'gallery.png',
+                                background_disabled_normal = 'gallery_disabled.png',
+                                on_release = self.show_images
+        )  
+
+        #Button 1 - Retake Image
+        self.button2 = Button(size_hint = (0.075, 0.09),
+                        pos = (535 , 63),
+                        # pos_hint = {'center_x' : .423, 'center_y': .1230},
+                        background_normal = 'camera.png',
+                        background_disabled_normal = 'camera_disabled.png',
+                        disabled = False,
+                        on_release = self.retake_images
+        )
+
+        
+        self.next_screen_button = Button(size_hint = (0.1,0.075),
+                        pos = (850, 550),
+                        background_normal = 'arrow.png',
+                        background_disabled_normal = 'arrow.png',
+                        on_release = self.next_screen        
+        )
+             
+			
+
+        self.add_widget(self.img1)
+        self.add_widget(self.img2)
+        self.add_widget(self.next_screen_button)
+        self.add_widget(self.button2)
+        self.add_widget(self.display_button)
+    
+    def update_ellipses(self, *args):
+        self.ellipse1.pos = (310, 45)
+        self.ellipse1.size = (90 , 90)
+        self.ellipse2.pos = (525 , 45)
+        self.ellipse2.size = (90 , 90)
+
+    def show_images(self, *args):
+        self.c = globals()['counter']
+        self.img1.source = 'image_taken_{}.jpg'.format(str(self.c))
+        self.img2.source = 'image_taken_{}.jpg'.format(str(self.c + 1))
+        self.img1.opacity = self.img2.opacity = 1
+        if globals()['counter'] > 0:
+            os.remove('image_taken_{}.jpg'.format(str(self.c - 1)))
+            os.remove('image_taken_{}.jpg'.format(str(self.c - 2)))
+        self.display_button.disabled = True
+        globals()['counter'] += 2
+
+
+    def retake_images(self, *args):
+        self.img1.source = self.img2.source = 'camera.png'
+        self.img1.opacity = self.img2.opacity = 0
+        self.display_button.disabled = False
+        sm.current = 'videofeed'
+    
+    def next_screen(self, *args):
+        self.img1.source = self.img2.source = 'camera.png'
+        self.img1.opacity = self.img2.opacity = 0
+        self.display_button.disabled = False
+        sm.current = 'evalautioninfoWindow'
+
 
 class evalautionWindow(Screen):
     pass
@@ -281,9 +389,10 @@ sm = WindowManager()
 class loginMain(App):
     def build(self):
         # sm.add_widget(signupWindow(name = 'signup'))
-        sm.add_widget(VideoCapture(name='videofeed'))
         # sm.add_widget(patientWindow(name = 'patientinfowindow'))
-        # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        sm.add_widget(VideoCapture(name='videofeed'))
+        sm.add_widget(ViewImages(name = 'viewimages'))
+        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
         return sm
 
 if __name__ == '__main__':
