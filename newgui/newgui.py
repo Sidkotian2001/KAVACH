@@ -389,10 +389,16 @@ class loginWindow(Screen):
         super().__init__(**kw)
 
         with self.canvas:
-            Color(0, 0, 0, 1)
+            Color(0.85, 0.85, 0.85, 1)
             self.round_rect = RoundedRectangle(pos = (300, 300),
                                             size = (200, 50),
-                                            radius = [20])
+                                            radius = [10])
+            self.bind(pos = self.update_round_rect, size = self.update_round_rect)
+
+            Color(0.85, 0.85, 0.85, 1)
+            self.round_rect2 = RoundedRectangle(pos = (300, 300),
+                                            size = (200, 50),
+                                            radius = [10])
             self.bind(pos = self.update_round_rect, size = self.update_round_rect)
         
 
@@ -408,7 +414,7 @@ class loginWindow(Screen):
             pos_hint = {'center_x' : 0.275, 'center_y' : 0.55}
         )
             
-        self.login_password = TextInput(hint_text= 'password',
+        self.login_password = TextInput(hint_text= 'Password',
             password = True,
             hint_text_color =  (0,0,0,1),
             font_name = 'Inter/static/Inter-Regular.ttf',
@@ -426,8 +432,10 @@ class loginWindow(Screen):
         self.add_widget(self.login_password)
     
     def update_round_rect(self, *args):
-        self.round_rect.pos = (200, 300)
+        self.round_rect.pos = (110, 305)
         self.round_rect.size = (300, 50)
+        self.round_rect2.pos = (110, 243)
+        self.round_rect2.size = (300, 50)
         
     def submit_login(self):
         try:
