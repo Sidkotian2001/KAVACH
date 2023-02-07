@@ -19,6 +19,7 @@ from kivy.graphics.texture import Texture
 import cv2
 from iris_local_kivy import iris_voice
 import pandas as pd
+import sqlite3
 
 Config.set('graphics', 'resizable', False)
 
@@ -354,45 +355,110 @@ d_a = ''
 d_pass = ''
 
 class signupWindow(Screen):
-    doctor_firstname = ObjectProperty(None)
-    doctor_lastname = ObjectProperty(None)
+    doctor_name = ObjectProperty(None)
+    doctor_username = ObjectProperty(None)
     doctor_mobile = ObjectProperty(None)
     doctor_age = ObjectProperty(None)
     doctor_password = ObjectProperty(None)
 
-    def submit_info(self):
+    def submit_signup(self):
         try:
-            users = pd.read_csv('login.csv')
+            conn = sqlite3.connect('login.db')
+            c = conn.cursor()
+            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
+            conn.commit()
+            conn.close()
+            sm.current = 'logininfoWindow'
         except:
-            users = pd.DataFrame(columns = ['First Name','Last Name', 'Mobile', 'Age', 'Password'])
-            users.to_csv('login.csv', index = False)
-        
-        user = pd.DataFrame([[self.doctor_firstname.text, self.doctor_lastname.text,
-                            self.doctor_mobile.text, self.doctor_age.text, 
-                            self.doctor_password.text]])        
-        if self.doctor_mobile.text != '':
-            if self.doctor_mobile.text not in users['Mobile'].unique():
-                user.to_csv('login.csv', mode = 'a', header = False, index = False)
-                # sm.current = 'login'
-                self.doctor_firstname.text = ''
-                self.doctor_lastname.text = ''
-                self.doctor_mobile = ''
-                self.doctor_age = ''
-                self.doctor_password = ''
+            #make a login database
+            conn = sqlite3.connect('login.db')
+            c = conn.cursor()
+            c.execute("CREATE TABLE IF NOT EXISTS login (Name, Username, mobile, age, password)")
+            conn.commit()
+            #insert into the database
+            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
+            conn.close()
+            sm.current = 'logininfoWindow'
 
-        else:
-            popFun()
+class loginWindow(Screen):
+    
+    # login_username = ObjectProperty(None)
+    # login_password = ObjectProperty(None)
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+
+        with self.canvas:
+            Color(0, 0, 0, 1)
+            self.round_rect = RoundedRectangle(pos = (300, 300),
+                                            size = (200, 50),
+                                            radius = [20])
+            self.bind(pos = self.update_round_rect, size = self.update_round_rect)
+        
+
+        self.login_username = TextInput(hint_text = 'Username',
+            hint_text_color = (0,0,0,1),
+            font_name = 'Inter/static/Inter-Regular.ttf',
+            halign = 'center',
+            background_color = (0.85,0.85,0.85,1),
+            multiline = False,
+            background_normal = "",
+            background_active = "",
+            size_hint = (0.281, 0.07),
+            pos_hint = {'center_x' : 0.275, 'center_y' : 0.55}
+        )
+            
+        self.login_password = TextInput(hint_text= 'password',
+            password = True,
+            hint_text_color =  (0,0,0,1),
+            font_name = 'Inter/static/Inter-Regular.ttf',
+            halign = 'center',
+            background_color = (0.85,0.85,0.85,1),
+            multiline = False,
+            background_normal = "",
+            background_active = "",
+            size_hint = (0.281, 0.07),
+            pos_hint = {'center_x' : 0.275, 'center_y' : 0.445}
+
+        )
+
+        self.add_widget(self.login_username)
+        self.add_widget(self.login_password)
+    
+    def update_round_rect(self, *args):
+        self.round_rect.pos = (200, 300)
+        self.round_rect.size = (300, 50)
+        
+    def submit_login(self):
+        try:
+            conn = sqlite3.connect('login.db')
+            c = conn.cursor()
+            c.execute("SELECT * FROM login WHERE username = ? AND password = ?", (self.login_username.text, self.login_password.text))
+            data = c.fetchall()
+            if data:
+                sm.current = 'patientinfowindow'
+            else:
+                self.login_username.text = ''
+                self.login_password.text = ''
+                pass
+        except Exception as e:
+            print(e)
+
+class ReportWindow(Screen):
+    pass
     
 kv = Builder.load_file('components.kv')
 sm = WindowManager()
 
 class loginMain(App):
     def build(self):
-        # sm.add_widget(signupWindow(name = 'signup'))
-        # sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        sm.add_widget(loginWindow(name = 'logininfoWindow'))
+        sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+        sm.add_widget(patientWindow(name = 'patientinfowindow'))
         sm.add_widget(VideoCapture(name='videofeed'))
         sm.add_widget(ViewImages(name = 'viewimages'))
         sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         return sm
 
 if __name__ == '__main__':

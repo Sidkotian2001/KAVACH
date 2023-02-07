@@ -1,9 +1,11 @@
 #:kivy 2.1.0
 WindowManager:
+    loginWindow:
     patientWindow:
     evalautionWindow:
     ViewImages:
     signupWindow:
+    ReportWindow:
 
 <RoundedButton@Button>:
     background_color: (0,0,0,0)
@@ -25,7 +27,152 @@ WindowManager:
             size: self.size
             pos: self.pos
             radius: [10]
+
+<RoundedButtonDarkBlue@Button>:
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (0.17,0.58,0.76,0.56)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+            
+<loginWindow>:
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+            # rgba: 0,0,0,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
         
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20] 
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20]
+    # login_password : login_password
+    # login_username : login_username  
+    FloatLayout:
+        Image:
+            source: 'infyuva_tech.jpeg'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.15, 0.1
+            pos_hint: {'center_x': 0.13, 'center_y': 0.89}
+        Image:
+            source: 'infyuvaFigma_square.png'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.475, 0.8835
+            pos_hint: {'center_x': 0.73, 'center_y': 0.505}
+        Label:
+            id:'Welcome to Infyuva'
+            
+            text:'[b][size=25]Welcome to Infyuva\n\nTech Solutions![/size][/b]\n \nInfyuva Tech Solutions offer\ninnovative AI-based diagnosis\nscreening tools for improved\npatient care.'
+            # font_name : 'Inter/static/Inter-Regular.ttf'
+            lineheight: 3.5
+            markup: True
+            multiline: True
+            color: (1,1,1,1)
+            size_hint: 0.3, 0.4
+            pos_hint: {'center_x': 0.725, 'center_y': 0.5}
+            canvas.before:
+                Color:
+                    rgba: (0,0,0,0.6)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 10,
+
+        Label:
+            text: 'Welcome Back...'
+            # font_name : 'Inter/static/Inter-Regular.ttf'
+            markup: True
+            font_size: 50
+            color : (0,0,0,1)
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.81}
+        
+        Label:
+            text: 'Please enter your\n      credentials'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            font_size: 25
+            color: (0,0,0,1)
+            pos_hint: {'center_x': 0.275, 'center_y': 0.7}
+
+        # TextInput:
+        #     id: login_username
+        #     hint_text: 'Username'
+        #     hint_text_color: (0,0,0,1)
+        #     font_name : 'Inter/static/Inter-Regular.ttf'
+        #     halign: 'center'
+        #     background_color: (1,1,1,1)
+        #     multiline: False
+        #     background_normal: ""
+        #     background_active: ""
+        #     size_hint : 0.281, 0.07
+        #     pos_hint : {'center_x' : 0.275, 'center_y' : 0.55}
+        #     canvas.after:
+        #         Color:
+        #             rgba: (0.85, 0.85, 0.85, 0.5)
+        #         RoundedRectangle:
+        #             size: self.size
+        #             pos:self.pos
+        #             radius: 10,
+        
+        # TextInput:
+        #     id: login_password
+        #     hint_text: 'password'
+        #     password: True
+        #     hint_text_color: (0,0,0,1)
+        #     font_name : 'Inter/static/Inter-Regular.ttf'
+        #     halign: 'center'
+        #     background_color: (1,1,1,1)
+        #     multiline: False
+        #     background_normal: ""
+        #     background_active: ""
+        #     size_hint : 0.281, 0.07
+        #     pos_hint : {'center_x' : 0.275, 'center_y' : 0.445}
+        #     canvas.after:
+        #         Color:
+        #             rgba: (0.85, 0.85, 0.85, 0.5)
+        #         RoundedRectangle:
+        #             size: self.size
+        #             pos:self.pos
+        #             radius: 10,
+
+        RoundedButton:
+            text:"login"
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.25}
+            on_press:
+                root.submit_login()
+
+        #make a button to go to the register page
+        Button:
+            background_color: (0,0,0,0)
+            text:"New user ? Sign up here"
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            color: (0,0,0,1)
+            font_size : 13.7
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
+            on_press:
+                app.root.current = 'signupinfoWindow'
+
 <signupWindow>:
     canvas:
         Color:
@@ -43,8 +190,8 @@ WindowManager:
             size: (self.width - 70, self.height - 70)
             radius: [20]
         
-    doctor_firstname : doctor_firstname
-    doctor_lastname : doctor_lastname
+    doctor_name: doctor_name
+    doctor_username : doctor_username
     doctor_mobile : doctor_mobile
 	doctor_age : doctor_age
 	doctor_password : doctor_password
@@ -75,8 +222,8 @@ WindowManager:
             pos_hint: {'center_x': 0.275, 'center_y': 0.7}
 
         TextInput:
-            id: doctor_firstname
-            hint_text: 'First Name'
+            id: doctor_name
+            hint_text: 'Name'
             hint_text_color: (0,0,0,1)
             font_name : 'Inter/static/Inter-Regular.ttf'
             halign: 'center'
@@ -95,8 +242,8 @@ WindowManager:
                     radius: 10,
         
         TextInput:
-            id: doctor_lastname
-            hint_text: 'Last Name'
+            id: doctor_username
+            hint_text: 'Username'
             hint_text_color: (0,0,0,1)
             font_name : 'Inter/static/Inter-Regular.ttf'
             halign: 'center'
@@ -185,9 +332,8 @@ WindowManager:
             size_hint : 0.281, 0.075
             pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
             on_press:
-                root.submit_info()
-                app.root.current = 'evalautioninfoWindow'
-				root.manager.transition.direction = "left"
+                root.submit_signup()
+               
 
 
         Image:
@@ -389,6 +535,8 @@ WindowManager:
                     pos: self.pos
                     radius: 10,
 
+
+
 <evalautionWindow>:
     canvas:
         Color:
@@ -450,6 +598,9 @@ WindowManager:
             font_size : 20
             size_hint : 0.281, 0.075
             pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
+            on_release:
+                app.root.current = 'reportinfoWindow'
+				root.manager.transition.direction = "left"
         
         RoundedButtonBlue:
             text:"Capture Img"
@@ -457,7 +608,10 @@ WindowManager:
             font_size : 20
             size_hint : 0.281, 0.075
             pos_hint : {'center_x' : 0.675 ,'center_y' : 0.15}
-            
+            on_release:
+                app.root.current = 'videofeed'
+                root.manager.transition.direction = "left"
+
         Label:
             text: 'Evaluation Parameters'
             font_name : 'Inter/static/Inter-Regular.ttf'
@@ -495,30 +649,40 @@ WindowManager:
             font_size: 27
             color: (0,0.267,0.4,1)
             pos_hint: {'center_x': 0.18, 'center_y': 0.30}
+        Widget:
         CheckBox:
 			id: cataract
 			color: 0,0.5,0,1
 			active: True
+            size_hint: None, None
+            size: 60, 60
 			pos_hint: {"center_x": 0.46, "center_y": 0.67}
 		
 		CheckBox:
 			id: amd
 			color: 0,0.5,0,1
 			active: True
+            size_hint: None, None
+            size: 60, 60
 			pos_hint: {"center_x": 0.46, "center_y": 0.54}
 
 		CheckBox:
 			id: dr
 			color: 0,0.5,0,1
 			active: True
+            size_hint: None, None
+            size: 60, 60
+            pos_hint: {"center_y" : 0.5}
 			pos_hint: {"center_x": 0.46, "center_y": 0.42}
 		
 		CheckBox:
 			id: glaucoma
 			color: 0,0.5,0,1
 			active: True
-
+            size_hint: None, None
+            size: 60, 60
 			pos_hint: {"center_x": 0.46, "center_y": 0.30}
+
 			
 <ViewImages>:
 
@@ -576,3 +740,181 @@ WindowManager:
 			color: 0,0,0,1
 			size_hint: 0.3, 0.2
 			pos_hint: {'center_x' : 0.74, 'center_y' : 0.5}
+
+<ReportWindow>:
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
+        
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), 390)
+            size: (self.width - 100, self.height - 480)
+            radius: [20]
+        Color:
+            rgba : 0.85, 0.85, 0.85, 0.5
+        RoundedRectangle:
+            pos: (50,400)
+            size: (270, 50)
+            radius: [10]
+        Color:
+            rgba : 0.85, 0.85, 0.85, 0.5
+        RoundedRectangle:
+            pos: (350,400)
+            size: (200, 50)
+            radius: [10]
+        Color:
+            rgba : 0.85, 0.85, 0.85, 0.5
+        RoundedRectangle:
+            pos: (620,400)
+            size: (220, 50)
+            radius: [10]
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (40,245)
+            size: (270,120)
+            radius: [10]
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (320,245)
+            size: (270,120)
+            radius: [10]
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (600,245)
+            size: (270,120)
+            radius: [10]
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (60,272)
+            size: (240,40)
+            radius: [10]
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (340,272)
+            size: (240,40)
+            radius: [10]
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (620,272)
+            size: (240,40)
+            radius: [10]
+
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (35, 95)
+            size: (450, 120)
+            radius: [20]
+        Color:
+            rgba : 0.85, 0.85, 0.85, 0.5
+        RoundedRectangle:
+            pos: (55,120)
+            size: (420, 40)
+            radius: [10]
+
+        
+    FloatLayout:
+
+        Image:
+            source: 'infyuva_bluelogo.png'
+            allow_stretch: False
+            keep_ratio: False
+            size_hint: 0.12, 0.18
+            pos_hint: {'center_x': 0.3, 'center_y': 0.92}
+
+
+        RoundedButtonDarkBlue:
+            text:"Save as PDF"
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.775 ,'center_y' : 0.3}
+            
+                
+        
+        RoundedButtonDarkBlue:
+            text:"Main Menu"
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.775 ,'center_y' : 0.2}
+            on_press: 
+                root.manager.current = 'logininfoWindow'
+
+            
+        Label:
+            text: 'Patient Report'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 40
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.92}
+        Label:
+            text: 'Patient Name:'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.16, 'center_y': 0.8}
+        Label:
+            text: 'Patient Age:'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.46, 'center_y': 0.8}
+        Label:
+            text: 'Patient Gender:'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.76, 'center_y': 0.8}
+        Label:
+            text: 'Glaucoma'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.16, 'center_y': 0.575}
+        Label:
+            text: 'Cataract'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.46, 'center_y': 0.575}
+        Label:
+            text: 'Macular Degeneration'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.78, 'center_y': 0.575}
+        Label:
+            text: 'Diabetic Retinopathy'
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.22, 'center_y': 0.32}
