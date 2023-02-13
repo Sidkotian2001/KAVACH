@@ -382,54 +382,54 @@ class signupWindow(Screen):
 
 class loginWindow(Screen):
     
-    # login_username = ObjectProperty(None)
-    # login_password = ObjectProperty(None)
+    login_username = ObjectProperty(None)
+    login_password = ObjectProperty(None)
 
     def __init__(self, **kw):
         super().__init__(**kw)
 
-        with self.canvas:
-            Color(0.85, 0.85, 0.85, 1)
-            self.round_rect = RoundedRectangle(pos = (300, 300),
-                                            size = (200, 50),
-                                            radius = [10])
-            self.bind(pos = self.update_round_rect, size = self.update_round_rect)
+        # with self.canvas:
+            # Color(0.85, 0.85, 0.85, 1)
+            # self.round_rect = RoundedRectangle(pos = (300, 300),
+            #                                 size = (200, 50),
+            #                                 radius = [10])
+            # self.bind(pos = self.update_round_rect, size = self.update_round_rect)
 
-            Color(0.85, 0.85, 0.85, 1)
-            self.round_rect2 = RoundedRectangle(pos = (300, 300),
-                                            size = (200, 50),
-                                            radius = [10])
-            self.bind(pos = self.update_round_rect, size = self.update_round_rect)
+            # Color(0.85, 0.85, 0.85, 1)
+            # self.round_rect2 = RoundedRectangle(pos = (300, 300),
+            #                                 size = (200, 50),
+            #                                 radius = [10])
+            # self.bind(pos = self.update_round_rect, size = self.update_round_rect)
         
 
-        self.login_username = TextInput(hint_text = 'Username',
-            hint_text_color = (0,0,0,1),
-            font_name = 'Inter/static/Inter-Regular.ttf',
-            halign = 'center',
-            background_color = (0.85,0.85,0.85,1),
-            multiline = False,
-            background_normal = "",
-            background_active = "",
-            size_hint = (0.281, 0.07),
-            pos_hint = {'center_x' : 0.275, 'center_y' : 0.55}
-        )
+        # self.login_username = TextInput(hint_text = 'Username',
+        #     hint_text_color = (0,0,0,1),
+        #     font_name = 'Inter/static/Inter-Regular.ttf',
+        #     halign = 'center',
+        #     background_color = (0.85,0.85,0.85,1),
+        #     multiline = False,
+        #     background_normal = "",
+        #     background_active = "",
+        #     size_hint = (0.281, 0.07),
+        #     pos_hint = {'center_x' : 0.275, 'center_y' : 0.55}
+        # )
             
-        self.login_password = TextInput(hint_text= 'Password',
-            password = True,
-            hint_text_color =  (0,0,0,1),
-            font_name = 'Inter/static/Inter-Regular.ttf',
-            halign = 'center',
-            background_color = (0.85,0.85,0.85,1),
-            multiline = False,
-            background_normal = "",
-            background_active = "",
-            size_hint = (0.281, 0.07),
-            pos_hint = {'center_x' : 0.275, 'center_y' : 0.445}
+        # self.login_password = TextInput(hint_text= 'Password',
+        #     password = True,
+        #     hint_text_color =  (0,0,0,1),
+        #     font_name = 'Inter/static/Inter-Regular.ttf',
+        #     halign = 'center',
+        #     background_color = (0.85,0.85,0.85,1),
+        #     multiline = False,
+        #     background_normal = "",
+        #     background_active = "",
+        #     size_hint = (0.281, 0.07),
+        #     pos_hint = {'center_x' : 0.275, 'center_y' : 0.445}
 
-        )
+        # )
 
-        self.add_widget(self.login_username)
-        self.add_widget(self.login_password)
+        # self.add_widget(self.login_username)
+        # self.add_widget(self.login_password)
     
     def update_round_rect(self, *args):
         self.round_rect.pos = (110, 305)

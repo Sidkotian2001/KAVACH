@@ -61,8 +61,8 @@ WindowManager:
             pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
             size: (self.width - 70, self.height - 70)
             radius: [20]
-    # login_password : login_password
-    # login_username : login_username  
+    login_password : login_password
+    login_username : login_username  
     FloatLayout:
         Image:
             source: 'infyuva_tech.jpeg'
@@ -111,46 +111,46 @@ WindowManager:
             color: (0,0,0,1)
             pos_hint: {'center_x': 0.275, 'center_y': 0.7}
 
-        # TextInput:
-        #     id: login_username
-        #     hint_text: 'Username'
-        #     hint_text_color: (0,0,0,1)
-        #     font_name : 'Inter/static/Inter-Regular.ttf'
-        #     halign: 'center'
-        #     background_color: (1,1,1,1)
-        #     multiline: False
-        #     background_normal: ""
-        #     background_active: ""
-        #     size_hint : 0.281, 0.07
-        #     pos_hint : {'center_x' : 0.275, 'center_y' : 0.55}
-        #     canvas.after:
-        #         Color:
-        #             rgba: (0.85, 0.85, 0.85, 0.5)
-        #         RoundedRectangle:
-        #             size: self.size
-        #             pos:self.pos
-        #             radius: 10,
+        TextInput:
+            id: login_username
+            hint_text: 'Username'
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.07
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.55}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
         
-        # TextInput:
-        #     id: login_password
-        #     hint_text: 'password'
-        #     password: True
-        #     hint_text_color: (0,0,0,1)
-        #     font_name : 'Inter/static/Inter-Regular.ttf'
-        #     halign: 'center'
-        #     background_color: (1,1,1,1)
-        #     multiline: False
-        #     background_normal: ""
-        #     background_active: ""
-        #     size_hint : 0.281, 0.07
-        #     pos_hint : {'center_x' : 0.275, 'center_y' : 0.445}
-        #     canvas.after:
-        #         Color:
-        #             rgba: (0.85, 0.85, 0.85, 0.5)
-        #         RoundedRectangle:
-        #             size: self.size
-        #             pos:self.pos
-        #             radius: 10,
+        TextInput:
+            id: login_password
+            hint_text: 'password'
+            password: True
+            hint_text_color: (0,0,0,1)
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.07
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.445}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
 
         RoundedButton:
             text:"login"
@@ -171,6 +171,8 @@ WindowManager:
             size_hint : 0.281, 0.075
             pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
             on_press:
+                login_username.text = ''
+                login_password.text = ''
                 app.root.current = 'signupinfoWindow'
 
 <signupWindow>:
