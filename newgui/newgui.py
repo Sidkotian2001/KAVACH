@@ -9,7 +9,8 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty
+
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.graphics import Ellipse, RoundedRectangle, Rectangle, Color
 from kivy.config import Config
 
@@ -23,6 +24,8 @@ import sqlite3
 from kivy_garden.filebrowser import FileBrowser
 # from tkinter import *
 # from tkinter import filedialog as fd
+# from models.detect import Checkup
+
 
 # Config.set('graphics', 'resizable', False)
 
@@ -34,14 +37,13 @@ Window.resize = False
 class WindowManager(ScreenManager):
     pass
 
-p_fn = ''
-p_ln = ''
-p_m = ''
+
+
+p_f = ''
+p_l = ''
+p_m= ''
 p_a = ''
 p_g = ''
-
-
-
 class patientWindow(Screen):
     patient_firstname = ObjectProperty(None)
     patient_lastname = ObjectProperty(None)
@@ -50,13 +52,11 @@ class patientWindow(Screen):
     patient_gender = ObjectProperty(None)
 
     def submit_info(self):
-        globals()['p_fn'] = self.patient_firstname.text
-        globals()['p_ln'] = self.patient_lastname.text
+        globals()['p_f'] = self.patient_firstname.text
+        globals()['p_l'] = self.patient_lastname.text
         globals()['p_m'] = self.patient_mobile.text
         globals()['p_a'] = self.patient_age.text
         globals()['p_g'] = self.patient_gender.text
-        # print(globals()['p_fn'])
-        # print(globals()['p_g'])
 
 #Global counter varible
 counter = 0
@@ -394,14 +394,41 @@ class ViewImages(Screen):
         self.button1.disabled = False
         sm.current = 'evalautioninfoWindow'        
 
-class evalautionWindow(Screen):
-    pass
+p_cataract = ''
+p_dr = ''
+p_amd = ''
+p_glaucoma = ''
 
-d_fn = ''
-d_ln = ''
-d_m = ''
-d_a = ''
-d_pass = ''
+class evalautionWindow(Screen):
+    dr = ObjectProperty(None)
+    amd = ObjectProperty(None)
+    glaucoma = ObjectProperty(None)
+    cataract = ObjectProperty(None)
+
+    def run_model(self):
+        global obj, categories
+        obj = Checkup("../images/3_retina_disease/Retina_006.png")
+        dr_flag = amd_flag = cataract_flag = glaucoma_flag = False
+        if self.dr.active:
+            dr_flag = True
+
+        if self.amd.active :
+            amd_flag = True
+
+        if self.cataract.active :
+            cataract_flag = True
+
+        if self.glaucoma.active :
+            glaucoma_flag = True
+        obj.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
+        obj.show_categories()
+        categories = obj.categories
+        globals()['p_cataract'] = categories['cataract']
+        globals()['p_dr'] = categories['dr']
+        globals()['p_amd'] = categories['amd']
+        globals()['p_glaucoma'] = categories['glaucoma']
+        sm.current = 'reportinfoWindow'
+
 
 class signupWindow(Screen):
     doctor_name = ObjectProperty(None)
@@ -434,6 +461,7 @@ class loginWindow(Screen):
     login_username = ObjectProperty(None)
     login_password = ObjectProperty(None)
     infyuva_label = ObjectProperty(None)
+    
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -504,15 +532,27 @@ class loginWindow(Screen):
             print(e)
 
 class ReportWindow(Screen):
-    patient_name = ObjectProperty(None)
-    patient_age = ObjectProperty(None)
-    patient_gender = ObjectProperty(None)
-
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        # self.patient_name.text = globals()['p_fn'] + globals()['p_ln']
-        # self.patient_age.text = globals()['p_a']
-        # self.patient_gender.text = globals()['p_g']
+    # patient_name = ObjectProperty(None)
+    # patient_age = ObjectProperty(None)
+    # patient_gender = ObjectProperty(None)
+    patient_name = StringProperty()
+    patient_mobile = StringProperty()
+    patient_age = StringProperty()
+    patient_gender = StringProperty()
+    cataract = StringProperty()
+    dr = StringProperty()
+    amd = StringProperty()
+    glaucoma = StringProperty()
+    
+    def view_(self):
+        self.patient_name = globals()['p_f']
+        self.patient_mobile = globals()['p_m']
+        self.patient_age = globals()['p_a']
+        self.patient_gender = globals()['p_g']
+        self.cataract = globals()['p_cataract']
+        self.dr = globals()['p_dr']
+        self.amd = globals()['p_amd']
+        self.glaucoma = globals()['p_glaucoma']
 
     pass
 
@@ -549,6 +589,9 @@ class FileBrowserScreen(Screen):
         self.fbrowser = None
         sm.current = 'viewimages'
     pass
+   
+
+ 
     
 kv = Builder.load_file('components.kv')
 sm = WindowManager()

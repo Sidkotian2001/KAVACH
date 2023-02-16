@@ -8,6 +8,7 @@ WindowManager:
     ReportWindow:
     FileBrowserScreen:
 
+
 <RoundedButton@Button>:
     background_color: (0,0,0,0)
     background_normal: ''
@@ -543,6 +544,10 @@ WindowManager:
 
 
 <evalautionWindow>:
+    dr : dr
+	amd : amd
+	cataract : cataract
+	glaucoma : glaucoma
     canvas:
         Color:
             rgba: 0,0.267,0.4,1
@@ -604,8 +609,7 @@ WindowManager:
             size_hint : 0.281, 0.075
             pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
             on_release:
-                app.root.current = 'reportinfoWindow'
-				root.manager.transition.direction = "left"
+                root.run_model()
         
         RoundedButtonBlue:
             text:"Capture Img"
@@ -747,7 +751,7 @@ WindowManager:
 			pos_hint: {'center_x' : 0.74, 'center_y' : 0.5}
 
 <ReportWindow>:
-    patient_name : patient_name
+    # patient_name : patient_name
     # patient_age : patient_age
     # patient_gender : patient_gender
     canvas:
@@ -850,7 +854,8 @@ WindowManager:
             font_size : 20
             size_hint : 0.281, 0.075
             pos_hint : {'center_x' : 0.775 ,'center_y' : 0.3}
-            
+            on_press: 
+                root.view_()
                 
         
         RoundedButtonDarkBlue:
@@ -881,14 +886,13 @@ WindowManager:
             pos_hint: {'center_x': 0.16, 'center_y': 0.8}
         
         Label:
-            id : patient_name
-            text : ''
+            text: root.patient_name
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
             font_size: 25
             color: (1,1,1,1)
-            pos_hint: {'center_x': 0.78, 'center_y': 0.575}
+            pos_hint: {'center_x': 0.16, 'center_y': 0.7}
 
         Label:
             text: 'Patient Age:'
@@ -898,6 +902,17 @@ WindowManager:
             font_size: 25
             color: (1,1,1,1)
             pos_hint: {'center_x': 0.46, 'center_y': 0.8}
+
+        Label:
+            text: root.patient_age
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.46, 'center_y': 0.7}
+
+
         Label:
             text: 'Patient Gender:'
             font_name : 'Inter/static/Inter-Regular.ttf'
@@ -906,6 +921,15 @@ WindowManager:
             font_size: 25
             color: (1,1,1,1)
             pos_hint: {'center_x': 0.76, 'center_y': 0.8}
+        
+        Label:
+            text: root.patient_gender
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.76, 'center_y': 0.7}
         Label:
             text: 'Glaucoma'
             font_name : 'Inter/static/Inter-Regular.ttf'
@@ -914,6 +938,16 @@ WindowManager:
             font_size: 25
             color: (1,1,1,1)
             pos_hint: {'center_x': 0.16, 'center_y': 0.575}
+
+        Label:
+            text: root.glaucoma
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.16, 'center_y': 0.475}
+
         Label:
             text: 'Cataract'
             font_name : 'Inter/static/Inter-Regular.ttf'
@@ -922,6 +956,18 @@ WindowManager:
             font_size: 25
             color: (1,1,1,1)
             pos_hint: {'center_x': 0.46, 'center_y': 0.575}
+
+        
+        Label:
+            text: root.cataract
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.46, 'center_y': 0.475}
+
+        
         Label:
             text: 'Macular Degeneration'
             font_name : 'Inter/static/Inter-Regular.ttf'
@@ -930,6 +976,17 @@ WindowManager:
             font_size: 25
             color: (1,1,1,1)
             pos_hint: {'center_x': 0.78, 'center_y': 0.575}
+        
+        Label:
+            text: root.amd
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.78, 'center_y': 0.475}
+
+
         Label:
             text: 'Diabetic Retinopathy'
             font_name : 'Inter/static/Inter-Regular.ttf'
@@ -938,6 +995,15 @@ WindowManager:
             font_size: 25
             color: (1,1,1,1)
             pos_hint: {'center_x': 0.22, 'center_y': 0.32}
+        
+        Label:
+            text: root.dr
+            font_name : 'Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.22, 'center_y': 0.22}
 
 # <FileBrowserScreen>:
 #     FileChooserIconView:
