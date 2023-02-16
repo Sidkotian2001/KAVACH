@@ -22,6 +22,8 @@ from iris_local_kivy import iris_voice
 import pandas as pd
 import sqlite3
 from kivy_garden.filebrowser import FileBrowser
+from models.detect import Checkup
+# from pdf import create_pdf
 # from tkinter import *
 # from tkinter import filedialog as fd
 # from models.detect import Checkup
@@ -364,12 +366,13 @@ class ViewImages(Screen):
         if len(self.selected) == 0:
             self.img1.source = 'captured_images/image_taken_{}.jpg'.format(str(self.c))
             self.img2.source = 'captured_images/image_taken_{}.jpg'.format(str(self.c + 1))
+            globals()['counter'] += 2
         else:
             self.img1.source = self.selected[0]
             self.img2.source = self.selected[1]
-            self.selected = []
+            self.selected.clear()
         self.img1.opacity = self.img2.opacity = 1
-        globals()['counter'] += 2
+        
         self.button1.disabled = True       
 
 
@@ -384,9 +387,9 @@ class ViewImages(Screen):
 
         #Tried to dynamically update the files by removing and adding the file widget
         
-        sm.remove_widget(FileBrowserScreen())
         sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
         sm.current = 'filebrowser'
+        sm.remove_widget(FileBrowserScreen(name = 'filebrowser'))
 
     def next_screen(self, *args):
         self.img1.source = self.img2.source = 'camera.png'
@@ -461,60 +464,6 @@ class loginWindow(Screen):
     login_username = ObjectProperty(None)
     login_password = ObjectProperty(None)
     infyuva_label = ObjectProperty(None)
-    
-
-    def __init__(self, **kw):
-        super().__init__(**kw)
-
-        # with self.canvas:
-            # Color(0.85, 0.85, 0.85, 1)
-            # self.round_rect = RoundedRectangle(pos = (300, 300),
-            #                                 size = (200, 50),
-            #                                 radius = [10])
-            # self.bind(pos = self.update_round_rect, size = self.update_round_rect)
-
-            # Color(0.85, 0.85, 0.85, 1)
-            # self.round_rect2 = RoundedRectangle(pos = (300, 300),
-            #                                 size = (200, 50),
-            #                                 radius = [10])
-            # self.bind(pos = self.update_round_rect, size = self.update_round_rect)
-        
-
-        # self.login_username = TextInput(hint_text = 'Username',
-        #     hint_text_color = (0,0,0,1),
-        #     font_name = 'Inter/static/Inter-Regular.ttf',
-        #     halign = 'center',
-        #     background_color = (0.85,0.85,0.85,1),
-        #     multiline = False,
-        #     background_normal = "",
-        #     background_active = "",
-        #     size_hint = (0.281, 0.07),
-        #     pos_hint = {'center_x' : 0.275, 'center_y' : 0.55}
-        # )
-            
-        # self.login_password = TextInput(hint_text= 'Password',
-        #     password = True,
-        #     hint_text_color =  (0,0,0,1),
-        #     font_name = 'Inter/static/Inter-Regular.ttf',
-        #     halign = 'center',
-        #     background_color = (0.85,0.85,0.85,1),
-        #     multiline = False,
-        #     background_normal = "",
-        #     background_active = "",
-        #     size_hint = (0.281, 0.07),
-        #     pos_hint = {'center_x' : 0.275, 'center_y' : 0.445}
-
-        # )
-
-        # self.add_widget(self.login_username)
-        # self.add_widget(self.login_password)
-        # self.infyuva_label.bind()
-    
-    # def update_round_rect(self, *args):
-    #     self.round_rect.pos = (110, 305)
-    #     self.round_rect.size = (300, 50)
-    #     self.round_rect2.pos = (110, 243)
-    #     self.round_rect2.size = (300, 50)
         
     def submit_login(self):
         try:
@@ -532,9 +481,6 @@ class loginWindow(Screen):
             print(e)
 
 class ReportWindow(Screen):
-    # patient_name = ObjectProperty(None)
-    # patient_age = ObjectProperty(None)
-    # patient_gender = ObjectProperty(None)
     patient_name = StringProperty()
     patient_mobile = StringProperty()
     patient_age = StringProperty()
@@ -545,7 +491,16 @@ class ReportWindow(Screen):
     glaucoma = StringProperty()
     
     def view_(self):
-        self.patient_name = globals()['p_f']
+        # self.patient_name = 'john'
+        # self.patient_mobile = '9876543210'
+        # self.patient_age = '34'
+        # self.patient_gender = 'female'
+        # self.cataract = 'yes'
+        # self.dr = 'npdr'
+        # self.amd = 'mild'
+        # self.glaucoma = 'yues'
+        p_n = globals()['p_f'] + globals()['p_l']
+        self.patient_name = p_n
         self.patient_mobile = globals()['p_m']
         self.patient_age = globals()['p_a']
         self.patient_gender = globals()['p_g']
@@ -581,12 +536,13 @@ class FileBrowserScreen(Screen):
         for file in fbInstance.selection:
             globals()['selected_list'].append(os.path.join(fbInstance.path, file))
         self.fbrowser = None
-        
+        # self.fbrowser.dispatch('on_draw')        
         sm.current = 'viewimages'
 
 
     def _fbrowser_canceled(self, instance):
         self.fbrowser = None
+        # self.fbrowser.dispatch('on_draw')
         sm.current = 'viewimages'
     pass
    
@@ -598,14 +554,14 @@ sm = WindowManager()
 
 class loginMain(App):
     def build(self):
-        # sm.add_widget(loginWindow(name = 'logininfoWindow'))
-        # sm.add_widget(signupWindow(name = 'signupinfoWindow'))
-        # sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        sm.add_widget(loginWindow(name = 'logininfoWindow'))
+        sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+        sm.add_widget(patientWindow(name = 'patientinfowindow'))
         sm.add_widget(VideoCapture(name='videofeed'))
         sm.add_widget(ViewImages(name = 'viewimages'))
-        # sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
-        # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
-        # sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
+        sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
+        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         return sm
 
 if __name__ == '__main__':
