@@ -8,7 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
-
+from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 from kivy.graphics import Ellipse, RoundedRectangle, Rectangle, Color
 from kivy.config import Config
@@ -20,11 +20,15 @@ import cv2
 from iris_local_kivy import iris_voice
 import pandas as pd
 import sqlite3
+from kivy_garden.filebrowser import FileBrowser
+# from tkinter import *
+# from tkinter import filedialog as fd
 
-Config.set('graphics', 'resizable', False)
+# Config.set('graphics', 'resizable', False)
 
 Window.size = (940, 600)
 Window.clearcolor = (0,0.267,0.4,1)
+Window.resize = False
 # Window.clearcolor = (0,0,0,1)
 
 class WindowManager(ScreenManager):
@@ -51,8 +55,8 @@ class patientWindow(Screen):
         globals()['p_m'] = self.patient_mobile.text
         globals()['p_a'] = self.patient_age.text
         globals()['p_g'] = self.patient_gender.text
-        print(globals()['p_fn'])
-        print(globals()['p_g'])
+        # print(globals()['p_fn'])
+        # print(globals()['p_g'])
 
 #Global counter varible
 counter = 0
@@ -232,7 +236,8 @@ class VideoCapture(Screen):
     def save_img(self, _):
         if self.is_eye_in_square == True:
             c = globals()['counter']
-            cv2.imwrite('image_taken_{}.jpg'.format(str(self.number_of_eyes_captured + c)), self.frame_original)
+            home_path = 'captured_images'
+            cv2.imwrite(os.path.join(home_path, 'image_taken_{}.jpg'.format(str(self.number_of_eyes_captured + c))), self.frame_original)
             self.number_of_eyes_captured += 1
         if self.number_of_eyes_captured > 1:
             self.next_screen()
@@ -242,12 +247,24 @@ class VideoCapture(Screen):
     def change_illumination(self, _):
         print("This button will adjust the illumination")
 
+
+
+selected_list = []
 class ViewImages(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
         self.c = globals()['counter']
-
+        # self.selected = []
         with self.canvas:
+
+            Color(0.5,0.5,0.5,0.5)
+            self.ellipse0 = Ellipse(pos= (525 , 45),
+                size = (90 , 90),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
+
+
             Color(0.5,0.5,0.5,0.5)
             self.ellipse1 = Ellipse(pos= (310, 45),
                 size = (90 , 90),
@@ -255,11 +272,17 @@ class ViewImages(Screen):
                 angle_end = 360)
             self.bind(pos = self.update_ellipses, size = self.update_ellipses)
 
+
             Color(1,1,1,1)
             self.ellipse2 = Ellipse(pos= (525 , 45),
                 size = (90 , 90),
-                stroke_width = 20,
-                stroke = (1,0,0,1),
+                angle_start = 0,
+                angle_end = 360)
+            self.bind(pos = self.update_ellipses, size = self.update_ellipses)
+
+            Color(1,1,1,1)
+            self.ellipse3 = Ellipse(pos= (310, 45),
+                size = (90 , 90),
                 angle_start = 0,
                 angle_end = 360)
             self.bind(pos = self.update_ellipses, size = self.update_ellipses)
@@ -280,70 +303,96 @@ class ViewImages(Screen):
                         pos_hint = {'center_x': 0.73, 'center_y': 0.5}
                         )
         
-        self.display_button = Button(size_hint = (0.1, 0.15),
-                                pos = (308 , 45),
-                                # pos_hint = {'center_x' : .423, 'center_y': .1230},
-                                background_normal = 'gallery.png',
-                                background_disabled_normal = 'gallery_disabled.png',
-                                on_release = self.show_images
+        self.button1 = Button(size_hint = (0.1, 0.15),
+                            pos = (107 , 47),
+                            # pos_hint = {'center_x' : .423, 'center_y': .1230},
+                            background_normal = 'gallery.png',
+                            background_disabled_normal = 'gallery_disabled.png',
+                            on_release = self.show_images
         )  
 
         #Button 1 - Retake Image
         self.button2 = Button(size_hint = (0.075, 0.09),
-                        pos = (535 , 63),
-                        # pos_hint = {'center_x' : .423, 'center_y': .1230},
-                        background_normal = 'camera.png',
-                        background_disabled_normal = 'camera_disabled.png',
-                        disabled = False,
-                        on_release = self.retake_images
+                            pos = (320 , 63),
+                            background_normal = 'camera.png',
+                            background_disabled_normal = 'camera_disabled.png',
+                            disabled = False,
+                            on_release = self.retake_images
         )
 
-        
-        self.next_screen_button = Button(size_hint = (0.1,0.075),
-                        pos = (850, 550),
-                        background_normal = 'arrow.png',
-                        background_disabled_normal = 'arrow.png',
-                        on_release = self.next_screen        
+        self.button3 = Button(size_hint = (0.08, 0.12),
+                            pos = (535 , 53),
+                            background_normal = 'files_img.png',
+                            # background_disabled_normal = 'camera_disabled.png',
+                            disabled = False,
+                            on_release = self.open_files
         )
+
+        self.button4 = Button(size_hint = (0.11, 0.24),
+                            pos = (715 , 20),
+                            background_normal = 'black_arrow.png',
+                            # background_disabled_normal = 'camera_disabled.png',
+                            disabled = False,
+                            on_release = self.next_screen
+        )
+
              
 			
 
         self.add_widget(self.img1)
         self.add_widget(self.img2)
-        self.add_widget(self.next_screen_button)
+        self.add_widget(self.button1)
         self.add_widget(self.button2)
-        self.add_widget(self.display_button)
+        self.add_widget(self.button3)
+        self.add_widget(self.button4)
     
     def update_ellipses(self, *args):
+        self.ellipse0.pos = (110, 45)
+        self.ellipse0.size = (90 , 90)
         self.ellipse1.pos = (310, 45)
         self.ellipse1.size = (90 , 90)
         self.ellipse2.pos = (525 , 45)
         self.ellipse2.size = (90 , 90)
+        self.ellipse3.pos = (725 , 45)
+        self.ellipse3.size = (90 , 90)
 
     def show_images(self, *args):
+        
         self.c = globals()['counter']
-        self.img1.source = 'image_taken_{}.jpg'.format(str(self.c))
-        self.img2.source = 'image_taken_{}.jpg'.format(str(self.c + 1))
+        self.selected = globals()['selected_list']
+        
+        if len(self.selected) == 0:
+            self.img1.source = 'captured_images/image_taken_{}.jpg'.format(str(self.c))
+            self.img2.source = 'captured_images/image_taken_{}.jpg'.format(str(self.c + 1))
+        else:
+            self.img1.source = self.selected[0]
+            self.img2.source = self.selected[1]
+            self.selected = []
         self.img1.opacity = self.img2.opacity = 1
-        if globals()['counter'] > 0:
-            os.remove('image_taken_{}.jpg'.format(str(self.c - 1)))
-            os.remove('image_taken_{}.jpg'.format(str(self.c - 2)))
-        self.display_button.disabled = True
         globals()['counter'] += 2
+        self.button1.disabled = True       
 
 
     def retake_images(self, *args):
         self.img1.source = self.img2.source = 'camera.png'
         self.img1.opacity = self.img2.opacity = 0
-        self.display_button.disabled = False
+        self.button1.disabled = False
         sm.current = 'videofeed'
-    
+
+    def open_files(self, *args):
+        self.button1.disabled = False
+
+        #Tried to dynamically update the files by removing and adding the file widget
+        
+        sm.remove_widget(FileBrowserScreen())
+        sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
+        sm.current = 'filebrowser'
+
     def next_screen(self, *args):
         self.img1.source = self.img2.source = 'camera.png'
         self.img1.opacity = self.img2.opacity = 0
-        self.display_button.disabled = False
-        sm.current = 'evalautioninfoWindow'
-
+        self.button1.disabled = False
+        sm.current = 'evalautioninfoWindow'        
 
 class evalautionWindow(Screen):
     pass
@@ -384,6 +433,7 @@ class loginWindow(Screen):
     
     login_username = ObjectProperty(None)
     login_password = ObjectProperty(None)
+    infyuva_label = ObjectProperty(None)
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -430,12 +480,13 @@ class loginWindow(Screen):
 
         # self.add_widget(self.login_username)
         # self.add_widget(self.login_password)
+        # self.infyuva_label.bind()
     
-    def update_round_rect(self, *args):
-        self.round_rect.pos = (110, 305)
-        self.round_rect.size = (300, 50)
-        self.round_rect2.pos = (110, 243)
-        self.round_rect2.size = (300, 50)
+    # def update_round_rect(self, *args):
+    #     self.round_rect.pos = (110, 305)
+    #     self.round_rect.size = (300, 50)
+    #     self.round_rect2.pos = (110, 243)
+    #     self.round_rect2.size = (300, 50)
         
     def submit_login(self):
         try:
@@ -453,6 +504,50 @@ class loginWindow(Screen):
             print(e)
 
 class ReportWindow(Screen):
+    patient_name = ObjectProperty(None)
+    patient_age = ObjectProperty(None)
+    patient_gender = ObjectProperty(None)
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        # self.patient_name.text = globals()['p_fn'] + globals()['p_ln']
+        # self.patient_age.text = globals()['p_a']
+        # self.patient_gender.text = globals()['p_g']
+
+    pass
+
+
+class FileBrowserScreen(Screen):
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.fbrowser = FileBrowser(select_string='Select',
+                                multiselect=True,
+                                filters=['*.jpg'],
+                                path='/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/newgui/captured_images'
+                                )
+        self.add_widget(self.fbrowser)
+        self.fbrowser.bind(
+            on_success = self._fbrowser_success,
+            on_canceled = self._fbrowser_canceled,
+            on_submit = self._fbrowser_success
+            )
+
+    def _fbrowser_success(self, fbInstance):
+        if len(fbInstance.selection) != 2:
+            return
+        
+        globals()['selected_list'] = []
+        for file in fbInstance.selection:
+            globals()['selected_list'].append(os.path.join(fbInstance.path, file))
+        self.fbrowser = None
+        
+        sm.current = 'viewimages'
+
+
+    def _fbrowser_canceled(self, instance):
+        self.fbrowser = None
+        sm.current = 'viewimages'
     pass
     
 kv = Builder.load_file('components.kv')
@@ -460,13 +555,14 @@ sm = WindowManager()
 
 class loginMain(App):
     def build(self):
-        sm.add_widget(loginWindow(name = 'logininfoWindow'))
-        sm.add_widget(signupWindow(name = 'signupinfoWindow'))
-        sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        # sm.add_widget(loginWindow(name = 'logininfoWindow'))
+        # sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+        # sm.add_widget(patientWindow(name = 'patientinfowindow'))
         sm.add_widget(VideoCapture(name='videofeed'))
         sm.add_widget(ViewImages(name = 'viewimages'))
-        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
-        sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
+        # sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
+        # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        # sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         return sm
 
 if __name__ == '__main__':
