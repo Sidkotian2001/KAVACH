@@ -1,4 +1,12 @@
 #:kivy 2.1.0
+WindowManager:
+    loginWindow:
+    patientWindow:
+    evalautionWindow:
+    ViewImages:
+    signupWindow:
+    ReportWindow:
+    FileBrowserScreen:
 
 
 <RoundedButton@Button>:
@@ -56,7 +64,8 @@
             size: (self.width - 70, self.height - 70)
             radius: [20]
     login_password : login_password
-    login_username : login_username  
+    login_username : login_username
+    infyuva_label : infyuva_label
     FloatLayout:
         Image:
             source: 'infyuva_tech.jpeg'
@@ -71,7 +80,7 @@
             size_hint: 0.475, 0.8835
             pos_hint: {'center_x': 0.73, 'center_y': 0.505}
         Label:
-            id:'Welcome to Infyuva'
+            id: infyuva_label
             
             text:'[b][size=25]Welcome to Infyuva\n\nTech Solutions![/size][/b]\n \nInfyuva Tech Solutions offer\ninnovative AI-based diagnosis\nscreening tools for improved\npatient care.'
             # font_name : 'Inter/static/Inter-Regular.ttf'
@@ -81,6 +90,7 @@
             color: (1,1,1,1)
             size_hint: 0.3, 0.4
             pos_hint: {'center_x': 0.725, 'center_y': 0.5}
+            resize : True
             canvas.before:
                 Color:
                     rgba: (0,0,0,0.6)
@@ -741,6 +751,9 @@
 			pos_hint: {'center_x' : 0.74, 'center_y' : 0.5}
 
 <ReportWindow>:
+    # patient_name : patient_name
+    # patient_age : patient_age
+    # patient_gender : patient_gender
     canvas:
         Color:
             rgba: 0,0.267,0.4,1
@@ -763,6 +776,7 @@
             radius: [10]
         Color:
             rgba : 0.85, 0.85, 0.85, 0.5
+
         RoundedRectangle:
             pos: (350,400)
             size: (200, 50)
@@ -878,7 +892,7 @@
             bold: True
             font_size: 25
             color: (1,1,1,1)
-            pos_hint: {'center_x': 0.16, 'center_y': 0.7}
+            pos_hint: {'center_x': 0.18, 'center_y': 0.715}
 
         Label:
             text: 'Patient Age:'
@@ -896,7 +910,7 @@
             bold: True
             font_size: 25
             color: (1,1,1,1)
-            pos_hint: {'center_x': 0.46, 'center_y': 0.7}
+            pos_hint: {'center_x': 0.48, 'center_y': 0.715}
 
 
         Label:
@@ -915,7 +929,7 @@
             bold: True
             font_size: 25
             color: (1,1,1,1)
-            pos_hint: {'center_x': 0.76, 'center_y': 0.7}
+            pos_hint: {'center_x': 0.78, 'center_y': 0.715}
         Label:
             text: 'Glaucoma'
             font_name : 'Inter/static/Inter-Regular.ttf'
@@ -990,3 +1004,11 @@
             font_size: 25
             color: (1,1,1,1)
             pos_hint: {'center_x': 0.22, 'center_y': 0.22}
+
+# <FileBrowserScreen>:
+#     FileChooserIconView:
+#         id : filechooser
+#         multiselect: True
+#         filters: '.*jpg'
+#         path : '/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/newgui/captured_images'
+#         on_selection: root.selection(filechooser.selection)
