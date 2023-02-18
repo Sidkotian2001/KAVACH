@@ -39,6 +39,53 @@ Window.resize = False
 class WindowManager(ScreenManager):
     pass
 
+class loginWindow(Screen):
+    
+    login_username = ObjectProperty(None)
+    login_password = ObjectProperty(None)
+    infyuva_label = ObjectProperty(None)
+        
+    def submit_login(self):
+        try:
+            conn = sqlite3.connect('login.db')
+            c = conn.cursor()
+            c.execute("SELECT * FROM login WHERE username = ? AND password = ?", (self.login_username.text, self.login_password.text))
+            data = c.fetchall()
+            if data:
+                sm.current = 'patientinfowindow'
+            else:
+                self.login_username.text = ''
+                self.login_password.text = ''
+                pass
+        except Exception as e:
+            print(e)
+
+class signupWindow(Screen):
+    doctor_name = ObjectProperty(None)
+    doctor_username = ObjectProperty(None)
+    doctor_mobile = ObjectProperty(None)
+    doctor_age = ObjectProperty(None)
+    doctor_password = ObjectProperty(None)
+
+    def submit_signup(self):
+        try:
+            conn = sqlite3.connect('login.db')
+            c = conn.cursor()
+            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
+            conn.commit()
+            conn.close()
+            sm.current = 'logininfoWindow'
+        except:
+            #make a login database
+            conn = sqlite3.connect('login.db')
+            c = conn.cursor()
+            c.execute("CREATE TABLE IF NOT EXISTS login (Name, Username, mobile, age, password)")
+            conn.commit()
+            #insert into the database
+            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
+            conn.close()
+            sm.current = 'logininfoWindow'
+
 
 
 p_f = ''
@@ -127,7 +174,7 @@ class VideoCapture(Screen):
         self.button0 = Button(size_hint = (0.08, 0.13),
                         pos = (207, 32),
                         background_normal = 'power_button.png',
-                        background_disabled_normal = 'power_button.png',
+                        background_disabled_normal = 'power_button_disabled.png',
                         disabled = False,
                         on_release = self.start_video
         )
@@ -157,7 +204,7 @@ class VideoCapture(Screen):
                         pos = (648, 26),
                         background_normal = 'gallery.png',
                         background_disabled_normal = 'gallery_disabled.png',
-                        disabled = True,
+                        disabled = False,
                         background_color = (0.50, 0.50,0.80, 1),
                         on_release = self.next_screen
         )
@@ -248,7 +295,6 @@ class VideoCapture(Screen):
 
     def change_illumination(self, _):
         print("This button will adjust the illumination")
-
 
 
 selected_list = []
@@ -395,122 +441,7 @@ class ViewImages(Screen):
         self.img1.source = self.img2.source = 'camera.png'
         self.img1.opacity = self.img2.opacity = 0
         self.button1.disabled = False
-        sm.current = 'evalautioninfoWindow'        
-
-p_cataract = ''
-p_dr = ''
-p_amd = ''
-p_glaucoma = ''
-
-class evalautionWindow(Screen):
-    dr = ObjectProperty(None)
-    amd = ObjectProperty(None)
-    glaucoma = ObjectProperty(None)
-    cataract = ObjectProperty(None)
-
-    def run_model(self):
-        global obj, categories
-        obj = Checkup("../images/3_retina_disease/Retina_006.png")
-        dr_flag = amd_flag = cataract_flag = glaucoma_flag = False
-        if self.dr.active:
-            dr_flag = True
-
-        if self.amd.active :
-            amd_flag = True
-
-        if self.cataract.active :
-            cataract_flag = True
-
-        if self.glaucoma.active :
-            glaucoma_flag = True
-        obj.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
-        obj.show_categories()
-        categories = obj.categories
-        globals()['p_cataract'] = categories['cataract']
-        globals()['p_dr'] = categories['dr']
-        globals()['p_amd'] = categories['amd']
-        globals()['p_glaucoma'] = categories['glaucoma']
-        sm.current = 'reportinfoWindow'
-
-
-class signupWindow(Screen):
-    doctor_name = ObjectProperty(None)
-    doctor_username = ObjectProperty(None)
-    doctor_mobile = ObjectProperty(None)
-    doctor_age = ObjectProperty(None)
-    doctor_password = ObjectProperty(None)
-
-    def submit_signup(self):
-        try:
-            conn = sqlite3.connect('login.db')
-            c = conn.cursor()
-            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
-            conn.commit()
-            conn.close()
-            sm.current = 'logininfoWindow'
-        except:
-            #make a login database
-            conn = sqlite3.connect('login.db')
-            c = conn.cursor()
-            c.execute("CREATE TABLE IF NOT EXISTS login (Name, Username, mobile, age, password)")
-            conn.commit()
-            #insert into the database
-            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
-            conn.close()
-            sm.current = 'logininfoWindow'
-
-class loginWindow(Screen):
-    
-    login_username = ObjectProperty(None)
-    login_password = ObjectProperty(None)
-    infyuva_label = ObjectProperty(None)
-        
-    def submit_login(self):
-        try:
-            conn = sqlite3.connect('login.db')
-            c = conn.cursor()
-            c.execute("SELECT * FROM login WHERE username = ? AND password = ?", (self.login_username.text, self.login_password.text))
-            data = c.fetchall()
-            if data:
-                sm.current = 'patientinfowindow'
-            else:
-                self.login_username.text = ''
-                self.login_password.text = ''
-                pass
-        except Exception as e:
-            print(e)
-
-class ReportWindow(Screen):
-    patient_name = StringProperty()
-    patient_mobile = StringProperty()
-    patient_age = StringProperty()
-    patient_gender = StringProperty()
-    cataract = StringProperty()
-    dr = StringProperty()
-    amd = StringProperty()
-    glaucoma = StringProperty()
-    
-    def view_(self):
-        # self.patient_name = 'john'
-        # self.patient_mobile = '9876543210'
-        # self.patient_age = '34'
-        # self.patient_gender = 'female'
-        # self.cataract = 'yes'
-        # self.dr = 'npdr'
-        # self.amd = 'mild'
-        # self.glaucoma = 'yues'
-        p_n = globals()['p_f'] + globals()['p_l']
-        self.patient_name = p_n
-        self.patient_mobile = globals()['p_m']
-        self.patient_age = globals()['p_a']
-        self.patient_gender = globals()['p_g']
-        self.cataract = globals()['p_cataract']
-        self.dr = globals()['p_dr']
-        self.amd = globals()['p_amd']
-        self.glaucoma = globals()['p_glaucoma']
-
-    pass
-
+        sm.current = 'evalautioninfoWindow'  
 
 class FileBrowserScreen(Screen):
 
@@ -544,6 +475,83 @@ class FileBrowserScreen(Screen):
         self.fbrowser = None
         # self.fbrowser.dispatch('on_draw')
         sm.current = 'viewimages'
+    pass
+
+
+p_cataract = ''
+p_dr = ''
+p_amd = ''
+p_glaucoma = ''
+
+
+class evalautionWindow(Screen):
+    dr = ObjectProperty(None)
+    amd = ObjectProperty(None)
+    glaucoma = ObjectProperty(None)
+    cataract = ObjectProperty(None)
+
+    def run_model(self):
+        global obj, categories
+        obj = Checkup("../images/3_retina_disease/Retina_006.png")
+        dr_flag = amd_flag = cataract_flag = glaucoma_flag = False
+        if self.dr.active:
+            dr_flag = True
+
+        if self.amd.active :
+            amd_flag = True
+
+        if self.cataract.active :
+            cataract_flag = True
+
+        if self.glaucoma.active :
+            glaucoma_flag = True
+        obj.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
+        obj.show_categories()
+        categories = obj.categories
+        globals()['p_cataract'] = categories['cataract']
+        globals()['p_dr'] = categories['dr']
+        globals()['p_amd'] = categories['amd']
+        globals()['p_glaucoma'] = categories['glaucoma']
+        sm.current = 'reportinfoWindow'
+
+class ReportWindow(Screen):
+    patient_name = StringProperty()
+    patient_mobile = StringProperty()
+    patient_age = StringProperty()
+    patient_gender = StringProperty()
+    left_cataract = StringProperty()
+    right_cataract = StringProperty()
+    left_dr = StringProperty()
+    right_dr = StringProperty()
+    left_amd = StringProperty()
+    right_amd = StringProperty()
+    left_glaucoma = StringProperty()
+    right_glaucoma = StringProperty()
+    
+    def view_(self):
+        self.patient_name = 'Siddharth Kotian'
+        self.patient_mobile = '9876543210'
+        self.patient_age = '34'
+        self.patient_gender = 'male'
+
+        self.left_glaucoma = 'Normal'
+        self.right_glaucoma = 'Present'
+        self.left_cataract = 'Normal'
+        self.right_cataract = 'NA'
+        self.left_amd = 'Normal'
+        self.right_amd = 'Normal'
+        self.left_dr = 'PDR '
+        self.right_dr = 'NA'
+        # p_n = globals()['p_f'] + globals()['p_l']
+        # self.patient_name = p_n
+        # self.patient_mobile = globals()['p_m']
+        # self.patient_age = globals()['p_a']
+        # self.patient_gender = globals()['p_g']
+        # self.cataract = globals()['p_cataract']
+        # self.dr = globals()['p_dr']
+        # self.amd = globals()['p_amd']
+        # self.glaucoma = globals()['p_glaucoma']
+
     pass
    
 
