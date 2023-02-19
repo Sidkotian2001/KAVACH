@@ -46,4 +46,6 @@ class Checkup:
 
     def show_categories(self):
         print(self.categories)
+    def get_categories(self):
+        return self.categories
 
