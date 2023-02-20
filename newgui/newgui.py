@@ -23,7 +23,7 @@ import pandas as pd
 import sqlite3
 import re
 from kivy_garden.filebrowser import FileBrowser
-# from models.detect import Checkup
+from models.detect import Checkup
 # from pdf import create_pdf
 
 
@@ -469,7 +469,7 @@ class FileBrowserScreen(Screen):
         self.fbrowser = FileBrowser(select_string='Select',
                                 multiselect=True,
                                 filters=['*.jpg'],
-                                path='/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/newgui/captured_images'
+                                path='/home/'
                                 )
         self.add_widget(self.fbrowser)
         self.fbrowser.bind(
@@ -482,7 +482,6 @@ class FileBrowserScreen(Screen):
         if len(fbInstance.selection) != 2:
             return
         
-        globals()['selected_list'] = []
         for file in fbInstance.selection:
             globals()['selected_list'].append(os.path.join(fbInstance.path, file))
         self.fbrowser = None
@@ -497,10 +496,14 @@ class FileBrowserScreen(Screen):
     pass
 
 
-p_cataract = ''
-p_dr = ''
-p_amd = ''
-p_glaucoma = ''
+p_cataract_left = ''
+p_dr_left = ''
+p_amd_left = ''
+p_glaucoma_left = ''
+p_cataract_right = ''
+p_dr_right = ''
+p_amd_right = ''
+p_glaucoma_right = ''
 
 
 class evalautionWindow(Screen):
@@ -510,8 +513,12 @@ class evalautionWindow(Screen):
     cataract = ObjectProperty(None)
 
     def run_model(self):
-        global obj, categories
-        obj = Checkup("../images/3_retina_disease/Retina_006.png")
+        paths = globals()['selected_list']
+        # print(type(paths),paths[0])
+        global obj_left,obj_right, categories_left,categories_right
+        # obj = Checkup("../images/3_retina_disease/Retina_006.png")
+        obj_left = Checkup(paths[0])
+        obj_right = Checkup(paths[1])
         dr_flag = amd_flag = cataract_flag = glaucoma_flag = False
         if self.dr.active:
             dr_flag = True
@@ -524,13 +531,25 @@ class evalautionWindow(Screen):
 
         if self.glaucoma.active :
             glaucoma_flag = True
-        obj.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
-        obj.show_categories()
-        categories = obj.categories
-        globals()['p_cataract'] = categories['cataract']
-        globals()['p_dr'] = categories['dr']
-        globals()['p_amd'] = categories['amd']
-        globals()['p_glaucoma'] = categories['glaucoma']
+        obj_left.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
+        obj_right.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
+        obj_left.show_categories()
+        categories_left = obj_left.get_categories()
+        categories_right = obj_right.get_categories()
+        print(categories_left)
+        print(categories_right)
+        # globals()['p_cataract'] = categories['cataract']
+        # globals()['p_dr'] = categories['dr']
+        # globals()['p_amd'] = categories['amd']
+        # globals()['p_glaucoma'] = categories['glaucoma']
+        globals()['p_cataract_left'] = categories_left['cataract']
+        globals()['p_dr_left'] = categories_left['dr']
+        globals()['p_amd_left'] = categories_left['amd']
+        globals()['p_glaucoma_left'] = categories_left['glaucoma']
+        globals()['p_cataract_right'] = categories_right['cataract']
+        globals()['p_dr_right'] = categories_right['dr']
+        globals()['p_amd_right'] = categories_right['amd']
+        globals()['p_glaucoma_right'] = categories_right['glaucoma']
         sm.current = 'reportinfoWindow'
 
 class ReportWindow(Screen):
@@ -548,19 +567,19 @@ class ReportWindow(Screen):
     right_glaucoma = StringProperty()
     
     def view_(self):
-        self.patient_name = 'Siddharth Kotian'
-        self.patient_mobile = '9876543210'
-        self.patient_age = '34'
-        self.patient_gender = 'male'
+        self.patient_name = globals()['p_f'] + " " + globals()['p_l']
+        self.patient_mobile = globals()['p_m']
+        self.patient_age = globals()['p_a']
+        self.patient_gender = globals()['p_g']
 
-        self.left_glaucoma = 'Normal'
-        self.right_glaucoma = 'Present'
-        self.left_cataract = 'Normal'
-        self.right_cataract = 'NA'
-        self.left_amd = 'Normal'
-        self.right_amd = 'Normal'
-        self.left_dr = 'PDR '
-        self.right_dr = 'NA'
+        self.left_glaucoma = globals()['p_glaucoma_left']
+        self.right_glaucoma = globals()['p_glaucoma_right']
+        self.left_cataract = globals()['p_cataract_left']
+        self.right_cataract = globals()['p_cataract_right']
+        self.left_amd = globals()['p_amd_left']
+        self.right_amd = globals()['p_amd_right']
+        self.left_dr = globals()['p_dr_left']
+        self.right_dr = globals()['p_dr_right']
         # p_n = globals()['p_f'] + globals()['p_l']
         # self.patient_name = p_n
         # self.patient_mobile = globals()['p_m']
@@ -583,12 +602,12 @@ class loginMain(App):
     def build(self):
         sm.add_widget(loginWindow(name = 'logininfoWindow'))
         sm.add_widget(signupWindow(name = 'signupinfoWindow'))
-        # sm.add_widget(patientWindow(name = 'patientinfowindow'))
-        # sm.add_widget(VideoCapture(name='videofeed'))
-        # sm.add_widget(ViewImages(name = 'viewimages'))
-        # sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
-        # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
-        # sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
+        sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        sm.add_widget(VideoCapture(name='videofeed'))
+        sm.add_widget(ViewImages(name = 'viewimages'))
+        sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
+        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         return sm
 
 if __name__ == '__main__':
