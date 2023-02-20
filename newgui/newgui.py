@@ -21,12 +21,11 @@ import cv2
 from iris_local_kivy import iris_voice
 import pandas as pd
 import sqlite3
+import re
 from kivy_garden.filebrowser import FileBrowser
-from models.detect import Checkup
-# from pdf import create_pdf
-# from tkinter import *
-# from tkinter import filedialog as fd
 # from models.detect import Checkup
+# from pdf import create_pdf
+
 
 
 # Config.set('graphics', 'resizable', False)
@@ -68,23 +67,43 @@ class signupWindow(Screen):
     doctor_password = ObjectProperty(None)
 
     def submit_signup(self):
-        try:
-            conn = sqlite3.connect('login.db')
-            c = conn.cursor()
-            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
-            conn.commit()
-            conn.close()
-            sm.current = 'logininfoWindow'
-        except:
-            #make a login database
-            conn = sqlite3.connect('login.db')
-            c = conn.cursor()
-            c.execute("CREATE TABLE IF NOT EXISTS login (Name, Username, mobile, age, password)")
-            conn.commit()
-            #insert into the database
-            c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
-            conn.close()
-            sm.current = 'logininfoWindow'
+        name_flag = str(self.doctor_name.text).isalpha()
+        age_flag = str(self.doctor_age.text).isnumeric()
+        mobile_flag = str(self.doctor_mobile.text).isnumeric()
+
+        if len(str(self.doctor_age.text)) < 0 or len(str(self.doctor_age.text)) > 3:
+            age_flag = False
+        if len(str(self.doctor_mobile.text)) != 10:
+            mobile_flag = False
+
+
+        if name_flag and age_flag and mobile_flag:
+            try:
+                conn = sqlite3.connect('login.db')
+                c = conn.cursor()
+                c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
+                conn.commit()
+                conn.close()
+                sm.current = 'logininfoWindow'
+
+
+            except:
+                #make a login database
+                conn = sqlite3.connect('login.db')
+                c = conn.cursor()
+                c.execute("CREATE TABLE IF NOT EXISTS login (Name, Username, mobile, age, password)")
+                conn.commit()
+                #insert into the database
+                c.execute("INSERT INTO login VALUES (?, ?, ?, ?, ?)", (self.doctor_name.text, self.doctor_username.text, self.doctor_mobile.text, self.doctor_age.text, self.doctor_password.text))
+                conn.close()
+                sm.current = 'logininfoWindow'
+        else:
+            if not name_flag:
+                self.doctor_name.text = ''
+            if  not age_flag:
+                self.doctor_age.text = ''
+            if not mobile_flag:
+                self.doctor_mobile.text = ''
 
 
 
@@ -564,12 +583,12 @@ class loginMain(App):
     def build(self):
         sm.add_widget(loginWindow(name = 'logininfoWindow'))
         sm.add_widget(signupWindow(name = 'signupinfoWindow'))
-        sm.add_widget(patientWindow(name = 'patientinfowindow'))
-        sm.add_widget(VideoCapture(name='videofeed'))
-        sm.add_widget(ViewImages(name = 'viewimages'))
-        sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
-        sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
-        sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
+        # sm.add_widget(patientWindow(name = 'patientinfowindow'))
+        # sm.add_widget(VideoCapture(name='videofeed'))
+        # sm.add_widget(ViewImages(name = 'viewimages'))
+        # sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
+        # sm.add_widget(evalautionWindow(name = 'evalautioninfoWindow'))
+        # sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         return sm
 
 if __name__ == '__main__':
