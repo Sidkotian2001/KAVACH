@@ -27,7 +27,7 @@ class Checkup:
         if cat == True:
             cataract_pred = cataract(self.image).prediction()
             if cataract_pred[0] == 1:
-                self.categories["cataract"] = 'Cataract Present'
+                self.categories["cataract"] = 'Present'
             else :
                 self.categories["cataract"] = 'Normal'
         

@@ -24,7 +24,7 @@ import sqlite3
 import re
 from kivy_garden.filebrowser import FileBrowser
 from models.detect import Checkup
-# from pdf import create_pdf
+from pdf import create_pdf
 
 
 
@@ -435,7 +435,7 @@ class ViewImages(Screen):
         else:
             self.img1.source = self.selected[0]
             self.img2.source = self.selected[1]
-            self.selected.clear()
+            # self.selected.clear()
         self.img1.opacity = self.img2.opacity = 1
         
         self.button1.disabled = True       
@@ -452,9 +452,9 @@ class ViewImages(Screen):
 
         #Tried to dynamically update the files by removing and adding the file widget
         
-        sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
+        # sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
         sm.current = 'filebrowser'
-        sm.remove_widget(FileBrowserScreen(name = 'filebrowser'))
+        # sm.remove_widget(FileBrowserScreen(name = 'filebrowser'))
 
     def next_screen(self, *args):
         self.img1.source = self.img2.source = 'camera.png'
@@ -468,7 +468,6 @@ class FileBrowserScreen(Screen):
         super().__init__(**kw)
         self.fbrowser = FileBrowser(select_string='Select',
                                 multiselect=True,
-                                filters=['*.jpg'],
                                 path='/home/'
                                 )
         self.add_widget(self.fbrowser)
@@ -513,6 +512,8 @@ class evalautionWindow(Screen):
     cataract = ObjectProperty(None)
 
     def run_model(self):
+        # paths = ['/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/newgui/images/2_glaucoma/Glaucoma_001.png',
+        #         '/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/newgui/images/2_glaucoma/Glaucoma_002.png']
         paths = globals()['selected_list']
         # print(type(paths),paths[0])
         global obj_left,obj_right, categories_left,categories_right
@@ -534,6 +535,7 @@ class evalautionWindow(Screen):
         obj_left.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
         obj_right.call_model(cataract_flag, dr_flag, amd_flag, glaucoma_flag)
         obj_left.show_categories()
+        obj_right.show_categories()
         categories_left = obj_left.get_categories()
         categories_right = obj_right.get_categories()
         print(categories_left)
@@ -542,14 +544,14 @@ class evalautionWindow(Screen):
         # globals()['p_dr'] = categories['dr']
         # globals()['p_amd'] = categories['amd']
         # globals()['p_glaucoma'] = categories['glaucoma']
-        globals()['p_cataract_left'] = categories_left['cataract']
-        globals()['p_dr_left'] = categories_left['dr']
-        globals()['p_amd_left'] = categories_left['amd']
-        globals()['p_glaucoma_left'] = categories_left['glaucoma']
-        globals()['p_cataract_right'] = categories_right['cataract']
-        globals()['p_dr_right'] = categories_right['dr']
-        globals()['p_amd_right'] = categories_right['amd']
-        globals()['p_glaucoma_right'] = categories_right['glaucoma']
+        # globals()['p_cataract_left'] = categories_left['cataract']
+        # globals()['p_dr_left'] = categories_left['dr']
+        # globals()['p_amd_left'] = categories_left['amd']
+        # globals()['p_glaucoma_left'] = categories_left['glaucoma']
+        # globals()['p_cataract_right'] = categories_right['cataract']
+        # globals()['p_dr_right'] = categories_right['dr']
+        # globals()['p_amd_right'] = categories_right['amd']
+        # globals()['p_glaucoma_right'] = categories_right['glaucoma']
         sm.current = 'reportinfoWindow'
 
 class ReportWindow(Screen):
@@ -567,28 +569,47 @@ class ReportWindow(Screen):
     right_glaucoma = StringProperty()
     
     def view_(self):
+        # categories_left = {'cataract' : 'Normal',
+        #                 'dr' : 'Moderate NPDR',
+        #                 'amd' : 'Normal',
+        #                 'glaucoma' : 'Normal'}
+        # categories_right = {'cataract' : 'Normal',
+        #                 'dr' : 'Moderate NPDR',
+        #                 'amd' : 'Normal',
+        #                 'glaucoma' : 'Normal'}
+        # left_img_path = '/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/newgui/images/2_glaucoma/Glaucoma_001.png'
+        # right_img_path = '/home/sid009/jupyter/Infyuva_repo/Infyuva_GITHUB/newgui/images/2_glaucoma/Glaucoma_002.png'
+        # self.patient_name = 'Bob Johnson'
+        # self.patient_gender = 'male'
+        # self.patient_mobile = '9820316789'
+        # self.patient_age = '34'
+
+        categories_left = globals()['categories_left']
+        categories_right = globals()['categories_right']
         self.patient_name = globals()['p_f'] + " " + globals()['p_l']
         self.patient_mobile = globals()['p_m']
         self.patient_age = globals()['p_a']
         self.patient_gender = globals()['p_g']
 
-        self.left_glaucoma = globals()['p_glaucoma_left']
-        self.right_glaucoma = globals()['p_glaucoma_right']
-        self.left_cataract = globals()['p_cataract_left']
-        self.right_cataract = globals()['p_cataract_right']
-        self.left_amd = globals()['p_amd_left']
-        self.right_amd = globals()['p_amd_right']
-        self.left_dr = globals()['p_dr_left']
-        self.right_dr = globals()['p_dr_right']
-        # p_n = globals()['p_f'] + globals()['p_l']
-        # self.patient_name = p_n
-        # self.patient_mobile = globals()['p_m']
-        # self.patient_age = globals()['p_a']
-        # self.patient_gender = globals()['p_g']
-        # self.cataract = globals()['p_cataract']
-        # self.dr = globals()['p_dr']
-        # self.amd = globals()['p_amd']
-        # self.glaucoma = globals()['p_glaucoma']
+        self.left_glaucoma = categories_left['glaucoma']
+        self.right_glaucoma = categories_right['glaucoma']
+        self.left_cataract = categories_left['cataract']
+        self.right_cataract = categories_right['cataract']
+        self.left_amd = categories_left['amd']
+        self.right_amd = categories_right['amd']
+        self.left_dr = categories_left['dr']
+        self.right_dr = categories_right['dr']
+        left_img_path = globals()['selected_list'][0]
+        right_img_path = globals()['selected_list'][1]
+        
+        pdf_obj = create_pdf('Medical_Report.pdf', 
+                            self.patient_name,
+                            self.patient_age,
+                            self.patient_mobile,
+                            self.patient_gender,
+                            left_img_path,
+                            right_img_path)
+        pdf_obj.build_pdf(categories_left, categories_right)
 
     pass
    
