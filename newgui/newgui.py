@@ -117,14 +117,18 @@ class patientWindow(Screen):
     patient_lastname = ObjectProperty(None)
     patient_mobile = ObjectProperty(None)
     patient_age = ObjectProperty(None)
-    patient_gender = ObjectProperty(None)
+    patient_gender = None
+    # patient_gender = ObjectProperty(None)
+
+    def spinner_clicked(self, value):
+        self.patient_gender = value
 
     def submit_info(self):
         globals()['p_f'] = self.patient_firstname.text
         globals()['p_l'] = self.patient_lastname.text
         globals()['p_m'] = self.patient_mobile.text
         globals()['p_a'] = self.patient_age.text
-        globals()['p_g'] = self.patient_gender.text
+        globals()['p_g'] = self.patient_gender
 
 #Global counter varible
 counter = 0
@@ -621,8 +625,8 @@ sm = WindowManager()
 
 class loginMain(App):
     def build(self):
-        sm.add_widget(loginWindow(name = 'logininfoWindow'))
-        sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+        # sm.add_widget(loginWindow(name = 'logininfoWindow'))
+        # sm.add_widget(signupWindow(name = 'signupinfoWindow'))
         sm.add_widget(patientWindow(name = 'patientinfowindow'))
         sm.add_widget(VideoCapture(name='videofeed'))
         sm.add_widget(ViewImages(name = 'viewimages'))
