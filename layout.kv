@@ -1,0 +1,341 @@
+#:kivy 2.1.0
+<RoundedButton@Button>:
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (0,0,0, 1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+<RoundedButtonBlue@Button>:
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (0,0.267,0.4,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+
+<RoundedButtonDarkBlue@Button>:
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (0.17,0.58,0.76,0.56)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+            
+<loginWindow>:
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+            # rgba: 0,0,0,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
+        
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20] 
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20]
+
+    login_password : login_password
+    login_username : login_username
+    infyuva_label : infyuva_label
+    FloatLayout:
+        # Image:
+        #     source: 'infyuva_tech.jpeg'
+        #     allow_stretch: True
+        #     keep_ratio: False
+        #     size_hint: 0.15, 0.1
+        #     pos_hint: {'center_x': 0.13, 'center_y': 0.89}
+        Image:
+            source: 'Image.png'
+            allow_stretch: False
+            keep_ratio: False
+            size_hint: 0.495, 0.8875
+            pos_hint: {'center_x': 0.73, 'center_y': 0.505}
+        Label:
+            id: infyuva_label
+            
+            text:'[b][size=25]Welcome to Kavach\nSolutions![/size][/b]\nKavach Solutions offer\ninnovative AI-based diagnosis\nscreening tools for detecting\nviolent incidents.'
+            # font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            lineheight: 3.5
+            markup: True    
+            multiline: True
+            color: (1,1,1,1)
+            size_hint: 0.3, 0.4
+            pos_hint: {'center_x': 0.725, 'center_y': 0.5}
+            resize : True
+            canvas.before:
+                Color:
+                    rgba: (0,0,0,0.6)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 10,
+
+        Label:
+            text: 'Welcome Back...'
+            # font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            markup: True
+            font_size: 50
+            color : (0,0,0,1)
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.81}
+        
+        Label:
+            text: 'Please enter your\n      credentials'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            font_size: 25
+            color: (0,0,0,1)
+            pos_hint: {'center_x': 0.275, 'center_y': 0.7}
+
+        TextInput:
+            id: login_username
+            hint_text: 'Username'
+            hint_text_color: (0,0,0,1)
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.07
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.55}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: login_password
+            hint_text: 'password'
+            password: True
+            hint_text_color: (0,0,0,1)
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.07
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.445}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+
+        RoundedButton:
+            text:"login"
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.25}
+            on_press:
+                root.submit_login()
+
+        #make a button to go to the register page
+        Button:
+            background_color: (0,0,0,0)
+            text:"New user ? Sign up here"
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            color: (0,0,0,1)
+            font_size : 13.7
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
+            on_press:
+                login_username.text = ''
+                login_password.text = ''
+                app.root.current = 'signupinfoWindow'
+
+<signupWindow>:
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+            # rgba: 0,0,0,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
+        
+        Color:
+            rgba : 1,1,1,1
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), self.center_y  - ((self.height - 75)/2))
+            size: (self.width - 70, self.height - 70)
+            radius: [20]
+        
+    user_name: user_name
+    user_username : user_username
+    user_mobile : user_mobile
+	user_age : user_age
+	user_password : user_password
+
+    FloatLayout:
+
+        Image:
+            source: 'infyuva_tech.jpeg'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.175, 0.1
+            pos_hint: {'center_x': 0.145, 'center_y': 0.89}
+        
+        Label:
+            text: '[b]user[/b] Profile'
+            # font_name : 'Inter/static/Inter-Regular.ttf'
+            markup: True
+            font_size: 50
+            color : (0,0,0,1)
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.81}
+        
+        Label:
+            text: '         Please enter\nall the personal details'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            font_size: 25
+            color: (0,0,0,1)
+            pos_hint: {'center_x': 0.275, 'center_y': 0.7}
+
+        TextInput:
+            id: user_name
+            hint_text: 'Name'
+            hint_text_color: (0,0,0,1)
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.575}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: user_username
+            hint_text: 'Username'
+            hint_text_color: (0,0,0,1)
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.5}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: user_mobile
+            hint_text: 'Mobile'
+            hint_text_color: (0,0,0,1)
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.425}
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        TextInput:
+            id: user_age
+            hint_text: 'Age'
+            hint_text_color: (0,0,0,1)
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.35}
+
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 10,
+            
+        
+        TextInput:
+            id: user_password
+            hint_text: 'Password'
+            hint_text_color: (0,0,0,1)
+            password : True
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            halign: 'center'
+            background_color: (1,1,1,1)
+            multiline: False
+            background_normal: ""
+            background_active: ""
+            size_hint : 0.281, 0.05
+            pos_hint : {'center_x' : 0.275, 'center_y' : 0.275}
+
+            canvas.after:
+                Color:
+                    rgba: (0.85, 0.85, 0.85, 0.5)
+                RoundedRectangle:
+                    size: self.size
+                    pos:self.pos
+                    radius: 10,
+        
+        RoundedButton:
+            text:"Submit"
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.275 ,'center_y' : 0.15}
+            on_press:
+                root.submit_signup()
+               
+
+
+        Image:
+            source: 'Image.png'
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 0.475, 0.8835
+            pos_hint: {'center_x': 0.73, 'center_y': 0.505}
