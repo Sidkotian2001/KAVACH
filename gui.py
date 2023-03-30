@@ -33,7 +33,6 @@ class loginWindow(Screen):
                 self.login_username.text = ''
                 self.login_password.text = ''
                 print("hurray")
-                # sm.current = 'patientinfowindow'
             else:
                 self.login_username.text = ''
                 self.login_password.text = ''
