@@ -55,8 +55,6 @@ class signupWindow(Screen):
             age_flag = False
         if len(str(self.user_mobile.text)) != 10:
             mobile_flag = False
-
-
         if name_flag and age_flag and mobile_flag:
             try:
                 conn = sqlite3.connect('login.db')
