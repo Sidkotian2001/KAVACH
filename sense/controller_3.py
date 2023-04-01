@@ -6,7 +6,7 @@ from collections import Callable
 from typing import List
 from typing import Optional
 from typing import Union
-
+import json
 from sense.camera import VideoSource
 from sense.camera import VideoStream
 from sense.display_3 import DisplayResults
@@ -98,6 +98,8 @@ class Controller:
         current_frame_number = 0
         frame_recording_start = False
         frame_recording_end = False
+        threat_level="NIL"
+        dictionary = {"threat_level":"NIL","Prediction":"Non-Violence"}
 
         while True:
             try:
@@ -166,6 +168,34 @@ class Controller:
                 else:
                     init_time = time.time()
                 
+                # threat level analysis added to the code
+
+                if max_class == 'violence video cleaned':
+
+                    threat_level = "LOW"
+
+                elif max_class == 'Weapon Violence':
+
+                    threat_level = "Severe"
+
+                elif max_class == "Non-Violence Videos":
+
+                    threat_level = "NIL"
+
+                elif max_class == "RoadAccidents":
+                    
+                    f = open('/home/sid009/KAVACH/YOLOv8_tracking_and_counting_people/count.json')
+
+                    data = json.load(f)
+
+                    if data['People']>0 and data['Vehicles']>0:
+
+                        threat_level = "Severe"
+                    else:
+
+                        threat_level = "Medium"
+                    
+
                 #Incremenet frame number
                 current_frame_number += 1
 
@@ -190,6 +220,16 @@ class Controller:
             # Press cancel on sense-studio testing page to stop inference
             if self.stop_event and self.stop_event.is_set():
                 break
+        
+        print(threat_level)
+
+        dictionary['threat_level'] = threat_level
+        dictionary["Prediction"] = prev_max_class
+        
+        json_object = json.dumps(dictionary, indent=4)
+
+        with open('/home/sid009/KAVACH/threat_level.json',"w") as outfile:
+            outfile.write(json_object)
 
         self._stop_inference()
 

@@ -78,3 +78,63 @@ Time: 13:52
 Phone Number: +919820218571
 Message: Alert! A High Theft has been reported at Manipal at 13:51:59. Nearest hospital is KMC Hospital. Stay safe!
 --------------------
+Date: 1/4/2023
+Time: 15:14
+Phone Number: +919820218571
+Message: Alert! A High Theft has been reported at Manipal at 15:14:21. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 15:15
+Phone Number: +919820218571
+Message: Alert! A High Theft has been reported at Manipal at 15:15:46. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 15:54
+Phone Number: +919820218571
+Message: Alert! A High Theft has been reported at Manipal at 15:54:21. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 15:54
+Phone Number: +919820218571
+Message: Alert! A High Theft has been reported at Manipal at 15:54:35. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:7
+Phone Number: +919820218571
+Message: Alert! A NIL Theft has been reported at Manipal at 16:06:52. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:15
+Phone Number: +919820218571
+Message: Alert! A NIL Theft has been reported at Manipal at 16:15:08. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:21
+Phone Number: +919820218571
+Message: Alert! A LOW violence video cleaned has been reported at Manipal at 16:21:00. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:23
+Phone Number: +919820218571
+Message: Alert! A LOW violence video cleaned has been reported at Manipal at 16:23:00. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:25
+Phone Number: +919820218571
+Message: Alert! A LOW violence video cleaned has been reported at Manipal at 16:25:07. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:27
+Phone Number: +919820218571
+Message: Alert! A LOW violence video cleaned has been reported at Manipal at 16:27:12. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:29
+Phone Number: +919820218571
+Message: Alert! A LOW violence video cleaned has been reported at Manipal at 16:29:44. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 16:41
+Phone Number: +919820218571
+Message: Alert! A LOW violence video cleaned has been reported at manipal at 16:41:06. Nearest hospital is KMC Hospital. Stay safe!
+--------------------

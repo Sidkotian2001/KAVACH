@@ -32,6 +32,9 @@ from sense.loading import build_backbone_network
 from sense.loading import load_backbone_model_from_config
 from pdf import create_pdf
 from wa import alerter
+
+from CountingFunction import Counter
+
 Window.size = (940, 600)
 Window.clearcolor = (0,0.267,0.4,1)
 Window.resize = False
@@ -364,12 +367,17 @@ class ReportWindow(Screen):
 
     
     def view_(self):
-        self.threat_class ="Theft"
-        self.threat_level ="High"
+        Counter(globals()['selected_video'])
+        f = open('/home/sid009/KAVACH/threat_level.json')
+        threat = json.load(f)
+        self.threat_class =threat["Prediction"]
+        self.threat_level = threat['threat_level']
         self.location = globals()['location']
         self.time_ = time.ctime(time.time())[11:19]
-        self.people = "2"
-        self.vehicles = "3"
+        f = open('/home/sid009/KAVACH/kavach_github/count.json')
+        counts = json.load(f)
+        self.people = str(counts['People'])
+        self.vehicles = str(counts['Vehicles'])
         self.past_threat_level = "Highlevel"
         pdf_obj = create_pdf('Crime_report.pdf',
                              self.time_,
@@ -378,8 +386,9 @@ class ReportWindow(Screen):
                              self.location,
                              )
         pdf_obj.build_pdf()
-        obj = alerter()
-        obj.send_msg(self.location, self.threat_level, self.threat_class)
+        if(self.threat_class!="Non-Violence Videos"):
+            obj = alerter()
+            obj.send_msg(self.location, self.threat_level, self.threat_class)
     def main_menu(self):
         self.threat_class = ''
         self.threat_level = ''
