@@ -32,7 +32,7 @@ class loginWindow(Screen):
             if data:
                 self.login_username.text = ''
                 self.login_password.text = ''
-                print("hurray")
+                sm.current = 'reportinfoWindow'
             else:
                 self.login_username.text = ''
                 self.login_password.text = ''
@@ -92,6 +92,29 @@ class signupWindow(Screen):
                 self.user_age.text = ''
             if not mobile_flag:
                 self.user_mobile.text = ''
+class ReportWindow(Screen):
+    patient_name = StringProperty()
+    patient_mobile = StringProperty()
+    patient_age = StringProperty()
+    patient_gender = StringProperty()
+    left_cataract = StringProperty()
+    left_dr = StringProperty()
+    left_amd = StringProperty()
+    left_glaucoma = StringProperty()
+    
+    def view_(self):
+        pass
+    def main_menu(self):
+        self.patient_name = ''
+        self.patient_mobile = ''
+        self.patient_age  = ''
+        self.patient_gender = ''
+        self.left_cataract = ''
+        self.left_dr = ''
+        self.left_amd = ''
+        self.left_glaucoma = ''
+        sm.current = 'logininfoWindow'
+
 
 kv = Builder.load_file('layout.kv')
 sm = WindowManager()
@@ -100,6 +123,28 @@ class loginMain(App):
     def build(self):
         sm.add_widget(loginWindow(name = 'logininfoWindow'))
         sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+        class ReportWindow(Screen):
+    patient_name = StringProperty()
+    patient_mobile = StringProperty()
+    patient_age = StringProperty()
+    patient_gender = StringProperty()
+    left_cataract = StringProperty()
+    left_dr = StringProperty()
+    left_amd = StringProperty()
+    left_glaucoma = StringProperty()
+    
+    def view_(self):
+        pass
+    def main_menu(self):
+        self.patient_name = ''
+        self.patient_mobile = ''
+        self.patient_age  = ''
+        self.patient_gender = ''
+        self.left_cataract = ''
+        self.left_dr = ''
+        self.left_amd = ''
+        self.left_glaucoma = ''
+        sm.current = 'logininfoWindow'
         return sm
 
 if __name__ == '__main__':

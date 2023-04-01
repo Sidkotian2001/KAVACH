@@ -144,7 +144,7 @@ class Controller:
 
                         if max_class != 'Non-Violence Videos':
                             if current_time - init_time > 3:
-                                print("In this video {} is taking place".format(max_class))
+                                # print("In this video {} is taking place".format(max_class))
                                 
                                 self.record_video = True
                             else:

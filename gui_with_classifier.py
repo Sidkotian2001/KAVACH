@@ -75,12 +75,13 @@ def recordvideo(video_path, start_frame_number):
     out.release()
     cv2.destroyAllWindows()
 
-def run_custom_classifier():
+def run_custom_classifier(video_path):
 
 
     custom_classifier = "/home/sid009/KAVACH/sense_hack_action/tools/cctvviolence/checkpoints"
     camera_id = 0
-    path_in = "/home/sid009/KAVACH/sense_hack_action/tools/sense_studio/Violence_videos/Fighting/fighting5.mp4"
+    # path_in = "/home/sid009/KAVACH/sense_hack_action/tools/sense_studio/Violence_videos/Fighting/fighting5.mp4"
+    path_in = video_path
     path_out = None
     title = "my video"
     use_gpu = False
@@ -170,8 +171,8 @@ class loginWindow(Screen):
             c.execute("SELECT * FROM login WHERE username = ? AND password = ?", (self.login_username.text, self.login_password.text))
             data = c.fetchall()
             if data:
-                sm.add_widget(VideoCapture(name='videofeed'))
-                sm.current = 'videofeed'
+                # sm.add_widget(VideoCapture(name='videofeed'))
+                sm.current = 'videoinputWindow'
             else:
                 self.login_username.text = ''
                 self.login_password.text = ''
@@ -232,26 +233,46 @@ class signupWindow(Screen):
             if not mobile_flag:
                 self.user_mobile.text = ''
 
+selected_video = None
 class videoinputWindow(Screen):
     video_path = ObjectProperty(None)
     location = ObjectProperty(None)
-    infyuva_label = ObjectProperty(None)
         
-    # def submit_login(self):
-    #     try:
-    #         conn = sqlite3.connect('login.db')
-    #         c = conn.cursor()
-    #         c.execute("SELECT * FROM login WHERE username = ? AND password = ?", (self.login_username.text, self.login_password.text))
-    #         data = c.fetchall()
-    #         if data:
-    #             sm.add_widget(VideoCapture(name='videofeed'))
-    #             sm.current = 'videofeed'
-    #         else:
-    #             self.login_username.text = ''
-    #             self.login_password.text = ''
-    #     except Exception as e:
-    #         print(e)
-    # pass
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        
+        with self.canvas:
+            Color(0.5,0.5,0.5,0.5)
+            self.round_rect = RoundedRectangle(pos = (375, 308),
+                                size = (50,43),
+                                radius = [10],
+                                Color = (0.85, 0.85, 0.85, 0.5)
+                                )
+            self.bind(pos = self.update_round_rect, size = self.update_round_rect)
+
+        self.button1 = Button(size_hint = (0.08, 0.12),
+                            pos = (362 , 293),
+                            # pos_hint = {'center_x' : .423, 'center_y': .1230},
+                            background_normal = 'gallery.png',
+                            background_disabled_normal = 'gallery_disabled.png',
+                            on_release = self.select_video_file
+        )
+        
+        self.add_widget(self.button1)
+    def update_round_rect(self, *args):
+        self.round_rect.pos = (375, 308)
+        self.round_rect.size = (50,43)
+
+    def select_video_file(self, *args):
+        sm.current = 'filebrowser'
+        
+    def update_text_box(self):
+        print(globals()['selected_video'])
+        if globals()['selected_video'] != None:
+            self.video_path.text = globals()['selected_video']
+    def view_video(self):
+        sm.add_widget(VideoCapture(name='videofeed'))
+        sm.current = 'videofeed'
 
 
 class VideoCapture(Screen):
@@ -260,8 +281,9 @@ class VideoCapture(Screen):
         super(VideoCapture, self).__init__(**kwargs)
         self.img = Image()
         self.texture = None
-        self.video_path = "/home/sid009/KAVACH/sense_hack_action/tools/sense_studio/Violence_videos/Fighting/fighting5.mp4"
-        
+        # self.video_path = "/home/sid009/KAVACH/sense_hack_action/tools/sense_studio/Violence_videos/Fighting/fighting5.mp4"
+        self.video_path = globals()['selected_video']
+        print(globals()['selected_video'])
         self.pos_dim = 75
         self.width_dim = 100
         self.height_dim = 200
@@ -279,7 +301,7 @@ class VideoCapture(Screen):
             self.bind(pos = self.update_round_rect, size = self.update_round_rect)
 
         # self.add_widget(self.img)
-        start_frame_number = run_custom_classifier()
+        start_frame_number = run_custom_classifier(self.video_path)
         recordvideo(video_path=self.video_path, 
                             start_frame_number=start_frame_number)
         self.capture = cv2.VideoCapture("/home/sid009/KAVACH/kavach_github/output_video2.mp4")
@@ -321,15 +343,75 @@ class VideoCapture(Screen):
         self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
         self.round_rect.texture = self.texture
 
+
+class ReportWindow(Screen):
+    patient_name = StringProperty()
+    patient_mobile = StringProperty()
+    patient_age = StringProperty()
+    patient_gender = StringProperty()
+    left_cataract = StringProperty()
+    left_dr = StringProperty()
+    left_amd = StringProperty()
+    left_glaucoma = StringProperty()
+    
+    def view_(self):
+        pass
+    def main_menu(self):
+        self.patient_name = ''
+        self.patient_mobile = ''
+        self.patient_age  = ''
+        self.patient_gender = ''
+        self.left_cataract = ''
+        self.left_dr = ''
+        self.left_amd = ''
+        self.left_glaucoma = ''
+        sm.current = 'logininfoWindow'
+
+class FileBrowserScreen(Screen):
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.fbrowser = FileBrowser(select_string='Select',
+                                multiselect=False,
+                                path='/home/sid009/KAVACH/sense_hack_action/tools/sense_studio/videos_ffmpeg/Sample_CCTV_Videos'
+                                )
+        self.add_widget(self.fbrowser)
+        self.fbrowser.bind(
+            on_success = self._fbrowser_success,
+            on_canceled = self._fbrowser_canceled,
+            on_submit = self._fbrowser_success
+            )
+
+    def _fbrowser_success(self, fbInstance):
+        if len(fbInstance.selection) != 1:
+            return
+        
+        for file in fbInstance.selection:
+            globals()['selected_video'] = (os.path.join(fbInstance.path, file))
+            # print(globals()['selected_video'])
+        self.fbrowser = None
+        # self.fbrowser.dispatch('on_draw')        
+        sm.current = 'videoinputWindow'
+
+
+    def _fbrowser_canceled(self, instance):
+        self.fbrowser = None
+        # self.fbrowser.dispatch('on_draw')
+        sm.current = 'videoinputWindow'
+    pass
+
+
 kv = Builder.load_file('layout.kv')
 sm = WindowManager()
 
 class CrimeSense(App):
     def build(self):
 
-        # sm.add_widget(loginWindow(name = 'logininfoWindow'))
-        # sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+        sm.add_widget(loginWindow(name = 'logininfoWindow'))
+        sm.add_widget(signupWindow(name = 'signupinfoWindow'))
         sm.add_widget(videoinputWindow(name = 'videoinputWindow'))
+        sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
+        # sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         
         return sm
 
