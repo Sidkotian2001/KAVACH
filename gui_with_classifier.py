@@ -325,23 +325,25 @@ class VideoCapture(Screen):
 
     def update(self, _):
         # if self.button0.disabled == True:
-        _, frame = self.capture.read()
-        
-        frame = cv2.resize(frame, (640, 480))
-        # print(frame.shape)
-        # frame = cv2.flip(frame, 0)
-        # frame = cv2.flip(frame, 1)
-        # frame = cv2.flip(frame, 0)	
+        ret, frame = self.capture.read()
+        if ret:
+            frame = cv2.resize(frame, (640, 480))
+            # print(frame.shape)
+            # frame = cv2.flip(frame, 0)
+            # frame = cv2.flip(frame, 1)
+            # frame = cv2.flip(frame, 0)	
 
-        buf = frame.tobytes()
+            buf = frame.tobytes()
 
-        self.texture = Texture.create(size = (640, 480), colorfmt = 'bgr')
-        # self.texture = Texture.create(size = (1280, 720), colorfmt = 'bgr')
+            self.texture = Texture.create(size = (640, 480), colorfmt = 'bgr')
+            # self.texture = Texture.create(size = (1280, 720), colorfmt = 'bgr')
 
-        #if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
+            #if working on RASPBERRY PI, use colorfmt='rgba' here instead, but stick with "bgr" in blit_buffer. 
 
-        self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
-        self.round_rect.texture = self.texture
+            self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
+            self.round_rect.texture = self.texture
+        else:
+            sm.current = 'reportinfoWindow'
 
 
 class ReportWindow(Screen):
@@ -410,8 +412,9 @@ class CrimeSense(App):
         sm.add_widget(loginWindow(name = 'logininfoWindow'))
         sm.add_widget(signupWindow(name = 'signupinfoWindow'))
         sm.add_widget(videoinputWindow(name = 'videoinputWindow'))
+        # sm.add_widget(VideoCapture(name='videofeed'))
         sm.add_widget(FileBrowserScreen(name = 'filebrowser'))
-        # sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
+        sm.add_widget(ReportWindow(name = 'reportinfoWindow'))
         
         return sm
 
