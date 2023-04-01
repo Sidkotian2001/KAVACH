@@ -70,7 +70,7 @@ while True:
 
 		# filter out weak detections by ensuring the `confidence` is
 		# greater than the minimum confidence
-		if confidence > 0.3:
+		if confidence > 0.5:
 			#print(confidence)
 			# extract the index of the class label from the
 			# `detections`, then compute the (x, y)-coordinates of
@@ -81,20 +81,19 @@ while True:
 			# humx = (startX+endX)/2
 			# humy = (startY+endY)/2
 			# cv2.rectangle(frame, (280,200), (360,280), color=(0,0,255), thickness=2)
-			if(idx!=15 or idx!= 6 or idx!=7 or idx!=14):
-				continue
-			# draw the prediction on the frame
-			# if((humx>=280 and humx<=360) and (humy>=200 and humy<280)):
-			# 	print_pass()
-			# else:
-			# 	print_fail()
-			label = "{}: {:.2f}%".format(CLASSES[idx],
-				confidence * 100)
-			cv2.rectangle(frame, (startX, startY), (endX, endY),
-				COLORS[idx], 2)
-			y = startY - 15 if startY - 15 > 15 else startY + 15
-			cv2.putText(frame, label, (startX, y),
-				cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+			if(idx==15 or idx== 6 or idx==7 or idx==14):
+				# draw the prediction on the frame
+				# if((humx>=280 and humx<=360) and (humy>=200 and humy<280)):
+				# 	print_pass()
+				# else:
+				# 	print_fail()
+				label = "{}: {:.2f}%".format(CLASSES[idx],
+					confidence * 100)
+				cv2.rectangle(frame, (startX, startY), (endX, endY),
+					COLORS[idx], 2)
+				y = startY - 15 if startY - 15 > 15 else startY + 15
+				cv2.putText(frame, label, (startX, y),
+					cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
 
 	# show the output frame
 	cv2.imshow("Frame", frame)
