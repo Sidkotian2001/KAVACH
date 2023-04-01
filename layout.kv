@@ -195,12 +195,6 @@
 
     FloatLayout:
 
-        Image:
-            source: 'infyuva_tech.jpeg'
-            allow_stretch: True
-            keep_ratio: False
-            size_hint: 0.175, 0.1
-            pos_hint: {'center_x': 0.145, 'center_y': 0.89}
         
         Label:
             text: '[b]user[/b] Profile'
@@ -337,5 +331,287 @@
             source: 'Image.png'
             allow_stretch: True
             keep_ratio: False
-            size_hint: 0.475, 0.8835
+            size_hint: 0.495, 0.8875
             pos_hint: {'center_x': 0.73, 'center_y': 0.505}
+
+
+<ReportWindow>:
+    canvas:
+        Color:
+            rgba: 0,0.267,0.4,1
+    
+        Rectangle:
+            pos: self.pos
+            size: (self.width, self.height)
+        
+        #Outer rectangle topmost
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (self.center_x - ((self.width - 75)/2), 390)
+            size: (self.width - 100, self.height - 480)
+            radius: [10]
+        #Label for patient name
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (50,405)
+            size: (270, 50)
+            radius: [10]
+
+        Color:
+            rgba  : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (350,405)
+            size: (200, 50)
+            radius: [10]
+        Color:
+            rgba :  0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (620,405)
+            size: (220, 50)
+            radius: [10]
+
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+            # rgba : 0.85, 0.85, 0.85, 0.5
+
+        RoundedRectangle:
+            pos: (40,245)
+            size: (270,120)
+            radius: [10]
+        
+        
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (320,245)
+            size: (270,120)
+            radius: [10]
+
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (600,245)
+            size: (270,120)
+            radius: [10]
+
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (60,272)
+            size: (240,40)
+            radius: [10]
+        
+        Color:
+            rgba : 0,0,0,1
+        # Line:
+        #     points : 180, 272, 180, 312
+
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (340,272)
+            size: (240,40)
+            radius: [10]
+        
+        Color:
+            rgba : 0,0,0,1
+        # Line:
+        #     points : 460, 272, 460, 312
+        
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (620,272)
+            size: (240,40)
+            radius: [10]
+        
+        Color:
+            rgba : 0,0,0,1
+        # Line:
+        #     points : 740, 272, 740, 312
+
+        #DR outer rectangle
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (35, 95)
+            size: (450, 120)
+            radius: [10]
+        
+        Color:
+            rgba : 0.645,0.717,0.796,0.6
+        RoundedRectangle:
+            pos: (55,120)
+            size: (420, 40)
+            radius: [10]
+        
+        Color:
+            rgba : 0,0,0,1
+        # Line:
+        #     points : 265, 120, 265, 160
+
+        
+        
+
+        
+    FloatLayout:
+        RoundedButtonDarkBlue:
+            text:"Save as PDF"
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.775 ,'center_y' : 0.3}
+            on_press: 
+                root.view_()
+                
+        
+        RoundedButtonDarkBlue:
+            text:"Main Menu"
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            font_size : 20
+            size_hint : 0.281, 0.075
+            pos_hint : {'center_x' : 0.775 ,'center_y' : 0.2}
+            on_press: 
+                root.main_menu()
+
+            
+        Label:
+            text: 'Threat Report'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 40
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.92}
+        Label:
+            text: 'Threat type:'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.16, 'center_y': 0.81}
+        
+        Label:
+            text: root.patient_name
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.19, 'center_y': 0.723}
+
+        Label:
+            text: 'Threat level:'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.46, 'center_y': 0.810}
+
+        Label:
+            text: root.patient_age
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.48, 'center_y': 0.723}
+
+
+        Label:
+            text: 'Threat location:'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.76, 'center_y': 0.810}
+        
+        Label:
+            text: root.patient_gender
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.78, 'center_y': 0.723}
+        Label:
+            text: 'Time of event:'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.16, 'center_y': 0.575}
+
+        Label:
+            text: root.left_glaucoma
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.125, 'center_y': 0.49}
+
+        Label:
+            text: 'People involved:'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.46, 'center_y': 0.575}
+
+        
+        Label:
+            text: root.left_cataract
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.425, 'center_y': 0.49}
+        
+
+        
+        Label:
+            text: 'Vehicle Invovled:'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.78, 'center_y': 0.575}
+        
+        Label:
+            text: root.left_amd
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.72, 'center_y': 0.49}
+        
+
+        Label:
+            text: 'Past pattern of threat:'
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.22, 'center_y': 0.32}
+        
+        Label:
+            text: root.left_dr
+            font_name : '/home/ayush/Documents/Machine_learning/INFYUVA/Infyuva/newgui/Inter/static/Inter-Regular.ttf'
+            multiline: True
+            bold: True
+            font_size: 25
+            color: (1,1,1,1)
+            pos_hint: {'center_x': 0.17, 'center_y': 0.235}
+        
