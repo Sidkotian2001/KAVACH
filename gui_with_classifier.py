@@ -232,6 +232,28 @@ class signupWindow(Screen):
             if not mobile_flag:
                 self.user_mobile.text = ''
 
+class videoinputWindow(Screen):
+    video_path = ObjectProperty(None)
+    location = ObjectProperty(None)
+    infyuva_label = ObjectProperty(None)
+        
+    # def submit_login(self):
+    #     try:
+    #         conn = sqlite3.connect('login.db')
+    #         c = conn.cursor()
+    #         c.execute("SELECT * FROM login WHERE username = ? AND password = ?", (self.login_username.text, self.login_password.text))
+    #         data = c.fetchall()
+    #         if data:
+    #             sm.add_widget(VideoCapture(name='videofeed'))
+    #             sm.current = 'videofeed'
+    #         else:
+    #             self.login_username.text = ''
+    #             self.login_password.text = ''
+    #     except Exception as e:
+    #         print(e)
+    # pass
+
+
 class VideoCapture(Screen):
 
     def __init__(self, **kwargs):
@@ -302,15 +324,17 @@ class VideoCapture(Screen):
 kv = Builder.load_file('layout.kv')
 sm = WindowManager()
 
-class loginMain(App):
+class CrimeSense(App):
     def build(self):
-        sm.add_widget(loginWindow(name = 'logininfoWindow'))
-        sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+
+        # sm.add_widget(loginWindow(name = 'logininfoWindow'))
+        # sm.add_widget(signupWindow(name = 'signupinfoWindow'))
+        sm.add_widget(videoinputWindow(name = 'videoinputWindow'))
         
         return sm
 
 def main():
-    loginMain().run()
+    CrimeSense().run()
 
 if __name__ == "__main__":
     main()
