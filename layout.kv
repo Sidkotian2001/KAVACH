@@ -407,7 +407,6 @@
     TextInput:
         id: location
         hint_text: 'Location'
-        password: True
         hint_text_color: (0,0,0,1)
         font_name : 'Inter/static/Inter-Regular.ttf'
         halign: 'center'
@@ -615,7 +614,7 @@
             pos_hint: {'center_x': 0.16, 'center_y': 0.81}
         
         Label:
-            text: root.patient_name
+            text: root.threat_class
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
@@ -633,7 +632,7 @@
             pos_hint: {'center_x': 0.46, 'center_y': 0.810}
 
         Label:
-            text: root.patient_age
+            text: root.threat_level
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
@@ -652,7 +651,7 @@
             pos_hint: {'center_x': 0.76, 'center_y': 0.810}
         
         Label:
-            text: root.patient_gender
+            text: root.location
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
@@ -669,7 +668,7 @@
             pos_hint: {'center_x': 0.16, 'center_y': 0.575}
 
         Label:
-            text: root.left_glaucoma
+            text: root.time_
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
@@ -688,7 +687,7 @@
 
         
         Label:
-            text: root.left_cataract
+            text: root.people
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
@@ -708,7 +707,7 @@
             pos_hint: {'center_x': 0.78, 'center_y': 0.575}
         
         Label:
-            text: root.left_amd
+            text: root.vehicles
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
@@ -727,11 +726,11 @@
             pos_hint: {'center_x': 0.22, 'center_y': 0.32}
         
         Label:
-            text: root.left_dr
+            text: root.past_threat_level
             font_name : 'Inter/static/Inter-Regular.ttf'
             multiline: True
             bold: True
             font_size: 25
-            color: (1,1,1,1)
+            color: (0,0,0,1)
             pos_hint: {'center_x': 0.17, 'center_y': 0.235}
         

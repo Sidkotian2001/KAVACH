@@ -63,3 +63,18 @@ Time: 21:21
 Phone Number: +91 96196 16979
 Message: Test msg.
 --------------------
+Date: 1/4/2023
+Time: 13:48
+Phone Number: +919820218571
+Message: Alert! A High Theft has been reported at Manipal at 13:48:08. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 13:48
+Phone Number: +919820218571
+Message: Alert! A High Theft has been reported at Manipal at 13:48:23. Nearest hospital is KMC Hospital. Stay safe!
+--------------------
+Date: 1/4/2023
+Time: 13:52
+Phone Number: +919820218571
+Message: Alert! A High Theft has been reported at Manipal at 13:51:59. Nearest hospital is KMC Hospital. Stay safe!
+--------------------

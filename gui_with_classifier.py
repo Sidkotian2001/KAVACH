@@ -18,7 +18,7 @@ import os
 import cv2
 from kivy.graphics.texture import Texture
 import sqlite3
-
+import time
 import os
 import json
 from docopt import docopt
@@ -30,8 +30,8 @@ from sense.downstream_tasks.nn_utils import Pipe
 from sense.downstream_tasks.postprocess import PostprocessClassificationOutput
 from sense.loading import build_backbone_network
 from sense.loading import load_backbone_model_from_config
-
-
+from pdf import create_pdf
+from wa import alerter
 Window.size = (940, 600)
 Window.clearcolor = (0,0.267,0.4,1)
 Window.resize = False
@@ -234,6 +234,7 @@ class signupWindow(Screen):
                 self.user_mobile.text = ''
 
 selected_video = None
+location = None
 class videoinputWindow(Screen):
     video_path = ObjectProperty(None)
     location = ObjectProperty(None)
@@ -257,6 +258,7 @@ class videoinputWindow(Screen):
                             background_disabled_normal = 'gallery_disabled.png',
                             on_release = self.select_video_file
         )
+
         
         self.add_widget(self.button1)
     def update_round_rect(self, *args):
@@ -271,6 +273,9 @@ class videoinputWindow(Screen):
         if globals()['selected_video'] != None:
             self.video_path.text = globals()['selected_video']
     def view_video(self):
+        globals()['location'] = self.location.text
+        print(globals()['location'])
+
         sm.add_widget(VideoCapture(name='videofeed'))
         sm.current = 'videofeed'
 
@@ -304,7 +309,7 @@ class VideoCapture(Screen):
         start_frame_number = run_custom_classifier(self.video_path)
         recordvideo(video_path=self.video_path, 
                             start_frame_number=start_frame_number)
-        self.capture = cv2.VideoCapture("/home/sid009/KAVACH/kavach_github/output_video2.mp4")
+        self.capture = cv2.VideoCapture("/home/sid009/KAVACH/kavach_github/output_video.mp4")
         
         self.clock_schedule()
         # self.size_hint = (1, 9/16)
@@ -343,31 +348,58 @@ class VideoCapture(Screen):
             self.texture.blit_buffer(buf, colorfmt = 'bgr', bufferfmt = 'ubyte')
             self.round_rect.texture = self.texture
         else:
+            #add here code to run code for human detection
             sm.current = 'reportinfoWindow'
 
 
+
 class ReportWindow(Screen):
-    patient_name = StringProperty()
-    patient_mobile = StringProperty()
-    patient_age = StringProperty()
-    patient_gender = StringProperty()
-    left_cataract = StringProperty()
-    left_dr = StringProperty()
-    left_amd = StringProperty()
-    left_glaucoma = StringProperty()
+    threat_class = StringProperty()
+    threat_level = StringProperty()
+    location = StringProperty()
+    time_ = StringProperty()
+    people = StringProperty()
+    vehicles = StringProperty()
+    past_threat_level = StringProperty()
+
     
     def view_(self):
-        pass
+        self.threat_class ="Theft"
+        self.threat_level ="High"
+        self.location = globals()['location']
+        self.time_ = time.ctime(time.time())[11:19]
+        self.people = "2"
+        self.vehicles = "3"
+        self.past_threat_level = "Highlevel"
+        pdf_obj = create_pdf('Crime_report.pdf',
+                             self.time_,
+                             self.threat_class,
+                             self.threat_level,
+                             self.location,
+                             )
+        pdf_obj.build_pdf()
+        obj = alerter()
+        obj.send_msg(self.location, self.threat_level, self.threat_class)
     def main_menu(self):
-        self.patient_name = ''
-        self.patient_mobile = ''
+        self.threat_class = ''
+        self.threat_level = ''
         self.patient_age  = ''
-        self.patient_gender = ''
-        self.left_cataract = ''
-        self.left_dr = ''
-        self.left_amd = ''
-        self.left_glaucoma = ''
+        self.location = ''
+        self.people = ''
+        self.past_threat_level = ''
+        self.vehicles = ''
+        self.time_ = ''
         sm.current = 'logininfoWindow'
+    
+    # def generate_report(self):
+    #     pdf_obj = create_pdf('Crime_report.pdf',
+    #                          self.time_,
+    #                          self.threat_class,
+    #                          self.threat_level,
+    #                          self.location,
+    #                          )
+    #     pdf_obj.build_pdf()
+
 
 class FileBrowserScreen(Screen):
 
