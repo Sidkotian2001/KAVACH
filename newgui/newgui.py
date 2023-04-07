@@ -118,10 +118,12 @@ class patientWindow(Screen):
     patient_mobile = ObjectProperty(None)
     patient_age = ObjectProperty(None)
     patient_gender = None
-    # patient_gender = ObjectProperty(None)
 
-    def spinner_clicked(self, value):
-        self.patient_gender = value
+    def checkbox_click(self, instance, value, name):
+        if value == True:
+            self.patient_gender = name
+    
+    
 
     def submit_info(self):
         globals()['p_f'] = self.patient_firstname.text
@@ -623,7 +625,7 @@ class ReportWindow(Screen):
 kv = Builder.load_file('components.kv')
 sm = WindowManager()
 
-class loginMain(App):
+class InfyUI(App):
     def build(self):
         # sm.add_widget(loginWindow(name = 'logininfoWindow'))
         # sm.add_widget(signupWindow(name = 'signupinfoWindow'))
@@ -636,4 +638,4 @@ class loginMain(App):
         return sm
 
 if __name__ == '__main__':
-    loginMain().run()
+    InfyUI().run()
